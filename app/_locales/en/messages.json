@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "capylang",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Practise a foreign language fast and easy, and improve your communication skills while you&#39;re surfing the Internet",
+    "description": "The description of the application"
+  }
+}
