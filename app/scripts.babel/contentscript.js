@@ -1,7 +1,31 @@
 const BASE_API = 'https://capylang.herokuapp.com'; //api
 
-//Storage in chrome
+/*
+* NEED to be JSON IN FILE EXTERNAL --> _locales
+* for language : [
+*	"learn_language"
+* ]
+*/
+const SUPPORTED_LANGUAGES = {
+	"portuguese": ["english"]
+};
 
+const MESSAGES_VIEW_RIGHT = {
+	"portuguese": "Aê, acertou!",
+	"english"   : "Uow, right!"
+};
+
+const MESSAGES_VIEW_TRANSLATEHERE = {
+	"portuguese": "Traduza aqui em português",
+	"english"   : "Translate to portuguese here"
+};
+
+const MESSAGE_VIEW_BUTTONS = {
+	"portuguese": ["Enviar", "Não sei"],
+	"english"   : ["Submit", "I don't know"]
+};
+
+//Storage in chrome
 let putStorage = function(key, value){
 	let obj = {
 		[key]: value
@@ -11,15 +35,24 @@ let putStorage = function(key, value){
 	});
 }
 
+
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
+    if (msg.message && (msg.message == "DIMENSION")) {                          
+        sendResponse(dimension);       
+    }
+	return true;
+});
+
+
+
 //Start application with args (category, interval)
-let capylangStart = (category = 0, minutesInterval = 1) => {
-		//verify
+let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
+	//verify
 	let phrases = {};
-	console.log("deu certo");
 	chrome.storage.sync.get('phrases', (obj) => {
 		if(obj.phrases){
 			phrases = obj.phrases;
-			console.log("phrase recebeu obj: ", phrases);
+			// console.log("phrase recebeu obj: ", phrases);
 		} else {
 			let request = new XMLHttpRequest();				
 			let _args = {};
@@ -73,36 +106,47 @@ let capylangStart = (category = 0, minutesInterval = 1) => {
 		return response.some((n) => n.toLowerCase() === valueEntered.toLowerCase());
 	}
 
-	//if checked is true, capylang alert!
+	//capylang alert with question
 	function seeQuestion(phrase, response){
+		let userLang = lang.split('_')[1];
 		view.input({
+			
 			type: 'text',
-			placeholder: 'Translate to portuguese here',
+			placeholder: `${MESSAGES_VIEW_TRANSLATEHERE[userLang]}`,
 			prefilledValue: ''
-		}, phrase, 'Submit', 'I don\'t know =(', function(valueEntered) {
+
+		},phrase, `${MESSAGE_VIEW_BUTTONS[userLang][0]}`, //submit
+							`${MESSAGE_VIEW_BUTTONS[userLang][1]} =(`, //I don't know
+			function(valueEntered) {
 				if(checkResponse(response, valueEntered)){
-					view.alert(1, 'Right! 👊 (• ͜ʖ•)', 2);
-				} else{
+
+					/*
+					* Get message in lang of the user -> eng_pt (::lang learn_your lang)
+					*/
+					view.alert(1, `${MESSAGES_VIEW_RIGHT[userLang]} 👊 (• ͜ʖ•)`, 2);
+
+				} else {
+
 					view.alert(3, '<b>' + response + '</b> =(', 2);
+
 				}
-	    }, function(valueEntered) {
+	    },  function(valueEntered) {
+
 				view.alert(3, '<b>' + response + '</b>', 2);
-		});
+
+			});
 	}
 
-	// Check Data
+	//remove dot in final str
+	String.prototype.removeDot = function() {
+		return  this[this.length-1] === '.'  ? 
+				this.slice(0, this.indexOf(this[this.length-1])) : 
+				/* ;^;  */ this
+	};
 
-	// let isStarted = ls2.load('capylangInterval');	
-	let checkVal  = window.setInterval(function(){
+	//init interval
+	let checkVal = window.setInterval(function(){
 		getRandomQuestion();
 	}, minutesInterval * 60 * 1000);
 	
-	//remove dot in final str
-	String.prototype.removeDot = function() {
-		return this[this.length-1] === '.' 
-		? this.slice(0, this.indexOf(this[this.length-1])) //final text
-		: /* ;^;  */ this
-	};
 }
-
-capylangStart(0, 1);
