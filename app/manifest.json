@@ -11,6 +11,7 @@
   "background": {
     "scripts": [
       "scripts/chromereload.js",
+      "scripts/alarms.js",
       "scripts/background.js"
     ]
   },

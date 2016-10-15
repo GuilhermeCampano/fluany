@@ -39,6 +39,7 @@ let putStorage = function(key, value){
 let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 	//verify
 	let phrases = {};
+
 	chrome.storage.sync.get('phrases', (obj) => {
 		if(obj.phrases){
 			console.log("JA TINHA SALVO");
@@ -69,7 +70,6 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	});
 
 	function getRandomQuestion(){
-		console.log('entrou em question1!!!');
 		let randOddNumber = 1,
 		  randQuestion,
 		  responseQuestion;
@@ -102,6 +102,14 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	//capylang alert with question
 	function seeQuestion(phrase, response){
 		let userLang = lang.split('_')[1];
+
+
+
+		//stop alarm: 
+		chrome.runtime.sendMessage({message: "killAlarm"}, function(response) {	});
+
+
+
 		view.input({
 			
 			type: 'text',
@@ -109,10 +117,9 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 			prefilledValue: ''
 
 		},phrase, `${MESSAGE_VIEW_BUTTONS[userLang][0]}`, //submit
-							`${MESSAGE_VIEW_BUTTONS[userLang][1]} =(`, //I don't know
+				  `${MESSAGE_VIEW_BUTTONS[userLang][1]} =(`, //I don't know
 			function(valueEntered) {
 				if(checkResponse(response, valueEntered)){
-
 					/*
 					* Get message in lang of the user -> eng_pt (::lang learn_your lang)
 					*/
@@ -123,10 +130,13 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 					view.alert(3, '<b>' + response + '</b> =(', 2);
 
 				}
+				//Create again :: Was a break from the application to receive the answer
+				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
 	    },  function(valueEntered) {
-
 				view.alert(3, '<b>' + response + '</b>', 2);
 
+	    		//Create again :: Was a break from the application to receive the answer
+				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
 			});
 	}
 
@@ -144,15 +154,13 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
 	    if (msg.message && (msg.message == "GET_QUESTION")) {
 	    	getRandomQuestion();
-	        sendResponse("entregando!!!!");  
 	    }
 		return true;
 	});
 
-	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
+	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 	    if (msg.message && (msg.message == "DIMENSION")) {
 	    	getRandomQuestion();
-	        sendResponse("entregando!!!!");  
 	    }
 		return true;
 	});

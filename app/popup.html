@@ -11,11 +11,65 @@
     <!-- endbuild -->
   </head>
   <body>
-    <h1>Nível:</h1>
-    <p>Básico</p>
-    <button id="start">Play</button>
-    <button id="stop">Stop</button>
-    <p id="toggleAlarm">alarms here</p>
+
+    <section class="start">
+        <p id="playTitle">click to play</p>
+        <svg viewbox="0 0 140 140" class="buttonPlay" id="start">
+          <circle cx="70" cy="70" r="65" style="fill:#fff;stroke:#ddd"/>
+          <polygon id="shape" points="50,40 100,70 100,70 50,100, 50,40" style="fill:#aaa;">
+            <animate
+              class="foo"
+              id="animate_to_stop" 
+              begin="indefinite" 
+              fill="freeze" 
+              attributeName="points" 
+              dur="500ms" 
+              to="45,45 95,45 95,95, 45,95 45,45"
+              keySplines="
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1"
+              keyTimes="0;0.22;0.33;0.55;0.66;0.88;1" 
+              calcMode="spline"
+            />
+            <animate
+              class="bar"
+              id="animate_to_play" 
+              begin="indefinite" 
+              fill="freeze" 
+              attributeName="points" 
+              dur="500ms" 
+              to="50,40 100,70 100,70 50,100, 50,40" 
+              keySplines="
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1; 
+                0.1 0.8 0.2 1"
+              keyTimes="0;0.22;0.33;0.55;0.66;0.88;1" 
+              calcMode="spline"
+            />
+          </polygon>
+        </svg>
+    </section>
+    
+    <section>
+        <div class="value">
+            <span id="valueMinute">5</span>
+            <span class="minute">min</span>
+        </div>
+        
+        <input type="range" min="5" max="60" step="5" value="5">
+        
+        <h1>Your level:</h1>
+        <p class="basic">begginer</p>
+    </section>
+
+
     <!-- build:js scripts/popup-vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->

@@ -45,6 +45,7 @@ var capylangStart = function capylangStart() {
 
 	//verify
 	var phrases = {};
+
 	chrome.storage.sync.get('phrases', function (obj) {
 		if (obj.phrases) {
 			console.log("JA TINHA SALVO");
@@ -76,7 +77,6 @@ var capylangStart = function capylangStart() {
 	});
 
 	function getRandomQuestion() {
-		console.log('entrou em question1!!!');
 		var randOddNumber = 1,
 		    randQuestion = void 0,
 		    responseQuestion = void 0;
@@ -106,6 +106,10 @@ var capylangStart = function capylangStart() {
 	//capylang alert with question
 	function seeQuestion(phrase, response) {
 		var userLang = lang.split('_')[1];
+
+		//stop alarm: 
+		chrome.runtime.sendMessage({ message: "killAlarm" }, function (response) {});
+
 		view.input({
 
 			type: 'text',
@@ -116,7 +120,6 @@ var capylangStart = function capylangStart() {
 		MESSAGE_VIEW_BUTTONS[userLang][1] + " =(", //I don't know
 		function (valueEntered) {
 			if (checkResponse(response, valueEntered)) {
-
 				/*
     * Get message in lang of the user -> eng_pt (::lang learn_your lang)
     */
@@ -125,9 +128,13 @@ var capylangStart = function capylangStart() {
 
 				view.alert(3, '<b>' + response + '</b> =(', 2);
 			}
+			//Create again :: Was a break from the application to receive the answer
+			chrome.runtime.sendMessage({ message: "createAlarm" }, function (response) {});
 		}, function (valueEntered) {
-
 			view.alert(3, '<b>' + response + '</b>', 2);
+
+			//Create again :: Was a break from the application to receive the answer
+			chrome.runtime.sendMessage({ message: "createAlarm" }, function (response) {});
 		});
 	}
 
@@ -143,7 +150,6 @@ var capylangStart = function capylangStart() {
 	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 		if (msg.message && msg.message == "GET_QUESTION") {
 			getRandomQuestion();
-			sendResponse("entregando!!!!");
 		}
 		return true;
 	});
@@ -151,7 +157,6 @@ var capylangStart = function capylangStart() {
 	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 		if (msg.message && msg.message == "DIMENSION") {
 			getRandomQuestion();
-			sendResponse("entregando!!!!");
 		}
 		return true;
 	});

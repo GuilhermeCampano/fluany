@@ -1,7 +1,8 @@
-'use strict';
+"use strict";
 
-function Alarm(alarmName) {
+function Alarm(alarmName, period) {
   this.alarmName = alarmName;
+  this.period = period;
 }
 
 Alarm.prototype.check = function (callback) {
@@ -13,21 +14,15 @@ Alarm.prototype.check = function (callback) {
       return a.name == _self.alarmName;
     });
 
-    var newLabel;
-    if (hasAlarm) {
-      newLabel = 'Cancel alarm';
-    } else {
-      newLabel = 'Activate alarm';
-    }
-    document.getElementById('toggleAlarm').innerText = newLabel;
     if (callback) callback(hasAlarm);
   });
 };
 
 Alarm.prototype.create = function () {
+  console.log("Alarme created");
   chrome.alarms.create(this.alarmName, {
-    delayInMinutes: 1,
-    periodInMinutes: 1
+    delayInMinutes: this.period,
+    periodInMinutes: this.period
   });
 };
 
