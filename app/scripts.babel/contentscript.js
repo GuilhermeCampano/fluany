@@ -35,25 +35,17 @@ let putStorage = function(key, value){
 	});
 }
 
-
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
-    if (msg.message && (msg.message == "DIMENSION")) {                          
-        sendResponse(dimension);       
-    }
-	return true;
-});
-
-
-
 //Start application with args (category, interval)
 let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 	//verify
 	let phrases = {};
 	chrome.storage.sync.get('phrases', (obj) => {
 		if(obj.phrases){
+			console.log("JA TINHA SALVO");
 			phrases = obj.phrases;
-			// console.log("phrase recebeu obj: ", phrases);
+
 		} else {
+			
 			let request = new XMLHttpRequest();				
 			let _args = {};
 			request.open('GET', `${BASE_API}/api/eng/readphrases/?id=${category}`, true); ///get options in gulp
@@ -77,6 +69,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	});
 
 	function getRandomQuestion(){
+		console.log('entrou em question1!!!');
 		let randOddNumber = 1,
 		  randQuestion,
 		  responseQuestion;
@@ -144,9 +137,25 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 				/* ;^;  */ this
 	};
 
-	//init interval
-	let checkVal = window.setInterval(function(){
-		getRandomQuestion();
-	}, minutesInterval * 60 * 1000);
+
+	/************************************************************************/
 	
+	//Messages Passing
+	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
+	    if (msg.message && (msg.message == "GET_QUESTION")) {
+	    	getRandomQuestion();
+	        sendResponse("entregando!!!!");  
+	    }
+		return true;
+	});
+
+	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
+	    if (msg.message && (msg.message == "DIMENSION")) {
+	    	getRandomQuestion();
+	        sendResponse("entregando!!!!");  
+	    }
+		return true;
+	});
 }
+
+capylangStart(0, 1, "english_portuguese");

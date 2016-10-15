@@ -37,13 +37,6 @@ var putStorage = function putStorage(key, value) {
 	});
 };
 
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-	if (msg.message && msg.message == "DIMENSION") {
-		sendResponse(dimension);
-	}
-	return true;
-});
-
 //Start application with args (category, interval)
 var capylangStart = function capylangStart() {
 	var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -52,13 +45,13 @@ var capylangStart = function capylangStart() {
 
 	//verify
 	var phrases = {};
-	console.log("INICIOU!!!");
 	chrome.storage.sync.get('phrases', function (obj) {
 		if (obj.phrases) {
+			console.log("JA TINHA SALVO");
 			phrases = obj.phrases;
-			// console.log("phrase recebeu obj: ", phrases);
 		} else {
 			(function () {
+
 				var request = new XMLHttpRequest();
 				var _args = {};
 				request.open('GET', BASE_API + "/api/eng/readphrases/?id=" + category, true); ///get options in gulp
@@ -83,6 +76,7 @@ var capylangStart = function capylangStart() {
 	});
 
 	function getRandomQuestion() {
+		console.log('entrou em question1!!!');
 		var randOddNumber = 1,
 		    randQuestion = void 0,
 		    responseQuestion = void 0;
@@ -143,8 +137,24 @@ var capylangStart = function capylangStart() {
 		/* ;^;  */this;
 	};
 
-	//init interval
-	var checkVal = window.setInterval(function () {
-		getRandomQuestion();
-	}, minutesInterval * 60 * 1000);
+	/************************************************************************/
+
+	//Messages Passing
+	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+		if (msg.message && msg.message == "GET_QUESTION") {
+			getRandomQuestion();
+			sendResponse("entregando!!!!");
+		}
+		return true;
+	});
+
+	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+		if (msg.message && msg.message == "DIMENSION") {
+			getRandomQuestion();
+			sendResponse("entregando!!!!");
+		}
+		return true;
+	});
 };
+
+capylangStart(0, 1, "english_portuguese");
