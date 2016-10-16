@@ -37,6 +37,7 @@
       "js": [
         "scripts/view.js",
         "scripts/viewcss.js",
+        "scripts/alarms.js",
         "scripts/contentscript.js"
       ],
       "run_at": "document_end",

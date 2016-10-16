@@ -44,12 +44,16 @@ var capylangStart = function capylangStart() {
 	var lang = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "english_portuguese";
 
 	//verify
-	var phrases = {};
-
+	var phrasesFull = {};
+	var phrasesStep = {}; //each step needs to save in local storage, to hit all
+	var level = 1; //global
+	/**
+ * GET phrases in API and save in local storage or GET local storage
+ */
 	chrome.storage.sync.get('phrases', function (obj) {
 		if (obj.phrases) {
 			console.log("JA TINHA SALVO");
-			phrases = obj.phrases;
+			phrasesFull = obj.phrases;
 		} else {
 			(function () {
 
@@ -59,10 +63,10 @@ var capylangStart = function capylangStart() {
 				request.onload = function () {
 					if (request.status >= 200 && request.status < 400) {
 						_args = JSON.parse(request.responseText);
-						phrases = _args.phrases;
+						phrasesFull = _args.phrases;
 						minutesInterval = _args.minutesInterval;
-						putStorage('phrases', phrases);
-						console.log("inseriiu: ", phrases);
+						putStorage('phrases', phrasesFull);
+						console.log("inseriiu: ", phrasesFull);
 					} else {
 						// We reached our target server, but it returned an error
 						console.log("error in server");
@@ -76,24 +80,60 @@ var capylangStart = function capylangStart() {
 		}
 	});
 
-	function getRandomQuestion() {
-		var randOddNumber = 1,
-		    randQuestion = void 0,
-		    responseQuestion = void 0;
-
-		var rand = Math.floor(Math.random() * phrases.length);
-
-		if (rand != 0) randOddNumber = rand % 2 == 0 ? rand - 1 : rand; //need to be odd 
-		randQuestion = phrases[randOddNumber].toLowerCase().removeDot();
-
-		responseQuestion = phrases[randOddNumber - 1].toLowerCase().removeDot();
-
-		//get multiple response
-		responseQuestion = responseQuestion.split('/').map(function (n) {
-			return n.trim();
+	/**
+ * Clean Levels
+ */
+	function cleanLevels() {
+		chrome.storage.sync.remove('levelStep', function () {
+			console.log('clean');
 		});
-		// console.log('-->',responseQuestion);
-		seeQuestion(randQuestion, responseQuestion);
+	}
+
+	/**
+ * GET Local storage the phrases of the level
+ */
+	function getRandomQuestion() {
+		console.log("UUUH");
+		chrome.storage.sync.get('levelStep', function (obj) {
+
+			if (obj.levelStep['phraseStep']) {
+				//has object
+				console.log(obj.levelStep);
+				console.log("Já está em algum nível: ", obj.levelStep['phraseStep']);
+				phrasesStep = obj.levelStep['phraseStep'];
+				level = obj.levelStep['level'];
+				console.log('levelStep: ', phrasesStep);
+				console.log('LEVEL: ', level);
+			} else {
+
+				if (obj.levelStep['level'] === 'next') obj.levelStep['level'] = level++; //next leveland and save local
+
+				phrasesStep = phrasesFull.slice(level === 1 ? 0 : level * 10 - 10, level * 10);
+				console.log("phraseStep:", phrasesStep);
+				putStorage('levelStep', { level: 1, phraseStep: phrasesStep });
+				console.log("saved phraseStep:", phrasesStep);
+			}
+
+			// cleanLevels();
+
+			var randOddNumber = 1,
+			    randQuestion = void 0,
+			    responseQuestion = void 0;
+
+			var rand = Math.floor(Math.random() * phrasesStep.length);
+
+			if (rand != 0) randOddNumber = rand % 2 == 0 ? rand - 1 : rand; //need to be odd 
+			randQuestion = phrasesStep[randOddNumber].toLowerCase().removeDot();
+
+			responseQuestion = phrasesStep[randOddNumber - 1].toLowerCase().removeDot();
+
+			//get multiple response
+			responseQuestion = responseQuestion.split('/').map(function (n) {
+				return n.trim();
+			});
+			// console.log('-->',responseQuestion);
+			seeQuestion(randQuestion, responseQuestion);
+		});
 	}
 
 	//check response with value entered, with multiple response
@@ -120,10 +160,27 @@ var capylangStart = function capylangStart() {
 		MESSAGE_VIEW_BUTTONS[userLang][1] + " =(", //I don't know
 		function (valueEntered) {
 			if (checkResponse(response, valueEntered)) {
-				/*
-    * Get message in lang of the user -> eng_pt (::lang learn_your lang)
-    */
-				view.alert(1, MESSAGES_VIEW_RIGHT[userLang] + " \uD83D\uDC4A (\u2022 \u035C\u0296\u2022)", 2);
+				//you're right
+				chrome.storage.sync.get('levelStep', function (obj) {
+					/*
+     * Get message in lang of the user -> eng_pt (::lang learn_your lang)
+     */
+					view.alert(1, MESSAGES_VIEW_RIGHT[userLang] + " \uD83D\uDC4A (\u2022 \u035C\u0296\u2022)", 2);
+					//remove in array phrase :: Array Level [phrases]
+					phrasesStep = phrasesStep.filter(function (item) {
+						return item.toLowerCase().removeDot().trim() !== valueEntered;
+						//remove phrase
+					}).filter(function (item) {
+						return item.toLowerCase().removeDot().trim() !== phrase;
+					});
+					//::update local storage
+					if (phrasesStep.length > 0) {
+						putStorage('levelStep', { level: level, phraseStep: phrasesStep });
+					} else {
+						putStorage('levelStep', { level: 'next' });
+					}
+					console.log("nova frase: ", phrasesStep);
+				});
 			} else {
 
 				view.alert(3, '<b>' + response + '</b> =(', 2);
@@ -149,7 +206,7 @@ var capylangStart = function capylangStart() {
 	//Messages Passing
 	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 		if (msg.message && msg.message == "GET_QUESTION") {
-			getRandomQuestion();
+			getRandomQuestion(1);
 		}
 		return true;
 	});
@@ -160,6 +217,7 @@ var capylangStart = function capylangStart() {
 		}
 		return true;
 	});
+	getRandomQuestion();
 };
 
 capylangStart(0, 1, "english_portuguese");
