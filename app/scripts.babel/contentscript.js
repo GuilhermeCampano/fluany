@@ -41,6 +41,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	let phrasesFull = {};
 	let phrasesStep = {}; //each step needs to save in local storage, to hit all
 	let level = 1; //global
+
 	/**
 	* GET phrases in API and save in local storage or GET local storage
 	*/
@@ -55,19 +56,23 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 			let _args = {};
 			request.open('GET', `${BASE_API}/api/eng/readphrases/?id=${category}`, true); ///get options in gulp
 			request.onload = function() {
+
 				if (request.status >= 200 && request.status < 400) {
 					_args = JSON.parse(request.responseText);
 					phrasesFull = _args.phrases;
 					minutesInterval = _args.minutesInterval;
 					putStorage('phrases', phrasesFull);
-					console.log("inseriiu: ", phrasesFull);
+					console.log("entered: ", phrasesFull);
 				} else {
 					// We reached our target server, but it returned an error
 					console.log("error in server");
 				}
+
 			};
-			request.onerror = function() {
+
 			// There was a connection error of some sort
+			request.onerror = function() {
+				console.log('error request');
 			};
 			request.send();
 		}
@@ -86,7 +91,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	* GET Local storage the phrases of the level
 	*/
 	function getRandomQuestion(){
-		console.log("UUUH")
+
 		let newObjectLocal = {};
 		chrome.storage.sync.get('levelStep', (obj) => {
 
@@ -97,7 +102,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 				phrasesStep = obj.levelStep['phraseStep'];
 				level       = obj.levelStep['level'];
 
-				console.log('LEVEL: ', level);
+				console.log('level: ', level);
 			} else {
 				// after emptying the array, enter here ::update level variable
 				if(getProperty(obj, "levelStep.level")){
@@ -117,7 +122,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 				
 			}
 
-			// cleanLevels();
+			// cleanLevels(); debug or new feature
 
 			let randOddNumber = 1,
 				randQuestion,
@@ -125,8 +130,10 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 
 			let rand = Math.floor(Math.random() * phrasesStep.length);
 
+			//Get a random question
 			if( rand != 0 )
-				randOddNumber = rand % 2 == 0 ? rand - 1 : rand; //need to be odd 
+				randOddNumber = rand % 2 == 0 ? rand - 1 : rand; //need to be odd
+
 				randQuestion = phrasesStep[randOddNumber]
 					.toLowerCase()
 					.removeDot();
@@ -155,7 +162,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 
 
 
-		//stop alarm: 
+		//stop alarm: ::waiting user with a answer
 		chrome.runtime.sendMessage({message: "killAlarm"}, function(response) {	});
 
 
@@ -166,31 +173,32 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 			placeholder: `${MESSAGES_VIEW_TRANSLATEHERE[userLang]}`,
 			prefilledValue: ''
 
-		},phrase, `${MESSAGE_VIEW_BUTTONS[userLang][0]}`, //submit
-				  		`${MESSAGE_VIEW_BUTTONS[userLang][1]} =(`, //I don't know
-			function(valueEntered) {
+		}, phrase 
+		 ,`${MESSAGE_VIEW_BUTTONS[userLang][0]}` //submit
+		 ,`${MESSAGE_VIEW_BUTTONS[userLang][1]} =(` //I don't know
+		 ,function(valueEntered) {
+
 				if(checkResponse(response, valueEntered)){
 					//you're right
-					chrome.storage.sync.get('levelStep', (obj) => {
+					chrome.storage.sync.get('levelStep', obj => {
+						
 						/*
 						* Get message in lang of the user -> eng_pt (::lang learn_your lang)
 						*/
 						view.alert(1, `${MESSAGES_VIEW_RIGHT[userLang]} 👊 (• ͜ʖ•)`, 2);
+						
 						//remove in array phrase :: Array Level [phrases]
-						phrasesStep = phrasesStep.filter(function(item) {
-						    return (item.toLowerCase().removeDot().trim() !== valueEntered);
-						    //remove phrase
-						}).filter(function(item){
-							return (item.toLowerCase().removeDot().trim() !== phrase);
-						});
+						phrasesStep = phrasesStep
+							.filter(item => (item.toLowerCase().removeDot() !== valueEntered))
+							.filter(item => (item.toLowerCase().removeDot() !== phrase));
+
 						//::update local storage
-						console.log("LEVEL->: ", level);
 						if(phrasesStep.length > 0){
 							putStorage('levelStep', {level: level, phraseStep: phrasesStep});
 						}else{
 							putStorage('levelStep', {level: ++level});
 						}
-						console.log("nova frase: ", phrasesStep);
+						console.log("new phrases: ", phrasesStep);
 					});
 				} else {
 
@@ -199,14 +207,20 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 				}
 				//Create again :: Was a break from the application to receive the answer
 				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
-	    },  function(valueEntered) {
+	    }
+	   ,function(valueEntered) {
+				
 				view.alert(3, '<b>' + response + '</b>', 2);
-
-	    		//Create again :: Was a break from the application to receive the answer
+	    	//Create again :: Was a break from the application to receive the answer
 				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
-			});
+			}
+		);
 	}
-	/*****FILE UTILS*******/
+
+	// Internal helper functions
+  // #################
+
+
 	//remove dot in final str
 	String.prototype.removeDot = function() {
 		return  this[this.length-1] === '.'  ? 
@@ -230,17 +244,17 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	    return typeof res === "undefined" ? defaultValue: res;
 }
 
-	/************************************************************************/
-	
-	//Messages Passing
-	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {        
+	// Message passing
+  // #################
+
+	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 	    if (msg.message && (msg.message == "GET_QUESTION")) {
 	    	getRandomQuestion();
 	    }
 		return true;
 	});
 
-	chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 	    if (msg.message && (msg.message == "DIMENSION")) {
 	    	getRandomQuestion();
 	    }
