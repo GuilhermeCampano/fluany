@@ -1,7 +1,7 @@
 const BASE_API = 'https://capylang.herokuapp.com'; //api
 
 /*
-* NEED to be JSON IN FILE EXTERNAL --> _locales
+* --> _locales
 * for language : [
 *	"learn_language"
 * ]
@@ -10,20 +10,13 @@ const SUPPORTED_LANGUAGES = {
 	"portuguese": ["english"]
 };
 
-const MESSAGES_VIEW_RIGHT = {
-	"portuguese": "Aê, acertou!",
-	"english"   : "Uow, right!"
-};
-
-const MESSAGES_VIEW_TRANSLATEHERE = {
-	"portuguese": "Traduza aqui em português",
-	"english"   : "Translate to portuguese here"
-};
-
-const MESSAGE_VIEW_BUTTONS = {
-	"portuguese": ["Enviar", "Não sei"],
-	"english"   : ["Submit", "I don't know"]
-};
+//Iternacionalization
+const MESSAGE_VIEW_RIGHT         = chrome.i18n.getMessage('alertRight');
+const MESSAGE_VIEW_TRANSLATEHERE = chrome.i18n.getMessage('placeholderAsk');
+const MESSAGES_VIEW_BUTTONS      = [
+	chrome.i18n.getMessage('buttonSubmit'),
+	chrome.i18n.getMessage('buttonIDontKnow')	
+];
 
 //Storage in chrome
 let putStorage = function(key, value){
@@ -36,7 +29,11 @@ let putStorage = function(key, value){
 }
 
 //Start application with args (category, interval)
-let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
+let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
+		
+	//DEBUG LANG
+	//console.log(chrome.i18n.getMessage('alertRight'));
+
 	//verify
 	let phrasesFull = {};
 	let phrasesStep = {}; //each step needs to save in local storage, to hit all
@@ -47,7 +44,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	*/
 	chrome.storage.sync.get('phrases', (obj) => {
 		if(obj.phrases){
-			console.log("JA TINHA SALVO");
+			console.log("I had been saved");
 			phrasesFull = obj.phrases;
 
 		} else {
@@ -170,12 +167,12 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 		view.input({
 			
 			type: 'text',
-			placeholder: `${MESSAGES_VIEW_TRANSLATEHERE[userLang]}`,
+			placeholder: `${MESSAGE_VIEW_TRANSLATEHERE}`,
 			prefilledValue: ''
 
 		}, phrase 
-		 ,`${MESSAGE_VIEW_BUTTONS[userLang][0]}` //submit
-		 ,`${MESSAGE_VIEW_BUTTONS[userLang][1]} =(` //I don't know
+		 ,`${MESSAGES_VIEW_BUTTONS[0]}` //submit
+		 ,`${MESSAGES_VIEW_BUTTONS[1]} =(` //I don't know
 		 ,function(valueEntered) {
 
 				if(checkResponse(response, valueEntered)){
@@ -185,7 +182,7 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 						/*
 						* Get message in lang of the user -> eng_pt (::lang learn_your lang)
 						*/
-						view.alert(1, `${MESSAGES_VIEW_RIGHT[userLang]} 👊 (• ͜ʖ•)`, 2);
+						view.alert(1, `${MESSAGE_VIEW_RIGHT} 👊 (• ͜ʖ•)`, 2);
 						
 						//remove in array phrase :: Array Level [phrases]
 						phrasesStep = phrasesStep
@@ -233,16 +230,16 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	 *     getProperty(myObj,['aze','xyz'],{value: null}) 
 	 */
 	function getProperty(obj, props, defaultValue) {
-	    var res, isvoid = function(x){return typeof x === "undefined" || x === null;}
-	    if(!isvoid(obj)){
-	        if(isvoid(props)) props = [];
-	        if(typeof props  === "string") props = props.trim().split(".");
-	        if(props.constructor === Array){
-	            res = props.length>1 ? getProperty(obj[props.shift()],props,defaultValue) : obj[props[0]];
-	        }
-	    }
-	    return typeof res === "undefined" ? defaultValue: res;
-}
+    var res, isvoid = (x) => typeof x === "undefined" || x === null;
+    if(!isvoid(obj)){
+        if(isvoid(props)) props = [];
+        if(typeof props  === "string") props = props.trim().split(".");
+        if(props.constructor === Array){
+            res = props.length>1 ? getProperty(obj[props.shift()],props,defaultValue) : obj[props[0]];
+        }
+    }
+    return typeof res === "undefined" ? defaultValue: res;
+	}
 
 	// Message passing
   // #################
@@ -255,11 +252,14 @@ let capylangStart = (category = 0, minutesInterval = 1, lang = "english_portugue
 	});
 
 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-	    if (msg.message && (msg.message == "DIMENSION")) {
+	    if (msg.message && (msg.message == "LOAD")) {
 	    	getRandomQuestion();
 	    }
 		return true;
 	});
+
+	//DEBUG:
+	// getRandomQuestion();
 }
 
-capylangStart(0, 1, "english_portuguese");
+load(0, 1, "english_portuguese");

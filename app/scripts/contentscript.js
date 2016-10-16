@@ -5,7 +5,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var BASE_API = 'https://capylang.herokuapp.com'; //api
 
 /*
-* NEED to be JSON IN FILE EXTERNAL --> _locales
+* --> _locales
 * for language : [
 *	"learn_language"
 * ]
@@ -14,20 +14,10 @@ var SUPPORTED_LANGUAGES = {
 	"portuguese": ["english"]
 };
 
-var MESSAGES_VIEW_RIGHT = {
-	"portuguese": "Aê, acertou!",
-	"english": "Uow, right!"
-};
-
-var MESSAGES_VIEW_TRANSLATEHERE = {
-	"portuguese": "Traduza aqui em português",
-	"english": "Translate to portuguese here"
-};
-
-var MESSAGE_VIEW_BUTTONS = {
-	"portuguese": ["Enviar", "Não sei"],
-	"english": ["Submit", "I don't know"]
-};
+//Iternacionalization
+var MESSAGE_VIEW_RIGHT = chrome.i18n.getMessage('alertRight');
+var MESSAGE_VIEW_TRANSLATEHERE = chrome.i18n.getMessage('placeholderAsk');
+var MESSAGES_VIEW_BUTTONS = [chrome.i18n.getMessage('buttonSubmit'), chrome.i18n.getMessage('buttonIDontKnow')];
 
 //Storage in chrome
 var putStorage = function putStorage(key, value) {
@@ -38,10 +28,14 @@ var putStorage = function putStorage(key, value) {
 };
 
 //Start application with args (category, interval)
-var capylangStart = function capylangStart() {
+var load = function load() {
 	var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 	var minutesInterval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
 	var lang = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "english_portuguese";
+
+
+	//DEBUG LANG
+	//console.log(chrome.i18n.getMessage('alertRight'));
 
 	//verify
 	var phrasesFull = {};
@@ -53,7 +47,7 @@ var capylangStart = function capylangStart() {
  */
 	chrome.storage.sync.get('phrases', function (obj) {
 		if (obj.phrases) {
-			console.log("JA TINHA SALVO");
+			console.log("I had been saved");
 			phrasesFull = obj.phrases;
 		} else {
 			(function () {
@@ -169,11 +163,11 @@ var capylangStart = function capylangStart() {
 		view.input({
 
 			type: 'text',
-			placeholder: "" + MESSAGES_VIEW_TRANSLATEHERE[userLang],
+			placeholder: "" + MESSAGE_VIEW_TRANSLATEHERE,
 			prefilledValue: ''
 
-		}, phrase, "" + MESSAGE_VIEW_BUTTONS[userLang][0] //submit
-		, MESSAGE_VIEW_BUTTONS[userLang][1] + " =(" //I don't know
+		}, phrase, "" + MESSAGES_VIEW_BUTTONS[0] //submit
+		, MESSAGES_VIEW_BUTTONS[1] + " =(" //I don't know
 		, function (valueEntered) {
 
 			if (checkResponse(response, valueEntered)) {
@@ -183,7 +177,7 @@ var capylangStart = function capylangStart() {
 					/*
      * Get message in lang of the user -> eng_pt (::lang learn_your lang)
      */
-					view.alert(1, MESSAGES_VIEW_RIGHT[userLang] + " \uD83D\uDC4A (\u2022 \u035C\u0296\u2022)", 2);
+					view.alert(1, MESSAGE_VIEW_RIGHT + " \uD83D\uDC4A (\u2022 \u035C\u0296\u2022)", 2);
 
 					//remove in array phrase :: Array Level [phrases]
 					phrasesStep = phrasesStep.filter(function (item) {
@@ -254,11 +248,14 @@ var capylangStart = function capylangStart() {
 	});
 
 	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-		if (msg.message && msg.message == "DIMENSION") {
+		if (msg.message && msg.message == "LOAD") {
 			getRandomQuestion();
 		}
 		return true;
 	});
+
+	//DEBUG:
+	// getRandomQuestion();
 };
 
-capylangStart(0, 1, "english_portuguese");
+load(0, 1, "english_portuguese");

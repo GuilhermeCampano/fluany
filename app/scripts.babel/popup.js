@@ -1,10 +1,10 @@
 'use strict';
 
-let start = document.querySelector('#start');
-let stop = document.querySelector('#stop');
-let alarm = new Alarm('remindme', 1);
+let start   = document.querySelector('#start');
+let stop    = document.querySelector('#stop');
+let alarm   = new Alarm('remindme', 1);
 let playing = false;
-let svg = document.querySelector('svg.buttonPlay');
+let svg     = document.querySelector('svg.buttonPlay');
 
 start.addEventListener('click', function(){
 

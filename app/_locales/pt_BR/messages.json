@@ -5,27 +5,27 @@
   },
 
   "appDescription": {
-    "message": "Practise a foreign language fast and easy, and improve your communication skills while you're surfing the Internet",
+    "message": "Pratique uma língua estrangeira rápido e fácil, e melhore suas habilidades de comunicação, enquanto está navegando na Internet",
     "description": "The description of the application"
   },
 
   "alertRight": {
-    "message": "Uow, right!",
+    "message": "Aê, acertou!",
     "description": "if hit, gets the message"
   },
 
   "buttonSubmit": {
-    "message": "Submit",
+    "message": "Enviar",
     "description": "Submit the message"
   },
 
   "buttonIDontKnow": {
-    "message": "I don't know",
+    "message": "Eu não sei",
     "description": "Informing does not know"
   },
 
   "placeholderAsk": {
-    "message": "Translate here",
+    "message": "Traduza aqui",
     "description": "Message for translate in input"
   }
 }
