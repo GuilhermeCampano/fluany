@@ -11,12 +11,26 @@
     <!-- endbuild -->
   </head>
   <body>
+    <header>
+      Capylang
+      <span class="level"><p class="begginer">beginner</p></span>
+    </header>
+  
+    <section class="options">
+      <p>Select a language</p>
+      <div class="select">
+        <select name="languageSelect" id="slct" class="languageSelect">
+          <option value="0">Português</option>
+          <option value="1">English</option>
+        </select>
+      </div>
+    </section>
 
     <section class="start">
         <p id="playTitle">click to play</p>
         <svg viewbox="0 0 140 140" class="buttonPlay" id="start">
           <circle cx="70" cy="70" r="65" style="fill:#fff;stroke:#ddd"/>
-          <polygon id="shape" points="50,40 100,70 100,70 50,100, 50,40" style="fill:#aaa;">
+          <polygon id="shape" points="50,40 100,70 100,70 50,100, 50,40" style="fill:#bdc3c7;">
             <animate
               class="foo"
               id="animate_to_stop" 
@@ -56,17 +70,18 @@
           </polygon>
         </svg>
     </section>
-    
-    <section>
+
+    <section class="content">
         <div class="value">
             <span id="valueMinute">5</span>
             <span class="minute">min</span>
         </div>
-        
+        <span>Intervalo: </span>
         <input type="range" min="5" max="60" step="5" value="5">
         
-        <h1>Your level:</h1>
-        <p class="basic">begginer</p>
+        <div class="info">
+          <p class="basic">Common Expressions</p>
+        </div>
     </section>
 
 

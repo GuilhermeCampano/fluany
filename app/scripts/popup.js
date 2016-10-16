@@ -68,3 +68,35 @@ function iconPlay() {
 	animate.beginElement();
 	title.innerHTML = 'click to play';
 }
+
+//Request Categories
+/* What's missing is the API ::get LANGUAGES
+let selectElement = document.querySelector('#slct'),
+	request = new XMLHttpRequest(),
+	content = '',
+	opt;
+const BASE_API = 'https://capylang.herokuapp.com'; //api
+request.open('GET', BASE_API+'/api/languages', true);
+request.onload = function() {
+	if ( request.status >= 200 && request.status < 400 ) {
+		content = JSON.parse(request.responseText).categories;
+		content = content.map( n  => {
+			return n
+			.slice(0, n.indexOf('.txt'))
+			.slice(0, n.indexOf('-pt'))
+			.slice(0, n.indexOf('-eng'))
+			.replace(/-/g, ' ');
+		})
+		//print
+		console.log(`CATEGORIES: `);
+		content.map((n, i) => {
+			opt = document.createElement('option');
+			opt.value = i;
+			opt.innerHTML = n;
+			selectElement.appendChild(opt); 
+		});
+	}else{
+		console.log('is not working...')
+	}
+};
+request.send(); */

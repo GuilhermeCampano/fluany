@@ -5,14 +5,25 @@ h1 {
 
 body {
   font-family: "Dosis", Helvetica, Arial, sans-serif;
-  background: #ecf0f1;
-  color: #34495e;
-  padding: 5px 20px;
-  width: 300px;
+  background: #FFF;
+  color: #9a9a9a;
   text-shadow: white 1px 1px 1px;
+  margin: 0;
 }
 
+header{
+  padding: 10px;
+}
 
+header .level{
+  position: absolute;
+  right: 20px;
+  top: 0px;
+}
+
+section.content, section.start{
+  padding: 5px 20px;
+}
 /* BTN play/stop */
 section.start{
 	text-align: center;
@@ -42,7 +53,6 @@ svg.buttonPlay{
   letter-spacing: -1px;
 }
 input[type="range"] {
-  display: block;
   -webkit-appearance: none;
   background-color: #bdc3c7;
   width: 230px;
@@ -53,7 +63,7 @@ input[type="range"] {
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: #e74c3c;
+  background-color: #EB593D;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -63,8 +73,70 @@ input[type="range"]::-webkit-slider-thumb {
 }
  input[type="range"]::-webkit-slider-thumb:hover {
   background-color: white;
-  border: 2px solid #e74c3c;
+  border: 2px solid #EB593D;
 }
 input[type="range"]::-webkit-slider-thumb:active {
   transform: scale(1.6);
+}
+
+/* SELECT LANGUAGE */
+.options p{
+  text-align: center;
+}
+/* Reset Select */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #bdc3c7;
+  background-image: none;
+}
+/* Custom Select */
+.select {
+  position: relative;
+  display: block;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #ddd;
+  overflow: hidden;
+  border-radius: .25em;
+  margin-left: auto;
+  margin-right: auto;
+}
+select {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 0 0 .5em;
+  color: #fff;
+  cursor: pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 1em;
+  background: #9a9a9a;
+  pointer-events: none;
+  color: #FFF;
+}
+/* Transition */
+.select:hover::after {
+  color: #9a9a9a;
+}
+.select::after {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
 }
