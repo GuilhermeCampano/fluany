@@ -94,24 +94,34 @@ var capylangStart = function capylangStart() {
  */
 	function getRandomQuestion() {
 		console.log("UUUH");
+		var newObjectLocal = {};
 		chrome.storage.sync.get('levelStep', function (obj) {
 
-			if (obj.levelStep['phraseStep']) {
+			if (getProperty(obj, "levelStep.phraseStep")) {
 				//has object
-				console.log(obj.levelStep);
-				console.log("Já está em algum nível: ", obj.levelStep['phraseStep']);
+
+				console.log("continuing level");
+
 				phrasesStep = obj.levelStep['phraseStep'];
 				level = obj.levelStep['level'];
-				console.log('levelStep: ', phrasesStep);
+
 				console.log('LEVEL: ', level);
 			} else {
+				// after emptying the array, enter here ::update level variable
+				if (getProperty(obj, "levelStep.level")) {
+					level = obj.levelStep['level']; //update :: save after
+					console.log('AVANCOU DE NIVEL PARA: ', level);
+				}
 
-				if (obj.levelStep['level'] === 'next') obj.levelStep['level'] = level++; //next leveland and save local
-
+				//takes a piece to train
 				phrasesStep = phrasesFull.slice(level === 1 ? 0 : level * 10 - 10, level * 10);
 				console.log("phraseStep:", phrasesStep);
-				putStorage('levelStep', { level: 1, phraseStep: phrasesStep });
-				console.log("saved phraseStep:", phrasesStep);
+
+				//inserting again, beacause ::phrases
+				newObjectLocal['level'] = level;
+
+				newObjectLocal['phraseStep'] = phrasesStep;
+				putStorage('levelStep', newObjectLocal); //Savng objectlocal in Storage
 			}
 
 			// cleanLevels();
@@ -174,10 +184,11 @@ var capylangStart = function capylangStart() {
 						return item.toLowerCase().removeDot().trim() !== phrase;
 					});
 					//::update local storage
+					console.log("LEVEL->: ", level);
 					if (phrasesStep.length > 0) {
 						putStorage('levelStep', { level: level, phraseStep: phrasesStep });
 					} else {
-						putStorage('levelStep', { level: 'next' });
+						putStorage('levelStep', { level: ++level });
 					}
 					console.log("nova frase: ", phrasesStep);
 				});
@@ -194,19 +205,38 @@ var capylangStart = function capylangStart() {
 			chrome.runtime.sendMessage({ message: "createAlarm" }, function (response) {});
 		});
 	}
-
+	/*****FILE UTILS*******/
 	//remove dot in final str
 	String.prototype.removeDot = function () {
 		return this[this.length - 1] === '.' ? this.slice(0, this.indexOf(this[this.length - 1])) :
 		/* ;^;  */this;
 	};
 
+	/* ex: getProperty(myObj,'aze.xyz',0) // return myObj.aze.xyz safely
+  * accepts array for property names: 
+  *     getProperty(myObj,['aze','xyz'],{value: null}) 
+  */
+	function getProperty(obj, props, defaultValue) {
+		var res,
+		    isvoid = function isvoid(x) {
+			return typeof x === "undefined" || x === null;
+		};
+		if (!isvoid(obj)) {
+			if (isvoid(props)) props = [];
+			if (typeof props === "string") props = props.trim().split(".");
+			if (props.constructor === Array) {
+				res = props.length > 1 ? getProperty(obj[props.shift()], props, defaultValue) : obj[props[0]];
+			}
+		}
+		return typeof res === "undefined" ? defaultValue : res;
+	}
+
 	/************************************************************************/
 
 	//Messages Passing
 	chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 		if (msg.message && msg.message == "GET_QUESTION") {
-			getRandomQuestion(1);
+			getRandomQuestion();
 		}
 		return true;
 	});
@@ -217,7 +247,6 @@ var capylangStart = function capylangStart() {
 		}
 		return true;
 	});
-	getRandomQuestion();
 };
 
 capylangStart(0, 1, "english_portuguese");
