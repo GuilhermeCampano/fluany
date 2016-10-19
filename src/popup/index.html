@@ -1,0 +1,72 @@
+<header>
+  Capylang
+  <span class="level"><p class="begginer">beginner</p></span>
+</header>
+
+<section class="options">
+  <p>Select a language</p>
+  <div class="select">
+    <select name="languageSelect" id="slct" class="languageSelect">
+      <option value="0">Português</option>
+      <option value="1">English</option>
+    </select>
+  </div>
+</section>
+
+<section class="start">
+  <p id="playTitle">click to play</p>
+  <svg viewbox="0 0 140 140" class="buttonPlay" id="start">
+    <circle cx="70" cy="70" r="65" style="fill:#fff;stroke:#ddd"/>
+    <polygon id="shape" points="50,40 100,70 100,70 50,100, 50,40" style="fill:#bdc3c7;">
+      <animate
+        class="foo"
+        id="animate_to_stop" 
+        begin="indefinite" 
+        fill="freeze" 
+        attributeName="points" 
+        dur="500ms" 
+        to="45,45 95,45 95,95, 45,95 45,45"
+        keySplines="
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1"
+        keyTimes="0;0.22;0.33;0.55;0.66;0.88;1" 
+        calcMode="spline"
+      />
+      <animate
+        class="bar"
+        id="animate_to_play" 
+        begin="indefinite" 
+        fill="freeze" 
+        attributeName="points" 
+        dur="500ms" 
+        to="50,40 100,70 100,70 50,100, 50,40" 
+        keySplines="
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1; 
+          0.1 0.8 0.2 1"
+        keyTimes="0;0.22;0.33;0.55;0.66;0.88;1" 
+        calcMode="spline"
+      />
+    </polygon>
+  </svg>
+</section>
+
+<section class="content">
+  <div class="value">
+      <span id="valueMinute">5</span>
+      <span class="minute">min</span>
+  </div>
+  <span>Intervalo: </span>
+  <input type="range" min="5" max="60" step="5" value="5">
+  
+  <div class="info">
+    <p class="basic">Common Expressions</p>
+  </div>
+</section>

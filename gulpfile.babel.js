@@ -1,135 +1,113 @@
-// generated on 2016-10-12 using generator-chrome-extension 0.6.1
+// Native
+import fs from 'fs';
+import path from 'path';
+import { exec } from 'child_process'
+
+// npm
+import rimraf from 'rimraf';
+import clc from 'cli-color';
+import yargs from 'yargs';
+
+// gulp
 import gulp from 'gulp';
-import gulpLoadPlugins from 'gulp-load-plugins';
-import del from 'del';
 import runSequence from 'run-sequence';
-import {stream as wiredep} from 'wiredep';
 
-const $ = gulpLoadPlugins();
+// package
+import configGenerator from './dev-env/webpack.generator';
+import webpackBuild from './dev-env/webpack.build';
+import webpackDevServer from './dev-env/webpack.server';
+import Manifest from './dev-env/manifest'
+import overrideHotUpdater from './dev-env/lib/override_hot_updater'
+import * as paths from './dev-env/paths'
 
-gulp.task('extras', () => {
-  return gulp.src([
-    'app/*.*',
-    'app/_locales/**',
-    '!app/scripts.babel',
-    '!app/*.json',
-    '!app/*.html',
-  ], {
-    base: 'app',
-    dot: true
-  }).pipe(gulp.dest('dist'));
+
+// Program
+
+const args = yargs
+  .alias('p', 'production')
+  .argv;
+
+gulp.task('env', () => {
+  const env = args.production ? 'production' : 'development';
+  process.env.NODE_ENV = env; // eslint-disable-line no-undef
 });
 
-function lint(files, options) {
-  return () => {
-    return gulp.src(files)
-      .pipe($.eslint(options))
-      .pipe($.eslint.format());
-  };
-}
+// gulp.task('test-manifest', () => {
+//   const watcher = new Manifest(paths.manifest)
+//   watcher.watch()
+// })
 
-gulp.task('lint', lint('app/scripts.babel/**/*.js', {
-  env: {
-    es6: true
-  }
-}));
+let manifest
 
-gulp.task('images', () => {
-  return gulp.src('app/images/**/*')
-    .pipe($.if($.if.isFile, $.cache($.imagemin({
-      progressive: true,
-      interlaced: true,
-      // don't remove IDs from SVGs, they are often used
-      // as hooks for embedding and styling
-      svgoPlugins: [{cleanupIDs: false}]
-    }))
-    .on('error', function (err) {
-      console.log(err);
-      this.end();
-    })))
-    .pipe(gulp.dest('dist/images'));
+gulp.task('manifest', () => {
+  manifest = new Manifest(paths.manifest)
+  manifest.run()
 });
 
-gulp.task('html',  () => {
-  return gulp.src('app/*.html')
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    .pipe($.sourcemaps.init())
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
-    .pipe($.sourcemaps.write())
-    .pipe($.if('*.html', $.htmlmin({removeComments: true, collapseWhitespace: true})))
-    .pipe(gulp.dest('dist'));
+gulp.task('override_webpack', () => {
+  overrideHotUpdater()
 });
 
-gulp.task('chromeManifest', () => {
-  return gulp.src('app/manifest.json')
-    .pipe($.chromeManifest({
-      buildnumber: true,
-      background: {
-        target: 'scripts/background.js',
-        exclude: [
-          'scripts/chromereload.js'
-        ]
-      }
-  }))
-  .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
-  .pipe($.if('*.js', $.sourcemaps.init()))
-  .pipe($.if('*.js', $.uglify()))
-  .pipe($.if('*.js', $.sourcemaps.write('.')))
-  .pipe(gulp.dest('dist'));
+gulp.task('webpack-production', function(done) {
+  return webpackBuild(configGenerator(false, manifest))(done)
 });
 
-gulp.task('babel', () => {
-  return gulp.src('app/scripts.babel/**/*.js')
-      .pipe($.babel({
-        presets: ['es2015']
-      }))
-      .pipe(gulp.dest('app/scripts'));
+gulp.task('webpack-hot', function(done) {
+  return webpackDevServer(configGenerator(true, manifest))(done)
 });
 
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
-
-gulp.task('watch', ['lint', 'babel'], () => {
-  $.livereload.listen();
-
-  gulp.watch([
-    'app/*.html',
-    'app/scripts/**/*.js',
-    'app/images/**/*',
-    'app/styles/**/*',
-    'app/_locales/**/*.json'
-  ]).on('change', $.livereload.reload);
-
-  gulp.watch('app/scripts.babel/**/*.js', ['lint', 'babel']);
-  gulp.watch('bower.json', ['wiredep']);
+gulp.task('webpack-dev', function(done) {
+  return webpackBuild(configGenerator(true, manifest))(done)
 });
 
-gulp.task('size', () => {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+gulp.task('webpack-local', (done) => {
+  runSequence('webpack-dev', 'webpack-hot', done);
 });
 
-gulp.task('wiredep', () => {
-  gulp.src('app/*.html')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest('app'));
+gulp.task('development', (done) => {
+  runSequence('override_webpack', 'manifest', 'webpack-hot', done)
+})
+
+gulp.task('extension', (done) => {
+  // TODO detect system and Chrome path
+  const chromeBinaryPath = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+
+  setTimeout(() => {
+    console.log(clc.yellow(`Building extension into '${paths.releaseBuild}'`))
+    exec(`\$('${chromeBinaryPath}' --pack-extension=${paths.releaseBuild})`, (error, stdout, stderr) => {
+      console.log(clc.green('Done'));
+
+      if(stdout)
+        console.log(clc.yellow('stdout: ' + stdout));
+
+      if(stderr)
+        console.log(clc.red('stderr: ' + stderr));
+
+      if(error !== null)
+        console.log(clc.red('exec error: ' + error));
+
+      done()
+    })
+  // Long enought to prevent some unexpected errors
+  }, 1000)
+})
+
+gulp.task('prepare-release-dir', (done) => {
+  rimraf(paths.release, () => {
+    fs.mkdir(paths.release, () => {
+      done()
+    })
+  })
+})
+
+gulp.task('production', (done) => {
+  runSequence('prepare-release-dir', 'manifest', 'webpack-production', 'extension', done)
+})
+
+gulp.task('run', (done) => {
+  runSequence('env', (args.production ?  'production' : 'development'), done)
 });
 
-gulp.task('package', function () {
-  var manifest = require('./dist/manifest.json');
-  return gulp.src('dist/**')
-      .pipe($.zip('capylang-' + manifest.version + '.zip'))
-      .pipe(gulp.dest('package'));
-});
-
-gulp.task('build', (cb) => {
-  runSequence(
-    'lint', 'babel', 'chromeManifest',
-    ['html', 'images', 'extras'],
-    'size', cb);
-});
-
-gulp.task('default', ['clean'], cb => {
-  runSequence('build', cb);
+gulp.task('default', (done) => {
+  runSequence('run', done);
 });

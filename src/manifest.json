@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/index.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "background": {
+    "persistent": true,
+    "scripts": ["background/index.js"]
+  },
+  "permissions": [
+    "background",
+    "tabs",
+    "https://*/*",
+    "storage",
+    "unlimitedStorage",
+    "alarms",
+    "notifications"
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "browser_action": {
+    "default_title": "fluany",
+    "default_popup": "popup/index.html"
+  }
+}

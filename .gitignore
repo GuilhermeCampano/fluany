@@ -1,8 +1,4 @@
-node_modules
-temp
-.tmp
-.sass-cache
-app/bower_components
-test/bower_components
-package
-
+node_modules/
+build/
+release/
+npm-debug.log
