@@ -1,13 +1,14 @@
+
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 
 module.exports = function(webpackConfig) {
-  var host = "0.0.0.0",
+  var host = "127.0.0.1",
       port = 3001;
 
   return function(callback) {
     new WebpackDevServer(webpack(webpackConfig), {
-      contentBase: 'https://localhost:3001',
+      contentBase: 'http://localhost:3001',
       publicPath: webpackConfig.output.publicPath,
       https: true,
       // lazy: true,
@@ -21,7 +22,7 @@ module.exports = function(webpackConfig) {
       // Remove console.log mess during watch.
       stats: {
         // assets: false,
-        colors: true,
+        colors: true
         // version: false,
         // hash: false,
         // timings: false,
@@ -30,12 +31,12 @@ module.exports = function(webpackConfig) {
       }
     }).listen(port, host, function (err, result) {
       if (err) {
-        console.log(err)
+        console.log(err);
       } else {
-        console.log('Listening at https://' + host + ':' + port);
+        console.log('Listening at http://' + host + ':' + port);
       }
 
-      callback()
-    })
-  }
-}
+      callback();
+    });
+  };
+};

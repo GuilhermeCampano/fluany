@@ -1,7 +1,7 @@
 'use strict';
 
 import {Alarm} from 'shared/Alarms';
-
+import 'shared/popup.css';
 let start   = document.querySelector('#start');
 let stop    = document.querySelector('#stop');
 let alarm   = new Alarm('remindme', 1);
@@ -16,14 +16,14 @@ start.addEventListener('click', function(){
 			chrome.storage.sync.set({playing: false}, function() {
 				console.log('PLAY');
 				iconPlay();
-				
+
 				alarm.cancel(); //STOP
 			});
 		}else{
 			chrome.storage.sync.set({playing: true}, function() {
 				console.log('STOP');
 				iconStop();
-				
+
 				alarm.create(); //PLAY
 			});
 		}
@@ -50,7 +50,7 @@ elem.addEventListener("input", rangeValue);
 **/
 
 chrome.storage.sync.get('playing', (obj) => {
-	if(obj.playing){	
+	if(obj.playing){
 		iconStop();
 	}else{
 		iconPlay();
@@ -97,7 +97,7 @@ request.onload = function() {
 			opt = document.createElement('option');
 			opt.value = i;
 			opt.innerHTML = n;
-			selectElement.appendChild(opt); 
+			selectElement.appendChild(opt);
 		});
 	}else{
 		console.log('is not working...')

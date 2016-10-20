@@ -9,12 +9,12 @@
     }
   ],
   "background": {
-    "persistent": true,
     "scripts": ["background/index.js"]
   },
   "permissions": [
     "background",
     "tabs",
+    "http://*/",
     "https://*/*",
     "storage",
     "unlimitedStorage",

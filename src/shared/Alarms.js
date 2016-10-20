@@ -6,14 +6,14 @@ export class Alarm {
 
   check(callback){
     let _self = this;
-    chrome.alarms.getAll(function(alarms) {    
+    chrome.alarms.getAll(function(alarms) {
 
       var hasAlarm = alarms.some( (a) => {
         console.log('-> ', a);
         return a.name == _self._name;
       });
-        
-        if (callback) 
+
+        if (callback)
           callback(hasAlarm);
     });
   }
@@ -21,9 +21,9 @@ export class Alarm {
   create(){
     console.log("create");
     chrome.alarms.create(this._name,
-       { 
+       {
           delayInMinutes: this._period,
-          periodInMinutes: this._period 
+          periodInMinutes: this._period
         }
     );
   }

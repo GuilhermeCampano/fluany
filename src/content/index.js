@@ -1,18 +1,19 @@
 import {BASE_API} from 'shared/constants';
 
-import {MESSAGE_VIEW_RIGHT, 
-		MESSAGES_VIEW_BUTTONS,
-		MESSAGE_VIEW_TRANSLATEHERE, 
-		} from 'shared/internacionalization';
+import {MESSAGE_VIEW_RIGHT,
+		    MESSAGES_VIEW_BUTTONS,
+		    MESSAGE_VIEW_TRANSLATEHERE,
+		   } from 'shared/internacionalization';
 
 import Alarm from 'shared/Alarms';
 
-import {putStorage, cleanLevels} from 'shared/helpers';
+import {putStorage, cleanLevels, getProperty} from 'shared/helpers';
 
-import view from 'shared/view';
+import {view} from 'shared/view';
+import 'shared/view_css';
 
 //Start application with args (category, interval)
-let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
+let load = (category = 0, minutesInterval = 1, lang = "english") => {
 
 	//verify
 	let phrasesFull = {};
@@ -28,8 +29,8 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 			phrasesFull = obj.phrases;
 
 		} else {
-			
-			let request = new XMLHttpRequest();				
+
+			let request = new XMLHttpRequest();
 			let _args = {};
 			request.open('GET', `${BASE_API}/api/eng/readphrases/?id=${category}`, true); ///get options in gulp
 			request.onload = function() {
@@ -88,7 +89,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 
 				newObjectLocal['phraseStep'] = phrasesStep;
 				putStorage('levelStep', newObjectLocal); //Savng objectlocal in Storage
-				
+
 			}
 
 			// cleanLevels(); debug or new feature
@@ -116,9 +117,9 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 				.split('/')
 				.map(n => n.trim());
 			// console.log('-->',responseQuestion);
-			seeQuestion(randQuestion, responseQuestion)
+			seeQuestion(randQuestion, responseQuestion);
 		});
-	}		
+	}
 
 	//check response with value entered, with multiple response
 	function checkResponse(response, valueEntered){
@@ -127,22 +128,18 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 
 	//capylang alert with question
 	function seeQuestion(phrase, response){
-		let userLang = lang.split('_')[1];
-
-
 
 		//stop alarm: ::waiting user with a answer
 		chrome.runtime.sendMessage({message: "killAlarm"}, function(response) {	});
 
 
-
 		view.input({
-			
+
 			type: 'text',
 			placeholder: `${MESSAGE_VIEW_TRANSLATEHERE}`,
 			prefilledValue: ''
 
-		}, phrase 
+		}, phrase
 		 ,`${MESSAGES_VIEW_BUTTONS[0]}` //submit
 		 ,`${MESSAGES_VIEW_BUTTONS[1]} =(` //I don't know
 		 ,function(valueEntered) {
@@ -150,12 +147,12 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 				if(checkResponse(response, valueEntered)){
 					//you're right
 					chrome.storage.sync.get('levelStep', obj => {
-						
+
 						/*
 						* Get message in lang of the user -> eng_pt (::lang learn_your lang)
 						*/
 						view.alert(1, `${MESSAGE_VIEW_RIGHT} 👊 (• ͜ʖ•)`, 2);
-						
+
 						//remove in array phrase :: Array Level [phrases]
 						phrasesStep = phrasesStep
 							.filter(item => (item.toLowerCase().removeDot() !== valueEntered))
@@ -178,7 +175,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
 	    }
 	   ,function(valueEntered) {
-				
+
 				view.alert(3, '<b>' + response + '</b>', 2);
 	    	//Create again :: Was a break from the application to receive the answer
 				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
@@ -192,26 +189,10 @@ let load = (category = 0, minutesInterval = 1, lang = "english_portuguese") => {
 
 	//remove dot in final str
 	String.prototype.removeDot = function() {
-		return  this[this.length-1] === '.'  ? 
-				this.slice(0, this.indexOf(this[this.length-1])) : 
-				/* ;^;  */ this
+		return  this[this.length-1] === '.'  ?
+				this.slice(0, this.indexOf(this[this.length-1])) :
+			/* ;^;  */ this;
 	};
-
-	/* ex: getProperty(myObj,'aze.xyz',0) // return myObj.aze.xyz safely
-	 * accepts array for property names: 
-	 *     getProperty(myObj,['aze','xyz'],{value: null}) 
-	 */
-	function getProperty(obj, props, defaultValue) {
-    var res, isvoid = (x) => typeof x === "undefined" || x === null;
-    if(!isvoid(obj)){
-        if(isvoid(props)) props = [];
-        if(typeof props  === "string") props = props.trim().split(".");
-        if(props.constructor === Array){
-            res = props.length>1 ? getProperty(obj[props.shift()],props,defaultValue) : obj[props[0]];
-        }
-    }
-    return typeof res === "undefined" ? defaultValue: res;
-	}
 
 	// Message passing
   // #################

@@ -1,5 +1,5 @@
 /*
-* [INVALID] 
+* [INVALID]
            NEED to be REACTJS
 */
 
@@ -14,7 +14,7 @@ export let view = (function(){
 		colorText: '',
 		animationDelay: 300,
 		backgroundClickDismiss: true
-	}
+	};
 
 	/** Alert **/
 	var wasClickedCounter = 0,
@@ -27,7 +27,7 @@ export let view = (function(){
 		clearTimeout(alertTimeout1);
 		clearTimeout(alertTimeout2);
 		alertHide();
-	};	
+	};
 
 	// add alert to body
 	document.body.appendChild(alertOuter);
@@ -41,7 +41,7 @@ export let view = (function(){
 	let alertContent = document.createElement('div');
 	alertContent.id = 'notie-alert-content';
 	alertInner.appendChild(alertContent);
-	
+
 	// Initialize alert text
 	let alertText = document.createElement('span');
 	alertText.id = 'notie-alert-text';
@@ -51,10 +51,10 @@ export let view = (function(){
 	let alertIsShowing = false;
 	let alertTimeout1;
 	let alertTimeout2;
-	
+
 	function alert(type, message, seconds) {
 		if ( options.colorText.length > 0 ) {
-			alertText.style.color = options.colorText;	
+			alertText.style.color = options.colorText;
 		}
 
 		blur();
@@ -63,7 +63,7 @@ export let view = (function(){
 		setTimeout(function() {
 			wasClickedCounter--;
 		}, (options.animationDelay + 10));
-		
+
 		if (wasClickedCounter === 1) {
 
 			if (alertIsShowing) {
@@ -85,8 +85,8 @@ export let view = (function(){
 		let duration = 0;
 		if ( typeof seconds === 'undefined' || seconds === 0 ) {
 			let duration = 86400000;
-		} 
-		else 
+		}
+		else
 			if ( seconds > 0 && seconds < 1 ) {
 				duration = 1000;
 			}
@@ -99,20 +99,20 @@ export let view = (function(){
 		removeClass(alertOuter, 'notie-background-warning');
 		removeClass(alertOuter, 'notie-background-error');
 		removeClass(alertOuter, 'notie-background-info');
-		
+
 		// Set notie type (background color)
 		switch(type) {
 			case 1:
 				if ( options.colorSuccess.length > 0 ){
 					alertOuter.style.backgroundColor = options.colorSuccess;
-				} else { 
+				} else {
 					addClass(alertOuter, 'notie-background-success');
 				}
 				break;
 			case 2:
 				if ( options.colorWarning.length > 0 ) {
 					alertOuter.style.backgroundColor = options.colorWarning;
-				} else { 
+				} else {
 					addClass(alertOuter, 'notie-background-warning');
 				}
 				break;
@@ -173,7 +173,7 @@ export let view = (function(){
 	let inputInner = document.createElement('div');
 	inputInner.id = 'notie-input-inner';
 	inputOuter.appendChild(inputInner);
-		
+
 	let inputField = document.createElement('input');
 	inputField.id = 'notie-input-field';
 	inputField.setAttribute('autocomplete', 'off');
@@ -181,7 +181,7 @@ export let view = (function(){
 	inputField.setAttribute('autocapitalize', 'off');
 	inputField.setAttribute('spellcheck', 'false');
 	inputOuter.appendChild(inputField);
-	    
+
 	let inputYes = document.createElement('div');
 	inputYes.id = 'notie-input-yes';
 	inputOuter.appendChild(inputYes);
@@ -189,7 +189,7 @@ export let view = (function(){
 	let inputNo = document.createElement('div');
 	inputNo.id = 'notie-input-no';
 	inputOuter.appendChild(inputNo);
-		
+
 	let inputText = document.createElement('span');
 	inputText.id = 'notie-input-text';
 	inputInner.appendChild(inputText);
@@ -204,8 +204,8 @@ export let view = (function(){
 
 	// Attach input elements to the body element
 	document.body.appendChild(inputOuter);
-	document.body.appendChild(inputBackground);	
-		
+	document.body.appendChild(inputBackground);
+
 	// Hide input on no click and background click
 	inputBackground.onclick = function() {
 	    if ( options.backgroundClickDismiss ) {
@@ -215,7 +215,7 @@ export let view = (function(){
 
 	// input helper variables
 	let inputIsShowing = false;
-		
+
 	function input(settings, title, submitText, cancelText, submitCallback, cancelCallback) {
 		if (options.colorInfo.length > 0) inputInner.style.backgroundColor = options.colorInfo;
 		if (options.colorSuccess.length > 0) inputYes.style.backgroundColor = options.colorSuccess;
@@ -242,13 +242,13 @@ export let view = (function(){
 			inputField.value = '';
 		}
 
-	  if ( alertIsShowing ) {		
+	  if ( alertIsShowing ) {
 	    // Hide alert
 	    clearTimeout(alertTimeout1);
 	    clearTimeout(alertTimeout2);
 	    alertHide(function() {
 	        inputShow(title, submitText, cancelText, submitCallback, cancelCallback);
-	    });	
+	    });
 	  } else {
 	    inputShow(title, submitText, cancelText, submitCallback, cancelCallback);
 	  }
@@ -265,7 +265,7 @@ export let view = (function(){
 					submitCallback(inputField.value);
 				}, (options.animationDelay + 10));
 			}
-		}	
+		}
 		// No callback function
 		inputNo.onclick = function() {
 			inputHide();
@@ -292,7 +292,7 @@ export let view = (function(){
 				addClass(inputOuter, 'notie-transition');
 	      inputOuter.style.top = 0;
 	      inputBackground.style.opacity = '0.75';
-	      
+
 	      setTimeout(function() {
 		      inputIsShowing = true;
 					inputField.focus();
@@ -524,7 +524,7 @@ export let view = (function(){
 				} else if ( escapeClicked ) {
 					inputHide();
 				}
-			} 
+			}
 	});
 
 	return {
