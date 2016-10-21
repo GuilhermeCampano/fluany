@@ -128,7 +128,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 
 		//stop alarm: ::waiting user with a answer
 		chrome.runtime.sendMessage({message: "killAlarm"}, function(response) {	});
-
+		console.log('ENVIOU A MENSAGEM!');
 
 		view.input({
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import {Alarm} from 'shared/Alarms';
+import Alarm from 'shared/Alarms';
 import 'shared/popup.css';
 let start   = document.querySelector('#start');
 let stop    = document.querySelector('#stop');

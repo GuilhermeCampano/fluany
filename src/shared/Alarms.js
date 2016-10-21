@@ -1,4 +1,4 @@
-export class Alarm {
+export default class Alarm {
   constructor(name, period){
     this._name = name;
     this._period = period;

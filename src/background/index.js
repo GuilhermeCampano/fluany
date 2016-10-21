@@ -1,3 +1,4 @@
+import Alarm from 'shared/Alarms';
 // Setting popup icon
 
 // When we defined browser_action
