@@ -1,9 +1,6 @@
-import {BASE_API} from 'shared/constants';
+import {BASE_API} from 'shared/constants/constants';
 
-import {MESSAGE_VIEW_RIGHT,
-		    MESSAGES_VIEW_BUTTONS,
-		    MESSAGE_VIEW_TRANSLATEHERE,
-		   } from 'shared/internacionalization';
+import * as message from 'shared/constants/internacionalization';
 
 import Alarm from 'shared/Alarms';
 
@@ -136,12 +133,12 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 		view.input({
 
 			type: 'text',
-			placeholder: `${MESSAGE_VIEW_TRANSLATEHERE}`,
+			placeholder: `${message.TRANSLATEHERE}`,
 			prefilledValue: ''
 
 		}, phrase
-		 ,`${MESSAGES_VIEW_BUTTONS[0]}` //submit
-		 ,`${MESSAGES_VIEW_BUTTONS[1]} =(` //I don't know
+		 ,`${message.BUTTONS[0]}` //submit
+		 ,`${message.BUTTONS[1]} =(` //I don't know
 		 ,function(valueEntered) {
 
 				if(checkResponse(response, valueEntered)){
@@ -151,7 +148,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 						/*
 						* Get message in lang of the user -> eng_pt (::lang learn_your lang)
 						*/
-						view.alert(1, `${MESSAGE_VIEW_RIGHT} 👊 (• ͜ʖ•)`, 2);
+						view.alert(1, `${message.RIGHT} 👊 (• ͜ʖ•)`, 2);
 
 						//remove in array phrase :: Array Level [phrases]
 						phrasesStep = phrasesStep

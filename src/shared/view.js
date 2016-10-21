@@ -206,13 +206,13 @@ export let view = (function(){
 	document.body.appendChild(inputOuter);
 	document.body.appendChild(inputBackground);
 
-	// Hide input on no click and background click
-	inputBackground.onclick = function() {
-	    if ( options.backgroundClickDismiss ) {
-	        inputHide();
-	    }
-	};
-
+	/* Hide input on no click and background click
+	   inputBackground.onclick = function() {
+	       if ( options.backgroundClickDismiss ) {
+	          inputHide();
+	       }
+	   };
+	*/
 	// input helper variables
 	let inputIsShowing = false;
 
