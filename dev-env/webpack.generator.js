@@ -1,11 +1,11 @@
 import fs from "fs";
-import path from "path"
+import path from "path";
 import { execSync } from "child_process";
 import webpack from 'webpack';
 import _ from 'lodash';
-import * as Remove from './remove'
-import * as paths from './paths'
-import ManifestPlugin from './manifest/plugin'
+import * as Remove from './remove';
+import * as paths from './paths';
+import ManifestPlugin from './manifest/plugin';
 
 // NOTE Style preprocessors
 // If you want to use any of style preprocessor, add related npm package + loader and uncomment following line
@@ -19,7 +19,7 @@ var styleLoaders = {
 function makeStyleLoaders() {
   return Object.keys(styleLoaders).map(function(ext) {
     // NOTE Enable autoprefixer loader
-    var prefix = 'css-loader?sourceMap&root=../assets'//!autoprefixer-loader?browsers=last 2 version';
+    var prefix = 'css-loader?sourceMap&root=../assets';//!autoprefixer-loader?browsers=last 2 version';
     var extLoaders = prefix + styleLoaders[ext];
     var loader = 'style-loader!' + extLoaders;
 
@@ -57,15 +57,15 @@ function configGenerator(isDevelopment, Manifest) {
           filename: '[name].js',
           chunkFilename: '[name]-[chunkhash].js',
           publicPath: 'https://localhost:3001/'
-        }
+        };
       } else {
         output = {
           path: paths.releaseBuild,
           filename: "[name].js"
-        }
+        };
       }
 
-      return output
+      return output;
     })(),
 
     // Plugins
@@ -89,7 +89,7 @@ function configGenerator(isDevelopment, Manifest) {
           new webpack.HotModuleReplacementPlugin(),
           // Tell reloader to not reload if there is an error.
           new webpack.NoErrorsPlugin()
-        ])
+        ]);
       } else {
         // Production plugins for optimizing code
         plugins = plugins.concat([
@@ -105,12 +105,12 @@ function configGenerator(isDevelopment, Manifest) {
           function() {
             this.plugin("done", function(stats) {
               if (stats.compilation.errors && stats.compilation.errors.length) {
-                console.log(stats.compilation.errors)
-                process.exit(1)
+                console.log(stats.compilation.errors);
+                process.exit(1);
               }
-            })
+            });
           }
-        ])
+        ]);
       }
 
       // NOTE Custom plugins
@@ -147,7 +147,7 @@ function configGenerator(isDevelopment, Manifest) {
         var alias = {
           // "react$": require.resolve(path.join(__dirname, '../node_modules/react')),
           // "react/addons$": require.resolve(path.join(__dirname, '../node_modules/react/addons'))
-        }
+        };
 
         return alias;
       })()
@@ -156,7 +156,7 @@ function configGenerator(isDevelopment, Manifest) {
     // Loaders
     module: {
       loaders: (function() {
-        var loaders = []
+        var loaders = [];
 
         // Assets
 
@@ -178,10 +178,10 @@ function configGenerator(isDevelopment, Manifest) {
             loader: "url-loader?limit=1000000?name=[name]-[hash].[ext]",
             exclude: /node_modules/
           }
-        ])
+        ]);
 
         // Styles
-        loaders = loaders.concat(makeStyleLoaders())
+        loaders = loaders.concat(makeStyleLoaders());
 
         // Scripts
         loaders = loaders.concat([
@@ -194,7 +194,7 @@ function configGenerator(isDevelopment, Manifest) {
               'babel-loader'
             ]
           }
-        ])
+        ]);
 
         // Json
         loaders = loaders.concat([
@@ -203,15 +203,15 @@ function configGenerator(isDevelopment, Manifest) {
             loader: "json-loader",
             exclude: /node_modules/
           }
-        ])
+        ]);
 
         // NOTE Custom loaders
         // loaders = loaders.concat([...])
 
-        return loaders
+        return loaders;
       })()
     }
-  }
+  };
 }
 
-module.exports = configGenerator
+module.exports = configGenerator;

@@ -8,6 +8,7 @@
       "all_frames": false
     }
   ],
+  "default_locale": "en",
   "background": {
     "scripts": ["background/index.js"]
   },

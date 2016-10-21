@@ -27,6 +27,17 @@ const args = yargs
   .alias('p', 'production')
   .argv;
 
+
+//_locales for build
+
+gulp.task('locales', () =>{
+  return gulp.src('./src/_locales/**/*.*').pipe(gulp.dest('build/_locales'));
+});
+
+gulp.task('locales:build', () =>{
+  return gulp.src('./src/_locales/**/*.*').pipe(gulp.dest('release/build/_locales'));
+});
+
 gulp.task('env', () => {
   const env = args.production ? 'production' : 'development';
   process.env.NODE_ENV = env; // eslint-disable-line no-undef
@@ -37,15 +48,15 @@ gulp.task('env', () => {
 //   watcher.watch()
 // })
 
-let manifest
+let manifest;
 
 gulp.task('manifest', () => {
-  manifest = new Manifest(paths.manifest)
-  manifest.run()
+  manifest = new Manifest(paths.manifest);
+  manifest.run();
 });
 
 gulp.task('override_webpack', () => {
-  overrideHotUpdater()
+  overrideHotUpdater();
 });
 
 gulp.task('webpack-production', function(done) {
@@ -65,8 +76,8 @@ gulp.task('webpack-local', (done) => {
 });
 
 gulp.task('development', (done) => {
-  runSequence('override_webpack', 'manifest', 'webpack-hot', done);
-})
+  runSequence('override_webpack', 'manifest', 'webpack-hot', 'locales', done);
+});
 
 gulp.task('extension', (done) => {
   // TODO detect system and Chrome path
@@ -90,7 +101,7 @@ gulp.task('extension', (done) => {
     });
   // Long enought to prevent some unexpected errors
   }, 1000);
-})
+});
 
 gulp.task('prepare-release-dir', (done) => {
   rimraf(paths.release, () => {
@@ -101,7 +112,7 @@ gulp.task('prepare-release-dir', (done) => {
 });
 
 gulp.task('production', (done) => {
-  runSequence('prepare-release-dir', 'manifest', 'webpack-production', 'extension', done);
+  runSequence('prepare-release-dir', 'manifest', 'webpack-production', 'extension','locales:build',done);
 });
 
 gulp.task('run', (done) => {
