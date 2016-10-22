@@ -10,10 +10,10 @@ import ManifestPlugin from './manifest/plugin';
 // NOTE Style preprocessors
 // If you want to use any of style preprocessor, add related npm package + loader and uncomment following line
 var styleLoaders = {
-  'css': ''
+  // 'css': ''
   // 'less': '!less-loader',
   // 'scss|sass': '!sass-loader',
-  // 'styl': '!stylus-loader'
+  'styl': '!stylus-loader'
 };
 
 function makeStyleLoaders() {

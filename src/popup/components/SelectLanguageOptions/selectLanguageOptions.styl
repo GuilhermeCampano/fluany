@@ -1,0 +1,56 @@
+/* Reset Select */
+select
+  appearance none
+  outline 0
+  box-shadow none
+  border 0 !important
+  background #bdc3c7
+  background-image none
+  
+/* Custom Select */
+.select
+  position relative
+  display block
+  width 20em
+  height 3em
+  line-height 3
+  background #ddd
+  overflow hidden
+  border-radius .25em
+  margin-left auto
+  margin-right auto
+
+select
+  width 100%
+  height 100%
+  margin 0
+  padding 0 0 0 .5em
+  color #fff
+  cursor pointer
+  
+select::-ms-expand
+  display none
+
+/* Arrow */
+.select::after
+  content '\25BC'
+  position absolute
+  top 0
+  right 0
+  bottom 0
+  padding 0 1em
+  background #9a9a9a
+  pointer-events none
+  color #FFF
+
+/* Transition */
+.select:hover::after
+  color #9a9a9a
+
+.select::after 
+  transition .25s all ease  
+
+/* SELECT LANGUAGE */
+.options p
+  text-align center
+
