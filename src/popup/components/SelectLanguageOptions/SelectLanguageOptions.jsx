@@ -1,17 +1,29 @@
 import React, {Component} from 'react';
+import Dropdown from 'react-dropdown';
 
 class SelectLanguageOptions extends Component{
 
-	render(){
-		return (
+	constructor(){
+		super();
 
+		this.state = {
+			options: [
+			  { value: 'pt_BR', label: 'Português' },
+			  { value: 'en', label: 'English' }
+			],
+		}
+	}
+
+	render(){
+
+		return (
 			<section className="options">
-				<div className="select">
-					<select name="languageSelect" id="slct" className="languageSelect">
-						<option value="0">Português</option>
-						<option value="1">English</option>
-					</select>
-				</div>
+				<Dropdown 
+				options={this.state.options} 
+				onChange={this._onSelect} 
+				value={this.state.options[0]} 
+				placeholder="Select an option" 
+				/>
 			</section>
 
 		);

@@ -27,7 +27,7 @@ class InputInterval extends Component{
 
 	render(){
 		return (
-			<section className="content">
+			<section className="content-interval">
 
 				<InputRange
 					maxValue={20}
