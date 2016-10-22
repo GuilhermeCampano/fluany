@@ -195,13 +195,6 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
   // #################
 
 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-	    if (msg.message && (msg.message == "GET_QUESTION")) {
-	    	getRandomQuestion();
-	    }
-		return true;
-	});
-
-	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 	    if (msg.message && (msg.message == "LOAD")) {
 	    	getRandomQuestion();
 	    }

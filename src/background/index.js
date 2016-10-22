@@ -39,12 +39,20 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
 });
 
 chrome.runtime.onMessage.addListener(function( msg, sender, sendResponse){
-    let alarm = new Alarm('remindme', 1);
-    if (typeof(msg.message) !== 'undefined' && msg.message === 'killAlarm'){
+  
+  let alarm = new Alarm('remindme',1); //default
+
+  //component start : putStorage > get
+  chrome.storage.sync.get('rangeInterval', (obj) => { 
+    //get value in localStorage created by component [ButtonStart]
+    alarm = new Alarm('remindme', obj.rangeInterval);
+
+    // alarm = new Alarm('reamindme', inter);
+    if(typeof(msg.message) !== 'undefined' && msg.message === 'createAlarm'){
+      alarm.create(); //returning after answer
+      alarm.check(); //returning after answer
+    }else if (typeof(msg.message) !== 'undefined' && msg.message === 'killAlarm'){
       alarm.cancel(); //waiting for response
-    }else
-      if(typeof(msg.message) !== 'undefined' && msg.message === 'createAlarm'){
-        alarm.create(); //returning after answer
-        alarm.check(); //returning after answer
-      }
+    }
+  })
 });

@@ -6,7 +6,6 @@ class SelectLanguageOptions extends Component{
 		return (
 
 			<section className="options">
-				<p>Select a language</p>
 				<div className="select">
 					<select name="languageSelect" id="slct" className="languageSelect">
 						<option value="0">Português</option>

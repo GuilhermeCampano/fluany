@@ -19,7 +19,7 @@ export default class Alarm {
   }
 
   create(){
-    console.log("create");
+    console.log("create with period: ", this._period);
     chrome.alarms.create(this._name,
        {
           delayInMinutes: this._period,
