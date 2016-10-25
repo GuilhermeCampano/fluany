@@ -16,7 +16,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 	let phrasesFull = {};
 	let phrasesStep = {}; //each step needs to save in local storage, to hit all
 	let level = 1; //global
-
+	let points = 0; //global
 	/**
 	* GET phrases in API and save in local storage or GET local storage
 	*/
@@ -60,8 +60,17 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 	function getRandomQuestion(){
 
 		let newObjectLocal = {};
-		chrome.storage.sync.get('levelStep', (obj) => {
+		chrome.storage.sync.get('pointUser', (obj) => {
+			//Points
+			if(getProperty(obj, "levelStep.points")){
+				points = obj.levelStep['points'];
+				console.log('Ja estava em localstorage.. My points: ', points);
+			}else{
+				newObjectLocal['points'] = points;
+				console.log('adicionado no objeto, nao estava em localStorage');
+			}
 
+			//phrases
 			if(getProperty(obj, "levelStep.phraseStep")){ //has object
 
 				console.log("continuing level");
@@ -85,7 +94,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 				newObjectLocal['level'] = level;
 
 				newObjectLocal['phraseStep'] = phrasesStep;
-				putStorage('levelStep', newObjectLocal); //Savng objectlocal in Storage
+				putStorage('levelStep', newObjectLocal); //Saving objectlocal in Storage
 
 			}
 
@@ -156,7 +165,8 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 
 						//::update local storage
 						if(phrasesStep.length > 0){
-							putStorage('levelStep', {level: level, phraseStep: phrasesStep});
+							putStorage('levelStep', {level: level, phraseStep: phrasesStep, point: points+= 200});
+							console.log('GANHOU PONTO OBJ: ', {level: level, phraseStep: phrasesStep, point: points})
 						}else{
 							putStorage('levelStep', {level: ++level});
 						}
@@ -168,6 +178,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 
 				}
 				//Create again :: Was a break from the application to receive the answer
+				console.log('level: ', level);
 				chrome.runtime.sendMessage({message: "createAlarm"}, function(response){});
 	    }
 	   ,function(valueEntered) {

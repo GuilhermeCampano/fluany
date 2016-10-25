@@ -28,6 +28,14 @@ class Points extends Component {
 		this.setState({
 			color: this.getColorToPoint()
 		});
+
+		//get level of the User
+		chrome.storage.sync.get('levelStep', obj => {
+			console.log(obj);
+			if(obj.levelStep){
+				this.setState({level: obj.levelStep.level});
+			}
+		});
 	}
 
 	render(){
