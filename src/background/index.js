@@ -5,7 +5,7 @@ import Alarm from 'shared/Alarms';
 if(chrome.browserAction) {
   chrome.browserAction.setIcon({
     path: require("icons/icon-16.png")
-  })
+  });
 
 // When we defined page_action
 } else if(chrome.pageAction) {
@@ -16,37 +16,39 @@ if(chrome.browserAction) {
     chrome.pageAction.setIcon({
       path: require("icons/icon-48.png"),
       tabId: tabId
-    })
-  }
+    });
+  };
 
   // Show page action on each page update
   chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    showPageAction(tabId)
+    showPageAction(tabId);
   });
 }
 
 
 chrome.alarms.onAlarm.addListener(function( alarm ) {
+  console.log('disparou! -> ', alarm);
   chrome.tabs.query({active: true, highlighted: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { message: "LOAD" }, function(response){
       console.log("response:  ", response);
-        if (response !== null) 
+        if (response !== null)
           console.log('Response:', response);
-        else 
+        else
           console.log('Response is null');
     });
   });
 });
 
+//run only when called the questions
 chrome.runtime.onMessage.addListener(function( msg, sender, sendResponse){
-  
+
   let alarm = new Alarm('remindme',1); //default
 
   //component start : putStorage > get
-  chrome.storage.sync.get('rangeInterval', (obj) => { 
+  chrome.storage.sync.get('rangeInterval', (obj) => {
     //get value in localStorage created by component [ButtonStart]
     alarm = new Alarm('remindme', obj.rangeInterval);
-
+    console.log('obj--> ', obj);
     // alarm = new Alarm('reamindme', inter);
     if(typeof(msg.message) !== 'undefined' && msg.message === 'createAlarm'){
       alarm.create(); //returning after answer
@@ -54,5 +56,5 @@ chrome.runtime.onMessage.addListener(function( msg, sender, sendResponse){
     }else if (typeof(msg.message) !== 'undefined' && msg.message === 'killAlarm'){
       alarm.cancel(); //waiting for response
     }
-  })
+  });
 });

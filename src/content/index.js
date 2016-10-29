@@ -60,8 +60,9 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 	function getRandomQuestion(){
 
 		let newObjectLocal = {};
-		chrome.storage.sync.get('pointUser', (obj) => {
+		chrome.storage.sync.get('levelStep', (obj) => {
 			//Points
+      console.log('obJ: ', obj);
 			if(getProperty(obj, "levelStep.points")){
 				points = obj.levelStep['points'];
 				console.log('Ja estava em localstorage.. My points: ', points);
@@ -94,6 +95,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 				newObjectLocal['level'] = level;
 
 				newObjectLocal['phraseStep'] = phrasesStep;
+        console.log('newObjectLocal: ', newObjectLocal);
 				putStorage('levelStep', newObjectLocal); //Saving objectlocal in Storage
 
 			}
@@ -166,7 +168,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 						//::update local storage
 						if(phrasesStep.length > 0){
 							putStorage('levelStep', {level: level, phraseStep: phrasesStep, point: points+= 200});
-							console.log('GANHOU PONTO OBJ: ', {level: level, phraseStep: phrasesStep, point: points})
+							console.log('GANHOU PONTO OBJ: ', {level: level, phraseStep: phrasesStep, point: points});
 						}else{
 							putStorage('levelStep', {level: ++level});
 						}
@@ -205,14 +207,13 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
   // #################
 
 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-	    if (msg.message && (msg.message == "LOAD")) {
-	    	getRandomQuestion();
-	    }
+	  if (msg.message && (msg.message == "LOAD")) {
+	    getRandomQuestion();
+	  }
 		return true;
 	});
-
 	//DEBUG:
 	// getRandomQuestion();
-}
+};
 
 load(0, 1, "english_portuguese");

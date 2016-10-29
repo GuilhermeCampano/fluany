@@ -10,14 +10,14 @@ class Points extends Component {
 			point: 200,
 			level: 1,
 			color: '#3FC7FA'
-		}
+		};
 	}
 
 	getColorToPoint(){
 
 		if(this.state.point < 300){
 			return '#FE8C6A';
-		}else 
+		}else
 			if(this.state.point < 700){
 				return '#3FC7FA';
 			}else
@@ -33,7 +33,9 @@ class Points extends Component {
 		chrome.storage.sync.get('levelStep', obj => {
 			console.log(obj);
 			if(obj.levelStep){
-				this.setState({level: obj.levelStep.level});
+				  this.setState({
+              level: obj.levelStep.level,
+              point: obj.levelStep.point});
 			}
 		});
 	}
