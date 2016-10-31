@@ -8,21 +8,20 @@ class SelectLanguageOptions extends Component{
 
 		this.state = {
 			options: [
-			  { value: 'pt_BR', label: 'Português' },
 			  { value: 'en', label: 'English' }
-			],
-		}
+			]
+		};
 	}
 
 	render(){
 
 		return (
 			<section className="options">
-				<Dropdown 
-				options={this.state.options} 
-				onChange={this._onSelect} 
-				value={this.state.options[0]} 
-				placeholder="Select an option" 
+				<Dropdown
+				options={this.state.options}
+				onChange={this._onSelect}
+				value={this.state.options[0]}
+				placeholder="Select an option"
 				/>
 			</section>
 

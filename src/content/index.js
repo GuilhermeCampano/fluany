@@ -38,6 +38,7 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 					minutesInterval = _args.minutesInterval;
 					putStorage('phrases', phrasesFull);
 					console.log("entered: ", phrasesFull);
+          putStorage('levelStep', {level: level, point: points}); //default level and points in start
 				} else {
 					// We reached our target server, but it returned an error
 					console.log("error in server");
@@ -170,7 +171,8 @@ let load = (category = 0, minutesInterval = 1, lang = "english") => {
 							putStorage('levelStep', {level: level, phraseStep: phrasesStep, point: points+= 200});
 							console.log('GANHOU PONTO OBJ: ', {level: level, phraseStep: phrasesStep, point: points});
 						}else{
-							putStorage('levelStep', {level: ++level});
+              points = 0; //restart point
+							putStorage('levelStep', {level: ++level, point: points});
 						}
 						console.log("new phrases: ", phrasesStep);
 					});
