@@ -1,22 +1,27 @@
 import {BASE_API} from 'shared/constants/constants';
 
-import * as message from 'shared/constants/internacionalization';
-
 import Alarm from 'shared/Alarms';
 
 import {putStorage, cleanLevels, getProperty} from 'shared/helpers';
 
 import {view} from 'shared/view';
-import 'shared/view_css';
+
 
 //Controllers
-import Phrases from './app/controllers/Phrases';
+import App from './app/controllers/App.js';
 
-let phrases = new Phrases();
-phrases.getAll(function(phrases, error){
-	if(phrases)
-		console.log(phrases);
-})
+let app = new App();
+// 	// Message passing
+  // #################
+
+	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+	  if (msg.message && (msg.message == "LOAD")) {
+			app.loadQuestion();
+	  }
+		return true;
+	});
+	//DEBUG:
+	// getRandomQuestion();
 // //Start application with args (category, interval)
 // let load = (category = 0) => {
 
@@ -212,17 +217,5 @@ phrases.getAll(function(phrases, error){
 // 			/* ;^;  */ this;
 // 	};
 
-// 	// Message passing
-//   // #################
-
-// 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-// 	  if (msg.message && (msg.message == "LOAD")) {
-// 	    getRandomQuestion();
-// 	  }
-// 		return true;
-// 	});
-// 	//DEBUG:
-// 	// getRandomQuestion();
-// };
 
 // load(0);

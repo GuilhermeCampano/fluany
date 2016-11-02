@@ -26,12 +26,12 @@ class Points extends Component {
 
 	componentDidMount() {
 		//get level of the User
-		chrome.storage.sync.get('levelStep', obj => {
+		chrome.storage.sync.get('localKeys', obj => {
 			console.log(obj);
-			if(obj.levelStep){
+			if(obj.localKeys){
 				  this.setState({
-              level: obj.levelStep.level,
-              point: obj.levelStep.point});
+              level: obj.localKeys.level,
+              point: obj.localKeys.points});
 			}else{
           this.setState({
               level: 1,
