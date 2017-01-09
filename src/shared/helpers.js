@@ -3,7 +3,7 @@ export let putStorage = (key, value) => {
 	let obj = {
 		[key]: value
 	};
-	chrome.storage.sync.set(obj, function() {
+	chrome.storage.sync.set(obj, () => {
 		console.log(`${key} saved`);
 	});
 };

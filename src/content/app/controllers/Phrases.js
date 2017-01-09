@@ -1,8 +1,8 @@
 import {BASE_API} from 'shared/constants/constants';
 import {putStorage} from 'shared/helpers';
 
-/*
-* Class for connection with phrases in API and saved in localStorage extension.
+/**
+* @description Class to connection with phrases in API and saved on localStorage extension.
 * @param {Number} category -  The category of phrases
 */
 class Phrases {
@@ -11,12 +11,11 @@ class Phrases {
 		this.phrasesFull = [];
 		//I need to boot catching API
 		this.category = category;
-
 	}
 
 /**
- * Callback to catch all phrases
- * @callback gsetAllCallback
+ * @description Get all phrases
+ * @callback getAllCallback
  */
 	getAll(callback){
 		this._loadPhrases()
@@ -28,6 +27,9 @@ class Phrases {
 		});
 	}
 
+   /**
+	 * @return Promise
+	 */
 	_getPhrasesInLocal(){
 		return new Promise((resolve, reject) => {
 			chrome.storage.sync.get('phrases', (obj) => {
@@ -38,8 +40,10 @@ class Phrases {
 			});
 		});
 	}
+
 	/**
-	* GET phrases in API and save in local storage or GET local storage
+	* @description GET phrases in API and save in local storage or GET local storage
+	* @return Promise
 	*/
 	_loadPhrases(){
 		return new Promise ((resolve, reject) => {
@@ -49,7 +53,7 @@ class Phrases {
 				resolve(phrases);
 
 			}).catch((error) => {
-				//error: I was not saved
+				//is not on localStorage
 				this._getPhrasesInAPI()
 				.then( (phrases) => {
 					console.log('Saved! He took API');
@@ -64,15 +68,19 @@ class Phrases {
 		});
 	}
 
+
+	/**
+	 * @return Promise
+	 * @description Get phrases in API
+	 */
 	_getPhrasesInAPI(){
 		return new Promise((resolve, reject) => {
 				let request = new XMLHttpRequest();
 				let _args = {};
-				request.open('GET', `${BASE_API}/api/eng/readphrases/?id=${this.category}`, true); ///get options in gulp
+				request.open('GET', `${BASE_API}/api/eng/readphrases/?id=${this.category}`, true); 
 				request.onload = function() {
 
 					if (request.status >= 200 && request.status < 400) {
-
 						_args = JSON.parse(request.responseText);
 						this.phrasesFull = _args.phrases;
 						putStorage('phrases', this.phrasesFull);

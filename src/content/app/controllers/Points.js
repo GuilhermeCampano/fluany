@@ -4,8 +4,8 @@ class Points {
 		this.point = 0;
 	}
 
-	/*
-	* Get my point in localStorage
+	/**
+	* @description Get my point in localStorage
 	*/
 	getMyPoint(){
 		return new Promise( (resolve, reject) => {

@@ -4,8 +4,8 @@ class LocalKeys {
 		this.localKeys = {};
 	}
 
-	/*
-	* Get my keys
+	/**
+	* @description Get my keys
 	*/
 	getMyLocalKeys(){
 		return new Promise( (resolve, reject) => {

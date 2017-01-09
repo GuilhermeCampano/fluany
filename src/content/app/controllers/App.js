@@ -7,7 +7,7 @@ import {view} from 'shared/view';
 import 'shared/view_css';
 import * as message from 'shared/constants/internacionalization';
 
-/*
+/**
   Algoritmo:
 
   verifica se ja tem salvo a LocalKeys
@@ -39,6 +39,7 @@ class App {
 		this.phrases = new Phrases();
 
 	}
+
 	_getRandomQuestion(){
 
 		String.prototype.removeDot = function() {
@@ -66,8 +67,8 @@ class App {
 			.split('/')
 			.map(n => n.trim());
 
-		console.log(randQuestion);
-		console.log(responseQuestion);
+		console.log('[App Controller] randQuestion: ', randQuestion);
+		console.log('[App Controller] responseQuestion: ', responseQuestion);
 		this.seeQuestion(randQuestion, responseQuestion);
 	}
 
@@ -75,7 +76,7 @@ class App {
 		this.phrases.getAll((phrases) => {
 			this.phrasesFull = phrases;
 			chrome.storage.sync.get('localKeys', (obj) => {
-				console.log('obj> ' ,obj.localKeys)
+				console.log('[App Controller] obj> ' ,obj.localKeys);
 				if(getProperty(obj, "localKeys.points")){
 					this.points = obj.localKeys['points'];
 				}else{
