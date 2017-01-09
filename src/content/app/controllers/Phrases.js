@@ -11,9 +11,9 @@ class Phrases {
 		this.phrasesFull = [];
 		//I need to boot catching API
 		this.category = category;
-		
+
 	}
-		
+
 /**
  * Callback to catch all phrases
  * @callback gsetAllCallback
@@ -31,9 +31,9 @@ class Phrases {
 	_getPhrasesInLocal(){
 		return new Promise((resolve, reject) => {
 			chrome.storage.sync.get('phrases', (obj) => {
-				if(obj.phrases) 
-					resolve(obj.phrases)
-				else 
+				if(obj.phrases)
+					  resolve(obj.phrases);
+				else
 					reject(Error('I was not saved'));
 			});
 		});
@@ -60,7 +60,7 @@ class Phrases {
 					reject(new Error('Error catch phrases in api'));
 				});
 
-			});	
+			});
 		});
 	}
 

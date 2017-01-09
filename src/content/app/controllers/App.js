@@ -6,6 +6,26 @@ import Phrases from './Phrases.js';
 import {view} from 'shared/view';
 import 'shared/view_css';
 import * as message from 'shared/constants/internacionalization';
+
+/*
+  Algoritmo:
+
+  verifica se ja tem salvo a LocalKeys
+  se nao tem, salva com dados default -> construuctor ja pega da api, entao joga do constr..
+  se ja tem vamos a verificacoes:
+
+  verifica se tem pontos salo na key, se nao tem, joga na variavel localKeys um default
+  se ja tem, joga na variavel localKeys o que tava salvo
+
+  verifica se ja tem alguma phrasesStep, se nao tem, é porque ainda ta na primeira vez, ou seja
+  recortar 10 frases dali do phrasesFULL, e entao verifica se ja tem algum level salvo no
+  localKeys pois no level dois ele cai nessa condicao, porém com level 2 (menos palavrases)
+  e ja salva no objeto localKeys o level..
+  E assim prosseguindo para o phraseStep, ele recebe novo array de acordo com o level
+  e salva no objeto localKeys
+  e por final, salvar na memoria o objetor localKeys.
+
+*/
 class App {
 
 	constructor(category = 0) {
@@ -17,29 +37,10 @@ class App {
 		this.localKeys = {};
 
 		this.phrases = new Phrases();
-		
+
 	}
-/*
-Algoritmo: 
-
-verifica se ja tem salvo a LocalKeys
-se nao tem, salva com dados default -> construuctor ja pega da api, entao joga do constr..
-se ja tem vamos a verificacoes:
-
-verifica se tem pontos salo na key, se nao tem, joga na variavel localKeys um default
-se ja tem, joga na variavel localKeys o que tava salvo
-
-verifica se ja tem alguma phrasesStep, se nao tem, é porque ainda ta na primeira vez, ou seja
-recortar 10 frases dali do phrasesFULL, e entao verifica se ja tem algum level salvo no
-localKeys pois no level dois ele cai nessa condicao, porém com level 2 (menos palavrases)
-e ja salva no objeto localKeys o level..
-E assim prosseguindo para o phraseStep, ele recebe novo array de acordo com o level
-e salva no objeto localKeys
-e por final, salvar na memoria o objetor localKeys.
-
-*/
 	_getRandomQuestion(){
-		
+
 		String.prototype.removeDot = function() {
 			return this[this.length-1] === '.'  ?
 						 this.slice(0, this.indexOf(this[this.length-1])) :
@@ -86,7 +87,7 @@ e por final, salvar na memoria o objetor localKeys.
 					this.phrasesStep = obj.localKeys['phrasesStep'];
 					this.level       = obj.localKeys['level'];
 				}else{
-					
+
 					if(getProperty(obj, "localKeys.level")){
 						this.level = obj.localKeys['level']; //update :: save after
 						console.log('Level: ', this.level);

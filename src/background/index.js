@@ -27,14 +27,12 @@ if(chrome.browserAction) {
 
 
 chrome.alarms.onAlarm.addListener(function( alarm ) {
-  console.log('disparou! -> ', alarm);
   chrome.tabs.query({active: true, highlighted: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { message: "LOAD" }, function(response){
-      console.log("response:  ", response);
         if (response !== null)
-          console.log('Response:', response);
+            console.log('[Background]: response message tab:', response);
         else
-          console.log('Response is null');
+          console.log('[Background]: Response is null');
     });
   });
 });
@@ -48,7 +46,7 @@ chrome.runtime.onMessage.addListener(function( msg, sender, sendResponse){
   chrome.storage.sync.get('rangeInterval', (obj) => {
     //get value in localStorage created by component [ButtonStart]
     alarm = new Alarm('remindme', obj.rangeInterval);
-    console.log('obj--> ', obj);
+    console.log('[Background]: obj--> ', obj);
     // alarm = new Alarm('reamindme', inter);
     if(typeof(msg.message) !== 'undefined' && msg.message === 'createAlarm'){
       alarm.create(); //returning after answer

@@ -1,9 +1,6 @@
 import {BASE_API} from 'shared/constants/constants';
-
 import Alarm from 'shared/Alarms';
-
 import {putStorage, cleanLevels, getProperty} from 'shared/helpers';
-
 import {view} from 'shared/view';
 
 
@@ -14,12 +11,12 @@ let app = new App();
 // 	// Message passing
   // #################
 
-	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-	  if (msg.message && (msg.message == "LOAD")) {
-			app.loadQuestion();
-	  }
-		return true;
-	});
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.message && (msg.message == "LOAD")) {
+        app.loadQuestion();
+    }
+    return true;
+});
 	//DEBUG:
 	// getRandomQuestion();
 // //Start application with args (category, interval)
