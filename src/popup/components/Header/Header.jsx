@@ -6,8 +6,7 @@ class Header extends Component {
 	render(){
 		return (
 			<header>
-			  Capylang
-			  <span className="level"><p className="begginer">beginner</p></span>
+			    Fluany
 			</header>
 		);
 	}

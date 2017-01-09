@@ -14,7 +14,6 @@ class Points extends Component {
 	}
 
 	getColorToPoint(){
-		console.log('GET COLOR');
 		if(this.state.point < 300){
 			return '#FE8C6A';
 		}else
@@ -27,7 +26,7 @@ class Points extends Component {
 	componentDidMount() {
 		//get level of the User
 		chrome.storage.sync.get('localKeys', obj => {
-			console.log(obj);
+      //update a component with local data
 			if(obj.localKeys){
 				  this.setState({
               level: obj.localKeys.level,
@@ -39,9 +38,6 @@ class Points extends Component {
           });
       }
 		});
-		
-		console.log('color: ', this.state.color);
-		console.log('DIDMOUT');
 		this.setState({
 			color: this.getColorToPoint()
 		});
@@ -50,7 +46,7 @@ class Points extends Component {
 	render(){
 		return (
 			<section>
-				<section className="content-progress">					
+				<section className="content-progress">
 					 <Line percent={(this.state.point/100)*10} strokeWidth="4" strokeColor={this.getColorToPoint()} />
 				</section>
 				<section className="content-point">

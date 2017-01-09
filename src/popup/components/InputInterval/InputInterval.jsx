@@ -9,12 +9,12 @@ class InputInterval extends Component{
       value: 1
     };
 	}
-	
+
 	componentDidMount() {
 			//get value saved in LocalStorage :: exit popup
-		  chrome.storage.sync.get('rangeInterval', (obj) => { 
+		  chrome.storage.sync.get('rangeInterval', (obj) => {
 		  	//update value component : localStorage previous
-		  	this.setState({value: obj.rangeInterval}); 
+		  	this.setState({value: obj.rangeInterval});
 		  });
 	}
 
@@ -40,7 +40,7 @@ class InputInterval extends Component{
 
 			</section>
 		);
-	}	
+	}
 }
 
 
