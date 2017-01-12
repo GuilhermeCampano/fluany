@@ -19,13 +19,13 @@ import * as message from 'shared/constants/internacionalization';
 
   verifica se ja tem alguma phrasesStep, se nao tem, é porque ainda ta na primeira vez, ou seja
   recortar 10 frases dali do phrasesFULL, e entao verifica se ja tem algum level salvo no
-  localKeys pois no level dois ele cai nessa condicao, porém com level 2 (menos palavrases)
+  localKeys pois no level dois ele cai nessa condicao, porém com level 2 (meno palavrases)
   e ja salva no objeto localKeys o level..
   E assim prosseguindo para o phraseStep, ele recebe novo array de acordo com o level
   e salva no objeto localKeys
   e por final, salvar na memoria o objetor localKeys.
-
 */
+
 class App {
 
 	constructor(category = 0) {
@@ -37,7 +37,6 @@ class App {
 		this.localKeys = {};
 
 		this.phrases = new Phrases();
-
 	}
 
 	_getRandomQuestion(){
@@ -67,16 +66,17 @@ class App {
 			.split('/')
 			.map(n => n.trim());
 
-		console.log('[App Controller] randQuestion: ', randQuestion);
-		console.log('[App Controller] responseQuestion: ', responseQuestion);
 		this.seeQuestion(randQuestion, responseQuestion);
 	}
 
+	/**
+	* @description if you have in the locakeys properties, save on object.
+	*/
 	loadQuestion(){
 		this.phrases.getAll((phrases) => {
 			this.phrasesFull = phrases;
 			chrome.storage.sync.get('localKeys', (obj) => {
-				console.log('[App Controller] obj> ' ,obj.localKeys);
+				//points
 				if(getProperty(obj, "localKeys.points")){
 					this.points = obj.localKeys['points'];
 				}else{
@@ -114,6 +114,7 @@ class App {
 		return response.some((n) => n.toLowerCase() === valueEntered.toLowerCase());
 	}
 
+	//show questions in view
   seeQuestion(phrase, response){
 
 		//stop alarm: ::waiting user with a answer
@@ -140,6 +141,7 @@ class App {
 						view.alert(1, `${message.RIGHT} 👊 (• ͜ʖ•)`, 2);
 
 						//remove in array phrase :: Array Level [phrases]
+						console.log('antes de remover ValueEntered: ', valueEntered);
 						this.phrasesStep = this.phrasesStep
 							.filter(item => (item.toLowerCase().removeDot() !== valueEntered))
 							.filter(item => (item.toLowerCase().removeDot() !== phrase));

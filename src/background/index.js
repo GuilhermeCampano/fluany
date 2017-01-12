@@ -40,7 +40,7 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
 //run only when called the questions
 chrome.runtime.onMessage.addListener(function( msg, sender, sendResponse){
 
-  let alarm = new Alarm('remindme',1); //default
+  let alarm = new Alarm('remindme', 1); //default
 
   //component start : putStorage > get
   chrome.storage.sync.get('rangeInterval', (obj) => {

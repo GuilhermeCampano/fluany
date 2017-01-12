@@ -9,7 +9,6 @@ export default class Alarm {
     chrome.alarms.getAll(function(alarms) {
 
       var hasAlarm = alarms.some( (a) => {
-        console.log('-> ', a);
         return a.name == _self._name;
       });
 
@@ -19,7 +18,7 @@ export default class Alarm {
   }
 
   create(){
-    console.log("create with period: ", this._period);
+    console.log("[Alarm] create with period: ", this._period);
     chrome.alarms.create(this._name,
        {
           delayInMinutes: this._period,
@@ -30,11 +29,10 @@ export default class Alarm {
 
   cancel(){
     chrome.alarms.clear(this._name);
-    console.log("cancel");
+    console.log("[Alarm] cancel");
   }
 
   toggle(){
-    console.log("toggle");
     //arrow function beacause escope :: this
     this.check((hasAlarm) => {
       if (hasAlarm) {
