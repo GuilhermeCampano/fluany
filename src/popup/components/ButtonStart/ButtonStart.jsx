@@ -17,7 +17,7 @@ class ButtonStart extends Component{
 	}
 
   componentDidMount() {
-    /* Check if was already started*/
+      /* Check if was already started*/
     chrome.storage.sync.get('playing', (obj) => {
         if(obj.playing){
             this.setState({titleButton: "Stop", play: false});

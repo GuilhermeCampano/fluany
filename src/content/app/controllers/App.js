@@ -35,7 +35,6 @@ class App {
 		this.points = 0;
 		this.category = category;
 		this.localKeys = {};
-
 		this.phrases = new Phrases();
 	}
 
@@ -55,6 +54,7 @@ class App {
 		//Get a random question
 		if( rand != 0 )
 			randOddNumber = rand % 2 == 0 ? rand - 1 : rand; //need to be odd
+
 
 		randQuestion = this.phrasesStep[randOddNumber]
 			.toLowerCase()
@@ -96,7 +96,7 @@ class App {
 
 					// takes a piece to train
 					this.phrasesStep = this.phrasesFull.slice(this.level === 1 ? 0: (this.level*10) - 10, this.level * 10);
-
+					// console.log('phrasesStep: ', this.phrasesStep);
 					//inserting again, beacause ::phrases
 					this.localKeys['level'] = this.level;
 
