@@ -20,7 +20,8 @@
     "storage",
     "unlimitedStorage",
     "alarms",
-    "notifications"
+    "notifications",
+    "contextMenus"
   ],
   "icons": {
     "16": "icons/icon-16.png",
@@ -31,4 +32,5 @@
     "default_title": "fluany",
     "default_popup": "popup/index.html"
   }
+
 }

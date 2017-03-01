@@ -5,6 +5,7 @@ import {putStorage} from 'shared/helpers';
 * @description Class to connection with phrases in API and saved on localStorage extension.
 * @param {Number} category -  The category of phrases
 */
+
 class Phrases {
 
 	constructor(category = 0){

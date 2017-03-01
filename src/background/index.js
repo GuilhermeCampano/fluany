@@ -1,4 +1,5 @@
 import Alarm from 'shared/Alarms';
+import './contextMenus';
 // Setting popup icon
 
 // When we defined browser_action
@@ -29,7 +30,7 @@ if(chrome.browserAction) {
 chrome.alarms.onAlarm.addListener(function( alarm ) {
   chrome.tabs.query({active: true, highlighted: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { message: "LOAD" }, function(response){
-			console.log('Load background');
+				console.log('Load background');
         if (response !== null)
             console.log('[Background]: response message tab:', response);
         else
