@@ -8,7 +8,7 @@ class SelectLanguageOptions extends Component{
 
 		this.state = {
 			options: [
-			  { value: 'en', label: 'English' }
+			    { value: 'city', label: 'Cidades' }
 			]
 		};
 	}

@@ -10,7 +10,8 @@ class ButtonStart extends Component{
 		this.state = {
 			titleButton: "Play",
 			play: true,
-			rangeInterval: 1
+			rangeInterval: 1,
+      addingPackage: false
 		}
 
 		this.alarm = new Alarm('remindme', 1); //default
@@ -27,7 +28,12 @@ class ButtonStart extends Component{
     PubSub.subscribe('rangeInterval', (topic, value) => {
         /* console.log('[ButtonStart]: rangeInterval: ', value);*/
         this.setState({rangeInterval: value})
-    })
+    });
+
+    //get value if the user is adding package
+    PubSub.subscribe('addingPackage', (topic, value) => {
+        this.setState({addingPackage: value})
+    });
   }
 
 	handleClick(){
@@ -65,7 +71,10 @@ class ButtonStart extends Component{
 		return (
 
 			<section className="start">
-			  <a title="Play to practice" className={"action-button shadow animate " +  (this.state.play ? "blue" : "red") } onClick={this.play}>
+			    <a title="Play to practice"
+             className={"action-button shadow animate " +  (this.state.play ? "blue" : "red") }
+             data-adding={this.state.addingPackage}
+             onClick={this.play}>
 			  		{this.state.titleButton}
 			  </a>
 			</section>

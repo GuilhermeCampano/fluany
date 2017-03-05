@@ -11,9 +11,16 @@ export let putStorage = (key, value) => {
 //clean level
 export let cleanLevels = () => {
 	chrome.storage.sync.remove('levelStep', () => {
-		console.log('clean');
+		console.log('cleaned levels');
 	});
 };
+
+//clean packages
+export let cleanPackages = () => {
+	  chrome.storage.sync.remove('packages', () => {
+		    console.log('cleaned packages');
+	  });
+}
 
 /* ex: getProperty(myObj,'aze.xyz',0) // return myObj.aze.xyz safely
  * accepts array for property names:
