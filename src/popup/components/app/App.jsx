@@ -8,7 +8,7 @@ import Points from '../Points/Points';
 
 class App extends Component {
   constructor(props) {
-    super(props);
+      super(props);
   }
 
   render() {

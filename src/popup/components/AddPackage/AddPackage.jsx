@@ -19,8 +19,8 @@ class AddPackage extends Component{
 
     handlerAddPackage(){
         this.setState({addingPackage: true});
-        PubSub.publish('addingPackage', true); //communication with components (addClass and hidden button play)
-    }
+        //communication with components (addClass and hidden button play)
+        PubSub.publish('addingPackage', true);     }
 
     handlerCreatePackage(){
         chrome.storage.sync.get('packages', obj => {
@@ -39,7 +39,8 @@ class AddPackage extends Component{
                 addingPackage: false
             });
 
-            PubSub.publish('addingPackage', false); //communication with components (addClass and hidden button play)
+            //communication with components (addClass and hidden button play
+            PubSub.publish('addingPackage', false);
         });
     }
 
@@ -49,14 +50,15 @@ class AddPackage extends Component{
         });
     }
 
-    savePackageName(){
-    }
-
     renderNewPackage(){
         return (
-            <div>
-                <input placeholder="Package name" className="packageField" onChange={this.handlerChangePackageName}/>
-                <button className="create-button" onClick={this.handlerCreatePackage}>Create</button>
+            <div className="creatingItem__container">
+                <input placeholder="Package name"
+                       className="packageField"
+                       onChange={this.handlerChangePackageName}/>
+
+                <button className="create-button"
+                        onClick={this.handlerCreatePackage}>Create</button>
             </div>
         );
     }
@@ -64,7 +66,9 @@ class AddPackage extends Component{
     renderButtonAddPackage(){
         return (
             <li key="add">
-                <button className="addPackage" title="Add new package" onClick={this.handlerAddPackage}>+</button>
+                <button className="addPackage"
+                        title="Add new package"
+                        onClick={this.handlerAddPackage}>+</button>
             </li>
         );
     }

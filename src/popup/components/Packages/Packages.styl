@@ -1,22 +1,105 @@
 .Packages
   max-width 400px
   margin 0 auto
+  transition all .4s
   ul
     list-style none
     padding 0
     display flex
     justify-content space-around
+    flex-wrap wrap
     li
       width 100px
       height 100px
       font-size 14px
       border none
-      background #eee
+      background #3498db
       cursor pointer
-      color #929292
+      color #FFF
+      text-shadow none
       position relative
+      margin-top 30px
+      margin-right 10px
       span
         position absolute
         top 50%;
         left 50%;
         transform translate(-50%, -50%)
+
+.editingPackage
+  transform translateX(-100%);
+
+.editingPackage__container
+  transform translateX(150%);
+  position absolute
+  text-align center
+  .editingPackage__title
+    text-align center
+    font-size 20px
+  &--edit
+    transition all .4s
+    transform translateX(0)
+    position relative
+
+  button
+    background transparent
+    border none
+    width 45px
+    height 45px
+    border-radius 100%
+    cursor pointer
+    border 1px solid #e3e3e3
+    outline none
+    position absolute
+    bottom -50px
+    right 10px
+.question__field, .response__field
+  padding 16px 16px 16px 2px
+  transition all .4s
+  border none
+  background rgba(0, 0, 0, 0.003);
+  box-shadow inset 0 -2px 1px rgba(0,0,0,0.03)
+  outline none
+  font-size 15px
+  margin-top 10px
+  line-height 1.4em
+  margin-right 25px
+  &:focus
+    border-bottom 1px solid #bdbdbd
+    padding 16px 16px 14px 2px
+.response__field
+  margin-right 0
+
+
+
+
+//icons
+@keyframes arrow-moveIn
+  50%
+    opacity 1
+    transform translateX(35px)
+
+  100%
+    opacity 1
+    transform translateX(35px)
+    opacity 0
+    transform translateX(35px)
+
+#square path,
+#circle path,
+.arrow-out,
+.arrow-in
+    fill none
+    stroke #868686
+    stroke-width 2
+    stroke-miterlimit 10
+
+.arrow-in
+    opacity 0
+
+.arrow
+    &:hover
+        .arrow-in
+            animation arrow-moveIn 1s ease 
+    &.right
+        transform scaleX(-1)
