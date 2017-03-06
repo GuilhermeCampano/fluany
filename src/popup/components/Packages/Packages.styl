@@ -32,8 +32,8 @@
         right 1px
         transition all .4s
         path
-          fill #e3e3e3
-          stroke #c3c3c3
+          fill #fff
+          stroke #fff
 
 .editingPackage
   transform translateX(-100%);
@@ -53,15 +53,47 @@
   button
     background transparent
     border none
-    width 45px
-    height 45px
-    border-radius 100%
     cursor pointer
-    border 1px solid #e3e3e3
+    border-bottom 2px solid #2196F3
+    font-size 25px
+    color #2196F3
     outline none
+
+.editingPackage__questions
+  margin 0
+  padding 0
+  list-style none
+  .editingPackage__item
+    background-color #f4f4f4
+    margin-bottom 20px
+    box-shadow 1px 1px 1px #d7d7d7
+    padding-left 80px
+    position relative
+    &:hover
+      .editingPackage__info:first-child
+        display none
+      .editingPackage__info
+        left 28px
+        svg
+          display initial
+  .editingPackage__info
     position absolute
-    bottom -50px
-    right 10px
+    left 36px
+    top calc(50% - 23px)
+    font-size 25px
+    svg
+      display none
+      cursor pointer
+      path
+        transition all .5s
+        fill #898989
+        stroke #898989
+      &:hover
+        path
+          fill #FF5722
+          stroke #FF5722
+        
+
 .question__field, .response__field
   padding 16px 16px 16px 2px
   transition all .4s
@@ -73,42 +105,7 @@
   margin-top 10px
   line-height 1.4em
   margin-right 25px
+  width 100%
+  padding-left 10px
   &:focus
-    border-bottom 1px solid #bdbdbd
-    padding 16px 16px 14px 2px
-.response__field
-  margin-right 0
-
-
-
-
-//icons
-@keyframes arrow-moveIn
-  50%
-    opacity 1
-    transform translateX(35px)
-
-  100%
-    opacity 1
-    transform translateX(35px)
-    opacity 0
-    transform translateX(35px)
-
-#square path,
-#circle path,
-.arrow-out,
-.arrow-in
-    fill none
-    stroke #868686
-    stroke-width 2
-    stroke-miterlimit 10
-
-.arrow-in
-    opacity 0
-
-.arrow
-    &:hover
-        .arrow-in
-            animation arrow-moveIn 1s ease 
-    &.right
-        transform scaleX(-1)
+    padding 16px 16px 16px 2px

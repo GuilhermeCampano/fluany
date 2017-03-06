@@ -28,7 +28,6 @@ class InputInterval extends Component{
 	render(){
 		return (
 			<section className="content-interval">
-
 				<InputRange
 					maxValue={20}
 					minValue={1}
@@ -37,7 +36,6 @@ class InputInterval extends Component{
 					defaultValue={4}
 					labelSuffix="min"
 				/>
-
 			</section>
 		);
 	}

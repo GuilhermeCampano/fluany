@@ -31,7 +31,7 @@ class Packages extends Component{
 
     renderPackagesList(){
 
-        let element = (<div></div>)
+        let element = "";
 
         for(let property in this.state.packages){
             element = [(<li key={property}
@@ -59,15 +59,21 @@ class Packages extends Component{
         }
 
         container = (<section className={"editingPackage__container " + (this.state.editingPackage ? "editingPackage__container--edit" : "")}>
-                          {packageTitleElement}
-                          <input className="question__field" placeholder="Question"/>
-                          <input className="response__field" placeholder="Response"/>
-                          <button>
-                                <svg className="arrow" viewBox="0 0 85 85">
-                                    <path className="arrow-out" d="M37.5 23.5l15 19-15 19"/>
-                                    <path className="arrow-in" d="M2.092 23.5l15 19-15 19"/>
-                                </svg>
-                          </button>
+                            {packageTitleElement}
+                            <ul className="editingPackage__questions">
+                                <li className="editingPackage__item">
+                                    <span className="editingPackage__info">1</span>
+                                    <span className="editingPackage__info">
+                                        <svg width="20" height="20" viewBox="0 0 64 64">
+                                            <path fill="#fff" d="M24.72 8.777h14.56v3.747H24.72zM7.917 11.56h48.164v4.818H7.918z"/>
+                                            <path fill="none" stroke="#fff" d="M40.212 57.362V27.005M32 57.398V27.04m-8.212 30.394V27.077m-11.06-7.594h38.543v40.254H12.73z"/>
+                                        </svg>
+                                    </span>
+                                    <input className="question__field" placeholder="Question"/>
+                                    <input className="response__field" placeholder="Answer"/>
+                                </li>
+                            </ul>
+                          <button>+ more</button>
                     </section>);
 
         return container
@@ -77,9 +83,11 @@ class Packages extends Component{
 
         /* cleanPackages();*/
         chrome.storage.sync.get('packages', obj => {
-            this.setState({
-                packages: JSON.parse(obj.packages)
-            });
+            if(obj.packages){
+                this.setState({
+                    packages: JSON.parse(obj.packages)
+                });
+            }
         });
 
         //get value if the user is adding package<Updating view)
@@ -96,8 +104,6 @@ class Packages extends Component{
     }
 
 	  render(){
-
-
         return (
          <div>
             {this.renderPackageEdit()}

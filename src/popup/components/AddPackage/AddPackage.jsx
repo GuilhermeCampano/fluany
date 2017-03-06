@@ -20,7 +20,8 @@ class AddPackage extends Component{
     handlerAddPackage(){
         this.setState({addingPackage: true});
         //communication with components (addClass and hidden button play)
-        PubSub.publish('addingPackage', true);     }
+        PubSub.publish('addingPackage', true);
+    }
 
     handlerCreatePackage(){
         chrome.storage.sync.get('packages', obj => {
@@ -72,7 +73,6 @@ class AddPackage extends Component{
             </li>
         );
     }
-
 
 	  render(){
         let element;
