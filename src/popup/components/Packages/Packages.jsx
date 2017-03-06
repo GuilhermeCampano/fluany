@@ -15,24 +15,25 @@ class Packages extends Component{
         this.handlerDeletePackage = this.handlerDeletePackage.bind(this);
         this.getPackageByName     = this.getPackageByName.bind(this);
         this.moreCardItem         = this.moreCardItem.bind(this);
+        this.handleSaveToggle = this.handleSaveToggle.bind(this);
 
         this.state = {
             addingPackage: false,
             packages: {},
             editingPackage: false,
-            cardItems: [<CardItem/>]
+            saveToggle: false,
+            cardItems: [],
+            cardItemsValue: []
         }
     }
 
     handlerItemPackage(e){
-        console.log(e.currentTarget.getAttribute('title'));
         this.setState({
             editingPackage: e.currentTarget
         });
     }
 
     handlerDeletePackage(e){
-        console.log(e.currentTarget);
     }
 
     renderPackagesList(){
@@ -68,12 +69,30 @@ class Packages extends Component{
         });
     }
 
+    handleSaveToggle(e){
+        if(e.target.checked){
+            console.log('to save: ', this.state.cardItemsValue);
+
+            this.getPackageByName('Cidades').then((cards => {
+                let newCards = [...cards, ...this.state.cardItemsValue];
+                console.log('newCards: ', newCards);
+
+                chrome.storage.sync.get('packages', obj => {
+
+                    let newobj = JSON.parse(obj.packages);
+                    console.log('after newobj: ', newobj);
+                    console.log('editing: ', this.state.editingPackage.getAttribute('title'))
+                    newobj[this.state.editingPackage.getAttribute('title')] = newCards;
+
+                    console.log('new obj: ', newobj)
+                });
+            }));
+        }
+    }
+
     renderPackageEdit(name){
         let packageTitleElement;
 
-        this.getPackageByName('Cidades').then((cards => {
-            console.log("aaae: ", cards)
-        }));
 
         if(this.state.editingPackage){
             let packageName = this.state.editingPackage.getAttribute('title');
@@ -82,8 +101,8 @@ class Packages extends Component{
                     <h3 className="editingPackage__title">{packageName}</h3>
                     <label className="card__save--toggle">
                         <Toggle
-                            defaultChecked={this.state.baconIsReady}
-                            onChange={this.handleBaconChange} />
+                            defaultChecked={this.state.saveToggle}
+                            onChange={this.handleSaveToggle} />
                         <span className="card__save--label">Save</span>
                     </label>
                 </header>
@@ -103,7 +122,9 @@ class Packages extends Component{
 
     moreCardItem(){
         this.setState({
-            cardItems: [...this.state.cardItems, <CardItem cards={this.state.cardItems}/>]
+            cardItems: [...this.state.cardItems,
+                        <CardItem cards={this.state.cardItems}
+                                  itemsArr={this.state.cardItemsValue}/>]
         });
     }
 
@@ -127,6 +148,13 @@ class Packages extends Component{
                     packages: JSON.parse(obj.packages)
                 });
             });
+        });
+
+        //add first component card items
+        this.setState({
+            cardItems: [...this.state.cardItems,
+                        <CardItem cards={this.state.cardItems}
+                                  itemsArr={this.state.cardItemsValue}/>]
         });
     }
 
