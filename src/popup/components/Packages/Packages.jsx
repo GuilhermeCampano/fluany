@@ -4,6 +4,7 @@ import PubSub from 'pubsub-js';
 import {putStorage, cleanPackages} from 'shared/helpers';
 import AddPackage from '../AddPackage/AddPackage';
 import CardItem from './CardItem.jsx';
+import Toggle from 'react-toggle';
 
 class Packages extends Component{
     constructor(props) {
@@ -76,7 +77,17 @@ class Packages extends Component{
 
         if(this.state.editingPackage){
             let packageName = this.state.editingPackage.getAttribute('title');
-            packageTitleElement = (<h3 className="editingPackage__title">{packageName}</h3>);
+            packageTitleElement = (
+                <header>
+                    <h3 className="editingPackage__title">{packageName}</h3>
+                    <label className="card__save--toggle">
+                        <Toggle
+                            defaultChecked={this.state.baconIsReady}
+                            onChange={this.handleBaconChange} />
+                        <span className="card__save--label">Save</span>
+                    </label>
+                </header>
+            );
         }
 
         return (
@@ -85,7 +96,7 @@ class Packages extends Component{
                 <ul className="editingPackage__questions">
                     {this.state.cardItems}
                 </ul>
-                <button onClick={this.moreCardItem}>+ more</button>
+                <button className="card__more-btn" onClick={this.moreCardItem}>+ more</button>
             </section>
         );
     }

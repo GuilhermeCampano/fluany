@@ -50,9 +50,9 @@ class CardItem extends Component{
                             d="M40.212 57.362V27.005M32 57.398V27.04m-8.212 30.394V27.077m-11.06-7.594h38.543v40.254H12.73z"/>
                     </svg>
                 </span>
-                <input value={this.state.question} onChange={this.handlerSetQuestion} className="question__field" placeholder="Question"/>
+                <input value={this.state.question} onChange={this.handlerSetQuestion} className="question__field" placeholder="Front"/>
                 {this.state.setEditing}
-                <input value={this.state.answer} onChange={this.handlerSetAnswer} className="response__field" placeholder="Answer"/>
+                <input value={this.state.answer} onChange={this.handlerSetAnswer} className="response__field" placeholder="Back"/>
             </li>
         )
     }
