@@ -16,6 +16,7 @@ class Packages extends Component{
         this.getPackageByName     = this.getPackageByName.bind(this);
         this.moreCardItem         = this.moreCardItem.bind(this);
         this.handleSaveToggle     = this.handleSaveToggle.bind(this);
+        this.renderListCards      = this.renderListCards.bind(this);
 
         this.state = {
             addingPackage: false,
@@ -32,7 +33,7 @@ class Packages extends Component{
         this.setState({
             packageNameIsEditing: e.currentTarget.getAttribute('title'),
             editing: true
-        });
+        }, () => this.renderListCards());
     }
 
     handlerDeletePackage(e){
@@ -65,7 +66,7 @@ class Packages extends Component{
 
     /**
     * @param {String} name
-     */
+    */
     getPackageByName(name){
         return new Promise( (resolve, reject) => {
             chrome.storage.sync.get('packages', obj => {
@@ -79,16 +80,50 @@ class Packages extends Component{
 
     handleSaveToggle(e){
         if(e.target.checked){
-            this.getPackageByName('Cidades').then( cards => {
-                let newCards = [...cards, ...this.state.cardItemsValue];
+            let packageName = this.state.packageNameIsEditing;
+            this.getPackageByName(packageName).then( cards => {
+                console.log('save cards: ', cards);
+                let newCards = this.state.cardItemsValue;
+                console.log('newCards to save: ', newCards);
                 getChromeStorage('packages').then( packages => {
-                    let packageName = this.state.packageNameIsEditing;
                     let newobj = JSON.parse(packages);
                     newobj[packageName] = newCards;
-                    console.log('new cards: ', newobj)
+                    console.log('new cards: ', newobj);
+                    putStorage('packages', JSON.stringify(newobj));
                 });
             });
         }
+    }
+
+    renderListCards(){
+        this.getPackageByName(this.state.packageNameIsEditing).then( cards => {
+            //updating cardItems of the package ^
+            console.log('cards: ', cards);
+            let cardItemsComponents = cards.map( (card, index) =>
+                <CardItem load={card}
+                          index={index}
+                          itemsArr={this.state.cardItemsValue}/>);
+
+            this.setState({
+                cardItemsValue: cards
+            }, () => {
+                this.setState({
+                    cardItems: [...cardItemsComponents,
+                                <CardItem itemsArr={this.state.cardItemsValue}/>]
+                });
+            })
+
+            console.log('Components arr: ', cardItemsComponents);
+            console.log('carditems: ', this.state.cardItemsValue);
+
+        }).catch( (err) => {
+            console.log(err);
+            //add first component card items
+            this.setState({
+                cardItems: [...this.state.cardItems,
+                            <CardItem itemsArr={this.state.cardItemsValue}/>]
+            });
+        });
     }
 
     renderPackageEdit(name){
@@ -145,13 +180,6 @@ class Packages extends Component{
                     packages: JSON.parse(packages)
                 });
             });
-        });
-
-        //add first component card items
-        this.setState({
-            cardItems: [...this.state.cardItems,
-                        <CardItem cards={this.state.cardItems}
-                                  itemsArr={this.state.cardItemsValue}/>]
         });
     }
 

@@ -6,7 +6,9 @@ class CardItem extends Component{
         super(props);
         this.handlerSetQuestion = this.handlerSetQuestion.bind(this);
         this.handlerSetAnswer = this.handlerSetAnswer.bind(this);
-        this.props.itemsArr.push({question: "", answer: ""});
+        if(!this.props.load){
+            this.props.itemsArr.push({question: "", answer: ""});
+        }
 
         this.state = {
             count: 1,
@@ -18,13 +20,24 @@ class CardItem extends Component{
     }
 
     componentDidMount(){
-        if(this.props.cards){
+        if(this.props.load){
+            console.log('load: ', this.props.load)
             this.setState({
-                count: this.props.cards.length + 1
+                card: {
+                    question: this.props.load.question,
+                    answer: this.props.load.answer,
+                },
+                count: this.props.index + 1
+            }, () => {
+                console.log('card: ', this.state.card);
+            });
+        }else{
+            console.log('itemsarr: ', this.props.itemsArr);
+            this.setState({
+                count: this.props.itemsArr.length
             });
         }
     }
-
 
     handlerSetQuestion(e){
         this.setState({
@@ -36,7 +49,6 @@ class CardItem extends Component{
             this.props.itemsArr[indexOfArray] = Object.assign({},
                                                               this.props.itemsArr[indexOfArray],
                                                               {question: this.state.card.question});
-
             console.log('Cards: ', this.props.itemsArr);
         });
 
@@ -44,7 +56,15 @@ class CardItem extends Component{
 
     handlerSetAnswer(e){
         this.setState({
-            card: { answer: e.target.answer }
+            card: {
+                answer: e.target.value
+            }
+        }, () => {
+            let indexOfArray = this.state.count - 1;
+            this.props.itemsArr[indexOfArray] = Object.assign({},
+                                                              this.props.itemsArr[indexOfArray],
+                                                              {answer: this.state.card.answer});
+            console.log('Cards: ', this.props.itemsArr);
         });
     }
 
