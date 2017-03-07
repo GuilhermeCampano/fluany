@@ -98,7 +98,6 @@ class Packages extends Component{
     renderListCards(){
         this.getPackageByName(this.state.packageNameIsEditing).then( cards => {
             //updating cardItems of the package ^
-            console.log('cards: ', cards);
             let cardItemsComponents = cards.map( (card, index) =>
                 <CardItem load={card}
                           index={index}
@@ -112,10 +111,6 @@ class Packages extends Component{
                                 <CardItem itemsArr={this.state.cardItemsValue}/>]
                 });
             })
-
-            console.log('Components arr: ', cardItemsComponents);
-            console.log('carditems: ', this.state.cardItemsValue);
-
         }).catch( (err) => {
             console.log(err);
             //add first component card items
