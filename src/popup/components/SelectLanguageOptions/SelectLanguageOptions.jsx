@@ -8,7 +8,7 @@ class SelectLanguageOptions extends Component{
 
 		this.state = {
 			options: [
-			    { value: 'city', label: 'Cidades' }
+			    { value: 'default', label: 'Defaul by Fluany' }
 			]
 		};
 	}

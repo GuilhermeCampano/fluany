@@ -6,6 +6,6 @@ import App from './components/app/App';
 import './popup.styl';
 
 ReactDOM.render(
-	<App />,
-	document.getElementById('app')
+	  <App />,
+	  document.getElementById('app')
 );

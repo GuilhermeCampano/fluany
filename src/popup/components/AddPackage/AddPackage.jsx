@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Alarm from 'shared/Alarms';
 import PubSub from 'pubsub-js';
-import {putStorage} from 'shared/helpers';
+import {putStorage, getChromeStorage} from 'shared/helpers';
 
 class AddPackage extends Component{
 
@@ -18,31 +18,32 @@ class AddPackage extends Component{
 	  }
 
     handlerAddPackage(){
-        this.setState({addingPackage: true});
         //communication with components (addClass and hidden button play)
-        PubSub.publish('addingPackage', true);
+        this.setState({addingPackage: true},
+                      () => PubSub.publish('addingPackage', true));
     }
 
     handlerCreatePackage(){
-        chrome.storage.sync.get('packages', obj => {
-            let newobj = {};
-            newobj[this.state.packageName] = [];
-
-            if(obj.packages){
-                newobj = JSON.parse(obj.packages);
-                newobj[this.state.packageName] = [];
-                putStorage("packages", JSON.stringify(newobj));
-            }else{
-                putStorage("packages", [JSON.stringify(newobj)]);
-            }
-
-            this.setState({
-                addingPackage: false
+        let allPackages = {};
+        allPackages[this.state.packageName] = [];
+        getChromeStorage('packages')
+            .then( packages => {
+                //updating packages
+                allPackages = JSON.parse(packages);
+                allPackages[this.state.packageName] = [];
+                putStorage("packages", JSON.stringify(allPackages));
+            })
+            .catch(err => {
+                //first package:
+                putStorage("packages", JSON.stringify(allPackages));
+            })
+            .then( () => {
+                this.setState({
+                    addingPackage: false
+                    //communication with components (addClass and hidden button play)
+                }, () => PubSub.publish('addingPackage', false));
             });
 
-            //communication with components (addClass and hidden button play
-            PubSub.publish('addingPackage', false);
-        });
     }
 
     handlerChangePackageName(e){
@@ -55,11 +56,12 @@ class AddPackage extends Component{
         return (
             <div className="creatingItem__container">
                 <input placeholder="Package name"
-                       className="packageField"
+                       className="packageName"
                        onChange={this.handlerChangePackageName}/>
 
-                <button className="create-button"
-                        onClick={this.handlerCreatePackage}>Create</button>
+                <button className="creatingItem__create-btn"
+                        onClick={this.handlerCreatePackage}>Create
+                </button>
             </div>
         );
     }
@@ -67,9 +69,10 @@ class AddPackage extends Component{
     renderButtonAddPackage(){
         return (
             <li key="add">
-                <button className="addPackage"
+                <button className="addPackage-btn"
                         title="Add new package"
-                        onClick={this.handlerAddPackage}>+</button>
+                        onClick={this.handlerAddPackage}>+
+                </button>
             </li>
         );
     }
@@ -81,7 +84,6 @@ class AddPackage extends Component{
         }else{
             element = this.renderButtonAddPackage();
         }
-
         return element;
 	  }
 }

@@ -34,6 +34,7 @@ class Packages extends Component{
     }
 
     handlerDeletePackage(e){
+        console.log('delete package');
     }
 
     renderPackagesList(){
