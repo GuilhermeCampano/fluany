@@ -110,7 +110,7 @@ class Packages extends Component{
                     cardItems: [...cardItemsComponents,
                                 <CardItem itemsArr={this.state.cardItemsValue}/>]
                 });
-            })
+            });
         }).catch( (err) => {
             console.log(err);
             //add first component card items
