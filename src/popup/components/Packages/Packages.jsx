@@ -17,6 +17,7 @@ class Packages extends Component{
         this.moreCardItem         = this.moreCardItem.bind(this);
         this.handleSaveToggle     = this.handleSaveToggle.bind(this);
         this.renderListCards      = this.renderListCards.bind(this);
+        this.changeColorPackage   = this.changeColorPackage.bind(this);
 
         this.state = {
             addingPackage: false,
@@ -25,6 +26,7 @@ class Packages extends Component{
             packageNameIsEditing: false,
             saveToggle: false,
             cardItems: [],
+            colorActive: 1,
             cardItemsValue: []
         }
     }
@@ -82,13 +84,10 @@ class Packages extends Component{
         if(e.target.checked){
             let packageName = this.state.packageNameIsEditing;
             this.getPackageByName(packageName).then( cards => {
-                console.log('save cards: ', cards);
                 let newCards = this.state.cardItemsValue;
-                console.log('newCards to save: ', newCards);
                 getChromeStorage('packages').then( packages => {
                     let newobj = JSON.parse(packages);
                     newobj[packageName] = newCards;
-                    console.log('new cards: ', newobj);
                     putStorage('packages', JSON.stringify(newobj));
                 });
             });
@@ -121,6 +120,9 @@ class Packages extends Component{
         });
     }
 
+    changeColorPackage(){
+
+    }
     renderPackageEdit(name){
         let packageTitleElement;
         if(this.state.editing){
@@ -128,6 +130,18 @@ class Packages extends Component{
             packageTitleElement = (
                 <header>
                     <h3 className="editingPackage__title">{packageName}</h3>
+                    <div className="colors__container">
+                        <ul>
+                            <li><label className="colors__item colors__item-1"
+                                       onClick={this.changeColorPackage}></label></li>
+                            <li><label className="colors__item colors__item-2 active"
+                                       onClick={this.changeColorPackage}></label></li>
+                            <li><label className="colors__item colors__item-3"
+                                       onClick={this.changeColorPackage}></label></li>
+                            <li><label className="colors__item colors__item-4"
+                                       onClick={this.changeColorPackage}></label></li>
+                        </ul>
+                    </div>
                     <label className="card__save--toggle">
                         <Toggle
                             defaultChecked={this.state.saveToggle}

@@ -118,3 +118,40 @@
   padding-left 10px
   &:focus
     padding 16px 16px 16px 2px
+
+.colors__container
+  position absolute
+  top -6px
+  height 64px
+  left 12px
+  ul
+    padding 0
+    list-style none
+    li
+      float left
+      margin-right 10px
+      label
+        width 20px
+        height 20px
+        display block
+        border-radius 100%
+        border 2px solid #fff
+        cursor pointer 
+        &.colors__item-1
+          background #4CAF50
+          &.active
+            box-shadow 0px 0px 5px 5px #4CAF50
+        &.colors__item-2
+          background #3498db
+          &.active
+            box-shadow 0px 0px 5px 5px #3498db
+        &.colors__item-3
+          background #f44336
+          &.active
+            box-shadow 0px 0px 5px 5px #f44336
+        &.colors__item-4
+          background #ff9800
+          &.active
+            box-shadow 0px 0px 5px 5px #ff9800
+
+    

@@ -5,7 +5,8 @@ class CardItem extends Component{
     constructor(props) {
         super(props);
         this.handlerSetQuestion = this.handlerSetQuestion.bind(this);
-        this.handlerSetAnswer = this.handlerSetAnswer.bind(this);
+        this.handlerSetAnswer   = this.handlerSetAnswer.bind(this);
+        this.handlerDeleteCard  = this.handlerDeleteCard.bind(this);
         if(!this.props.load){
             this.props.itemsArr.push({question: "", answer: ""});
         }
@@ -28,8 +29,6 @@ class CardItem extends Component{
                     answer: this.props.load.answer,
                 },
                 count: this.props.index + 1
-            }, () => {
-                console.log('card: ', this.state.card);
             });
         }else{
             console.log('itemsarr: ', this.props.itemsArr);
@@ -49,9 +48,12 @@ class CardItem extends Component{
             this.props.itemsArr[indexOfArray] = Object.assign({},
                                                               this.props.itemsArr[indexOfArray],
                                                               {question: this.state.card.question});
-            console.log('Cards: ', this.props.itemsArr);
         });
 
+    }
+
+    handlerDeleteCard(e){
+        console.log('deleting.... ahh ;^; is not working!');
     }
 
     handlerSetAnswer(e){
@@ -64,7 +66,6 @@ class CardItem extends Component{
             this.props.itemsArr[indexOfArray] = Object.assign({},
                                                               this.props.itemsArr[indexOfArray],
                                                               {answer: this.state.card.answer});
-            console.log('Cards: ', this.props.itemsArr);
         });
     }
 
@@ -72,7 +73,7 @@ class CardItem extends Component{
         return (
             <li className="editingPackage__item">
                 <span className="editingPackage__info">{this.state.count}</span>
-                <span className="editingPackage__info">
+                <span className="editingPackage__info" onClick={this.handlerDeleteCard}>
                     <svg width="20" height="20" viewBox="0 0 64 64">
                         <path fill="#fff" d="M24.72 8.777h14.56v3.747H24.72zM7.917 11.56h48.164v4.818H7.918z"/>
                         <path fill="none"
