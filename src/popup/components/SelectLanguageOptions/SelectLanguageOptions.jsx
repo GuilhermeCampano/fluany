@@ -1,17 +1,26 @@
 import React, {Component} from 'react';
 import Dropdown from 'react-dropdown';
+import {getChromeStorage} from '../../../shared/helpers';
 
 class SelectLanguageOptions extends Component{
 
 	constructor(){
-		super();
-
-		this.state = {
-			options: [
-			    { value: 'default', label: 'Defaul by Fluany' }
-			]
-		};
+		  super();
+      this.state = {
+          options: []
+      }
+      getChromeStorage('packages').then((packages) => {
+        let objPackages = JSON.parse(packages);
+        let options = [{value: 'default', label: 'Default by Fluany'}];
+        for(let property in objPackages){
+            options.push({value: property, label: property});
+        }
+        this.setState({
+            options
+        });
+    });
 	}
+
 
 	render(){
 
