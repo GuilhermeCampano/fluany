@@ -18,6 +18,7 @@ class Packages extends Component{
         this.handleSaveToggle     = this.handleSaveToggle.bind(this);
         this.renderListCards      = this.renderListCards.bind(this);
         this.changeColorPackage   = this.changeColorPackage.bind(this);
+        this.getPackageColor      = this.getPackageColor.bind(this);
 
         this.state = {
             addingPackage: false,
@@ -26,7 +27,7 @@ class Packages extends Component{
             packageNameIsEditing: false,
             saveToggle: false,
             cardItems: [],
-            colorActive: 1,
+            colorPackages: {},
             cardItemsValue: []
         }
     }
@@ -42,12 +43,27 @@ class Packages extends Component{
         console.log('deleting package');
     }
 
+    getPackageColor(){
+        classColor = "";
+        if(this.state.colorActive){
+            classColor = "package__color-1";
+        }else if(this.state.colorActive){
+            classColor = "package__color-2";
+        }else if(this.state.colorActive){
+            classColor = "package__color-3";
+        }else if(this.state.colorActive){
+            classColor = "package__color-4";
+        }
+        return classColor;
+    }
+
     renderPackagesList(){
         let element = [];
         for(let pckg in this.state.packages){
             element = [(
                 <li key     = {pckg}
                     title   = {pckg}
+                    className = {this.getPackageColor}
                     onClick = {this.handlerItemPackage}>
                     <span className="delete__package" onClick={this.handlerDeletePackage}>
                         <svg width="15" height="15" viewBox="0 0 64 64">
@@ -95,7 +111,8 @@ class Packages extends Component{
     }
 
     renderListCards(){
-        this.getPackageByName(this.state.packageNameIsEditing).then( cards => {
+        this.getPackageByName(this.state.packageNameIsEditing)
+            .then( cards => {
             //updating cardItems of the package ^
             let cardItemsComponents = cards.map( (card, index) =>
                 <CardItem load={card}
@@ -120,9 +137,32 @@ class Packages extends Component{
         });
     }
 
-    changeColorPackage(){
-
+    changeColorPackage(e){
+        let item = e.currentTarget.getAttribute('data-item');
+        this.setState({
+            colorActive: item
+        }, () => {
+            console.log(this.state.colorActive);
+            getChromeStorage('packagesColor')
+                .then(packages => {
+                    let newobj = packages;
+                    console.log('aquiii: ', newobj)
+                    console.log(this.state.packageNameIsEditing);
+                    console.log(this.state.colorPackages)
+                    newobj[this.state.packageNameIsEditing] = this.state.colorPackages[this.state.packageNameIsEditing];
+                    putStorage('packagesColor', newobj);
+                })
+                .catch( () => {
+                    let newobj = {};
+                    console.log('entrou catch')
+                    newobj[this.state.packageNameIsEditing] = this.state.colorPackages[this.state.packageNameIsEditing];
+                    console.log(this.state.packageNameIsEditing);
+                    console.log('newobj-> ', newobj);
+                    putStorage('packagesColor', newobj);
+                })
+        });
     }
+
     renderPackageEdit(name){
         let packageTitleElement;
         if(this.state.editing){
@@ -132,14 +172,22 @@ class Packages extends Component{
                     <h3 className="editingPackage__title">{packageName}</h3>
                     <div className="colors__container">
                         <ul>
-                            <li><label className="colors__item colors__item-1"
-                                       onClick={this.changeColorPackage}></label></li>
-                            <li><label className="colors__item colors__item-2 active"
-                                       onClick={this.changeColorPackage}></label></li>
-                            <li><label className="colors__item colors__item-3"
-                                       onClick={this.changeColorPackage}></label></li>
-                            <li><label className="colors__item colors__item-4"
-                                       onClick={this.changeColorPackage}></label></li>
+                            <li key="1">
+                                <label className={"colors__item colors__item-1" + (this.state.colorPackages[this.state.packageNameIsEditing] === "1" ? " active": "")}
+                                       onClick={this.changeColorPackage}
+                                       data-item="1"></label></li>
+                            <li key="2">
+                                <label className={"colors__item colors__item-2" + (this.state.colorPackages[this.state.packageNameIsEditing] === "2" ? " active": "")}
+                                       onClick={this.changeColorPackage}
+                                       data-item="2"></label></li>
+                            <li key="3">
+                                <label className={"colors__item colors__item-3" + (this.state.colorPackages[this.state.packageNameIsEditing] === "3" ? " active": "")}
+                                       onClick={this.changeColorPackage}
+                                       data-item="3"></label></li>
+                            <li key="4">
+                                <label className={"colors__item colors__item-4" + (this.state.colorPackages[this.state.packageNameIsEditing] === "4" ? " active": "")}
+                                       onClick={this.changeColorPackage}
+                                       data-item="4"></label></li>
                         </ul>
                     </div>
                     <label className="card__save--toggle">
@@ -190,6 +238,14 @@ class Packages extends Component{
                 });
             });
         });
+
+        getChromeStorage('packagesColor')
+            .then(packages => {
+                console.log('packages: ',packages);
+                this.setState({
+                    colorPackages: packages
+                });
+            });
     }
 
 	  render(){

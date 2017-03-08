@@ -591,7 +591,7 @@ cipher-base@^1.0.0, cipher-base@^1.0.1:
   dependencies:
     inherits "^2.0.1"
 
-classnames@^2.2.3:
+classnames@^2.2.3, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -2549,15 +2549,15 @@ minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/minimalistic-crypto-utils/-/minimalistic-crypto-utils-1.0.1.tgz#f6c00c1c0b082246e5c4d99dfb8c7c083b2b582a"
 
-"minimatch@2 || 3", minimatch@^3.0.0, minimatch@^3.0.2:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.3.tgz#2a4e4090b96b2db06a9d7df01055a62a77c9b774"
+"minimatch@2 || 3", minimatch@^2.0.1, minimatch@^2.0.3:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-2.0.10.tgz#8d087c39c6b38c001b97fca7ce6d0e1e80afbac7"
   dependencies:
     brace-expansion "^1.0.0"
 
-minimatch@^2.0.1, minimatch@^2.0.3:
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-2.0.10.tgz#8d087c39c6b38c001b97fca7ce6d0e1e80afbac7"
+minimatch@^3.0.0, minimatch@^3.0.2:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.3.tgz#2a4e4090b96b2db06a9d7df01055a62a77c9b774"
   dependencies:
     brace-expansion "^1.0.0"
 
@@ -3259,6 +3259,12 @@ react-hot-loader@^1.2.8:
 react-input-range@^0.9.2:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/react-input-range/-/react-input-range-0.9.3.tgz#77f321b5eea1f0480bd88929aabbe5600588f265"
+
+react-toggle@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-toggle/-/react-toggle-3.0.1.tgz#60d462007ea52ad13442eee4fef262fa53c5ec6f"
+  dependencies:
+    classnames "^2.2.5"
 
 react@^15.3.2:
   version "15.4.2"
