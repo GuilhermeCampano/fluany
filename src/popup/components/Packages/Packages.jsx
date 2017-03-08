@@ -43,18 +43,10 @@ class Packages extends Component{
         console.log('deleting package');
     }
 
-    getPackageColor(){
-        classColor = "";
-        if(this.state.colorActive){
-            classColor = "package__color-1";
-        }else if(this.state.colorActive){
-            classColor = "package__color-2";
-        }else if(this.state.colorActive){
-            classColor = "package__color-3";
-        }else if(this.state.colorActive){
-            classColor = "package__color-4";
-        }
-        return classColor;
+    getPackageColor(packg){
+        let colorPackage = this.state.colorPackages[packg];
+        if(typeof(colorPackage) === 'undefined') colorPackage = "";
+        return "package__color-" + colorPackage;
     }
 
     renderPackagesList(){
@@ -63,7 +55,7 @@ class Packages extends Component{
             element = [(
                 <li key     = {pckg}
                     title   = {pckg}
-                    className = {this.getPackageColor}
+                    className = {this.getPackageColor(pckg)}
                     onClick = {this.handlerItemPackage}>
                     <span className="delete__package" onClick={this.handlerDeletePackage}>
                         <svg width="15" height="15" viewBox="0 0 64 64">
@@ -138,29 +130,24 @@ class Packages extends Component{
     }
 
     changeColorPackage(e){
-        let item = e.currentTarget.getAttribute('data-item');
-        this.setState({
-            colorActive: item
-        }, () => {
-            console.log(this.state.colorActive);
-            getChromeStorage('packagesColor')
-                .then(packages => {
-                    let newobj = packages;
-                    console.log('aquiii: ', newobj)
-                    console.log(this.state.packageNameIsEditing);
-                    console.log(this.state.colorPackages)
-                    newobj[this.state.packageNameIsEditing] = this.state.colorPackages[this.state.packageNameIsEditing];
-                    putStorage('packagesColor', newobj);
-                })
-                .catch( () => {
-                    let newobj = {};
-                    console.log('entrou catch')
-                    newobj[this.state.packageNameIsEditing] = this.state.colorPackages[this.state.packageNameIsEditing];
-                    console.log(this.state.packageNameIsEditing);
-                    console.log('newobj-> ', newobj);
-                    putStorage('packagesColor', newobj);
-                })
-        });
+        let colorActive = e.currentTarget.getAttribute('data-item');
+        console.log('package color: ', this.state.colorPackages);
+        getChromeStorage('packagesColor')
+            .then(packages => {
+                let newobj = packages;
+                newobj[this.state.packageNameIsEditing] = colorActive;
+                console.log('newobj: ', newobj);
+                this.setState({
+                    colorPackages: newobj
+                }, () => putStorage('packagesColor', newobj))
+            })
+            .catch( () => {
+                let newobj = {};
+                console.log('entrou catch')
+                newobj[this.state.packageNameIsEditing] = colorActive;
+                console.log('newobj-> ', newobj);
+                putStorage('packagesColor', newobj);
+            });
     }
 
     renderPackageEdit(name){
@@ -188,6 +175,10 @@ class Packages extends Component{
                                 <label className={"colors__item colors__item-4" + (this.state.colorPackages[this.state.packageNameIsEditing] === "4" ? " active": "")}
                                        onClick={this.changeColorPackage}
                                        data-item="4"></label></li>
+                            <li key="5">
+                                <label className={"colors__item colors__item-5" + (this.state.colorPackages[this.state.packageNameIsEditing] === "5" ? " active": "")}
+                                       onClick={this.changeColorPackage}
+                                       data-item="5"></label></li>
                         </ul>
                     </div>
                     <label className="card__save--toggle">
