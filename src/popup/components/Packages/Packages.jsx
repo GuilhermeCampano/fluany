@@ -90,6 +90,7 @@ class Packages extends Component{
 
     handleSaveToggle(e){
         if(e.target.checked){
+            this.setState({editing:false})
             let packageName = this.state.packageNameIsEditing;
             this.getPackageByName(packageName).then( cards => {
                 let newCards = this.state.cardItemsValue;
@@ -120,7 +121,6 @@ class Packages extends Component{
                 });
             });
         }).catch( (err) => {
-            console.log(err);
             //add first component card items
             this.setState({
                 cardItems: [...this.state.cardItems,
@@ -191,7 +191,7 @@ class Packages extends Component{
             );
         }
 
-        let classEditContainer = "editingPackage__container " + (this.state.packageNameIsEditing ? "editingPackage__container--edit" : "");
+        let classEditContainer = "editingPackage__container " + (this.state.editing ? "editingPackage__container--edit" : "");
         return (
             <section className={classEditContainer}>
                 {packageTitleElement}
