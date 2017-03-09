@@ -57,16 +57,10 @@ class Packages extends Component{
                     title   = {pckg}
                     className = {this.getPackageColor(pckg)}
                     onClick = {this.handlerItemPackage}>
-                    <span className="delete__package" onClick={this.handlerDeletePackage}>
-                        <svg width="15" height="15" viewBox="0 0 64 64">
-                            <path fill="#fff"
-                                  d="M24.72 8.777h14.56v3.747H24.72zM7.917 11.56h48.164v4.818H7.918z"/>
-                            <path fill="none"
-                                  stroke="#fff"
-                                  d="M40.212 57.362V27.005M32 57.398V27.04m-8.212 30.394V27.077m-11.06-7.594h38.543v40.254H12.73z"/>
-                        </svg>
+                    <span className="top__ribbon">
+                        <span>{pckg}</span>
                     </span>
-                    <span className="package__name">{pckg}</span>
+                    {/* <span className="package__name">{pckg}</span> */}
                 </li>
             ), ...element ]
         }
@@ -131,21 +125,17 @@ class Packages extends Component{
 
     changeColorPackage(e){
         let colorActive = e.currentTarget.getAttribute('data-item');
-        console.log('package color: ', this.state.colorPackages);
         getChromeStorage('packagesColor')
             .then(packages => {
                 let newobj = packages;
                 newobj[this.state.packageNameIsEditing] = colorActive;
-                console.log('newobj: ', newobj);
                 this.setState({
                     colorPackages: newobj
                 }, () => putStorage('packagesColor', newobj))
             })
             .catch( () => {
                 let newobj = {};
-                console.log('entrou catch')
                 newobj[this.state.packageNameIsEditing] = colorActive;
-                console.log('newobj-> ', newobj);
                 putStorage('packagesColor', newobj);
             });
     }
@@ -156,7 +146,6 @@ class Packages extends Component{
             let packageName = this.state.packageNameIsEditing;
             packageTitleElement = (
                 <header>
-                    <h3 className="editingPackage__title">{packageName}</h3>
                     <div className="colors__container">
                         <ul>
                             <li key="1">
@@ -187,6 +176,17 @@ class Packages extends Component{
                             onChange={this.handleSaveToggle} />
                         <span className="card__save--label">Save</span>
                     </label>
+                    <span className="delete__package" onClick={this.handlerDeletePackage} title="Delete package">
+                        <svg width="23" height="23" viewBox="0 0 64 64">
+                            <path fill="#fff"
+                                d="M24.72 8.777h14.56v3.747H24.72zM7.917 11.56h48.164v4.818H7.918z"/>
+                            <path fill="none"
+                                stroke="#fff"
+                                d="M40.212 57.362V27.005M32 57.398V27.04m-8.212 30.394V27.077m-11.06-7.594h38.543v40.254H12.73z"/>
+                        </svg>
+                    </span>
+                    <h3 className="editingPackage__title">{packageName}
+                    </h3>
                 </header>
             );
         }

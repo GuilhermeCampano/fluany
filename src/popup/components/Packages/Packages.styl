@@ -39,12 +39,51 @@
         transform translate(-50%, -50%)
       svg
         position absolute
-        right 1px
+        left 1px
+        bottom 1px
         transition all .4s
         path
           fill #fff
           stroke #fff
-
+      .top__ribbon
+        position absolute
+        right -5px
+        top -5px
+        z-index 1
+        overflow hidden
+        width 75px
+        height 75px
+        text-align right
+        span
+          font-size 13px
+          font-weight bold
+          color #fff
+          text-transform uppercase
+          text-align center
+          line-height 20px
+          transform rotate(45deg)
+          width 100px
+          display block
+          background #f55d5d
+          position absolute
+          top 19px
+          right -21px
+          &:before
+            content ""
+            position absolute
+            left 0
+            top 100%
+            z-index 1
+            border-left 3px solid #f55d5d
+            border-top 3px solid #f55d5d
+          &:after
+            content ""
+            position absolute
+            right 0
+            top 100%
+            z-index 1
+            border-left 3px solid #f55d5d
+            border-top 3px solid #f55d5d
 .editingPackage
   transform translateX(-100%);
 
@@ -56,6 +95,8 @@
   .editingPackage__title
     text-align center
     font-size 20px
+    margin-top 55px
+    text-transform uppercase
   &--edit
     position initial
     transition all .4s
@@ -72,18 +113,17 @@
 
   .card__save--toggle
     position absolute
-    top 0px
-    right 47px
+    top -39px
+    right 45px
     .card__save--label
-      font-size 14px
-      position absolute
-      margin-left 6px
-      top 2px
+      font-size 12px
+      display block
      
 
 .editingPackage__questions
   margin 0
   padding 0
+  padding-top 3px
   list-style none
   .editingPackage__item
     background-color #f4f4f4
@@ -134,12 +174,14 @@
 
 .colors__container
   position absolute
-  top -6px
+  top -52px
   height 64px
   left 12px
+  text-align center
   ul
     padding 0
     list-style none
+    display inline-block
     li
       float left
       margin-right 10px
@@ -172,4 +214,14 @@
           &.active
             box-shadow 0px 0px 5px 5px #9d60b8
 
+.delete__package
+  padding-left 30px
+  position absolute
+  top -40px
+  right 11px
+  cursor pointer
+  svg
+    path
+      fill #868686
+      stroke #868686
     
