@@ -90,7 +90,6 @@ class Packages extends Component{
 
     handleSaveToggle(e){
         if(e.target.checked){
-            this.setState({editing:false})
             let packageName = this.state.packageNameIsEditing;
             this.getPackageByName(packageName).then( cards => {
                 let newCards = this.state.cardItemsValue;
@@ -98,6 +97,7 @@ class Packages extends Component{
                     let newobj = JSON.parse(packages);
                     newobj[packageName] = newCards;
                     putStorage('packages', JSON.stringify(newobj));
+                    setTimeout( () =>this.setState({editing:false}), 1000);
                 });
             });
         }
