@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import Dropdown from 'react-dropdown';
 import PubSub from 'pubsub-js';
-import {getChromeStorage} from '../../../shared/helpers';
+import {getChromeStorage, putStorage, cleanPackages} from '../../../shared/helpers';
 
 class SelectLanguageOptions extends Component{
 
     constructor(){
         super();
         this.state = {
-            options: []
+            options: [],
+            packageSelected: {value: 'default', label: 'Default by Fluany'}
         }
         this.updatingSelectField = this.updatingSelectField.bind(this);
-
+        this._onSelect           = this._onSelect.bind(this);
         this.updatingSelectField();
     }
 
@@ -23,6 +24,21 @@ class SelectLanguageOptions extends Component{
                 this.updatingSelectField();
             }
         });
+
+        getChromeStorage('packageSelected')
+            .then( packageSelected => {
+                this.setState({
+                    packageSelected
+                });
+            })
+            .catch(err =>
+                    putStorage('packageSelected', this.state.packageSelected));
+    }
+
+    _onSelect(e){
+        this.setState({
+            packageSelected: e
+        }, () => putStorage('packageSelected', this.state.packageSelected));
     }
 
     updatingSelectField(){
@@ -45,7 +61,7 @@ class SelectLanguageOptions extends Component{
 				<Dropdown
 				options={this.state.options}
 				onChange={this._onSelect}
-				value={this.state.options[0]}
+				value={this.state.packageSelected}
 				placeholder="Select an option"
 				/>
 			</section>

@@ -51,7 +51,7 @@ class Packages extends Component{
 
             //saving
             putStorage('packages', JSON.stringify(newobj));
-            setTimeout( () => this.setState({editing:false}), 1000);
+            setTimeout( () => this.setState({editing:false}), 600);
         });
     }
 
