@@ -12,7 +12,6 @@ export let getChromeStorage = name => {
   return new Promise( (resolve, reject) => {
 		chrome.storage.sync.get(name, obj => {
 			if(obj[name]){
-				console.log('obj: ', obj);
 				resolve(obj[name]);
 			}else
 				reject(`${name} was not found`);
@@ -26,12 +25,20 @@ export let cleanLevels = () => {
 	});
 };
 
-//clean packages
 export let cleanPackages = () => {
 	  chrome.storage.sync.remove('packages', () => {
 		    console.log('cleaned packages');
 	  });
 };
+
+export let getAllKeysInStorage = () => {
+	return new Promise( (resolve, reject) => {
+		chrome.storage.sync.get(null, function(items) {
+			var allKeys = Object.keys(items);
+			resolve(allKeys);
+		});
+	});
+}
 
 /* ex: getProperty(myObj,'aze.xyz',0) // return myObj.aze.xyz safely
  * accepts array for property names:

@@ -1,5 +1,5 @@
 import {BASE_API} from 'shared/constants/constants';
-import {putStorage} from 'shared/helpers';
+import {putStorage, getChromeStorage, getAllKeysInStorage} from 'shared/helpers';
 
 /**
 * @description Class to connection with phrases in API and saved on localStorage extension.
@@ -19,12 +19,17 @@ class Phrases {
  * @callback getAllCallback
  */
 	getAll(callback){
-		this._loadPhrases()
-		.then((phrases) => {
-			callback(phrases, null);
-		})
-		.catch((error) => {
-			callback(null, error);
+		getChromeStorage('packageSelected').then( packageSelected => {
+			getChromeStorage('packages').then( packages => {
+				console.log('packages', packages);
+				// this._loadPhrases()
+				// .then((phrases) => {
+				// 	callback(phrases, null);
+				// })
+				// .catch((error) => {
+				// 	callback(null, error);
+				// });
+			});
 		});
 	}
 

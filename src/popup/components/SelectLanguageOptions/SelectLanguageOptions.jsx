@@ -32,7 +32,7 @@ class SelectLanguageOptions extends Component{
                 });
             })
             .catch(err =>
-                    putStorage('packageSelected', this.state.packageSelected));
+                putStorage('packageSelected', this.state.packageSelected));
     }
 
     _onSelect(e){

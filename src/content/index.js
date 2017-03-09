@@ -11,8 +11,9 @@ import App from './app/controllers/App';
 let app = new App();
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.message && (msg.message == "LOAD")) {
-        app.loadQuestion();
-    }
+  if (msg.message && (msg.message == "LOAD")) {
+			console.log('loadQuestion....');
+			app.loadQuestion();
+	}
     return true;
 });
