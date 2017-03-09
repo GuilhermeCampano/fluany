@@ -40,7 +40,19 @@ class Packages extends Component{
     }
 
     handlerDeletePackage(e){
-        console.log('deleting package');
+        getChromeStorage('packages').then( packages => {
+            let newobj = JSON.parse(packages);
+            delete newobj[this.state.packageNameIsEditing];
+
+            //updating packages state
+            this.setState({
+                packages: newobj
+            });
+
+            //saving
+            putStorage('packages', JSON.stringify(newobj));
+            setTimeout( () => this.setState({editing:false}), 1000);
+        });
     }
 
     getPackageColor(packg){

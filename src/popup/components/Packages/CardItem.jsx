@@ -21,6 +21,7 @@ class CardItem extends Component{
     }
 
     componentDidMount(){
+        console.log('=> ', this.props.itemsArr)
         if(this.props.load){
             console.log('load: ', this.props.load)
             this.setState({
