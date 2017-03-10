@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Dropdown from 'react-dropdown';
 import PubSub from 'pubsub-js';
-import {getChromeStorage, putStorage, cleanPackages} from '../../../shared/helpers';
+import {getChromeStorage, putStorage, cleanPackages, cleanChromeStorage} from '../../../shared/helpers';
 
 class SelectLanguageOptions extends Component{
 
@@ -39,6 +39,10 @@ class SelectLanguageOptions extends Component{
         this.setState({
             packageSelected: e
         }, () => putStorage('packageSelected', this.state.packageSelected));
+
+
+        //because the phrasesStep need to stay empty for the content get new Package
+        cleanChromeStorage('localKeys');
     }
 
     updatingSelectField(){

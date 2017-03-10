@@ -1,5 +1,5 @@
 import {BASE_API} from 'shared/constants/constants';
-import {putStorage, getChromeStorage, getAllKeysInStorage} from 'shared/helpers';
+import {putStorage, getChromeStorage, getAllKeysInStorage, cleanChromeStorage} from 'shared/helpers';
 
 /**
 * @description Class to connection with phrases in API and saved on localStorage extension.
@@ -20,19 +20,40 @@ class Phrases {
  */
 	getAll(callback){
 		getChromeStorage('packageSelected').then( packageSelected => {
-			getChromeStorage('packages').then( packages => {
-				console.log('packages', packages);
-				// this._loadPhrases()
-				// .then((phrases) => {
-				// 	callback(phrases, null);
-				// })
-				// .catch((error) => {
-				// 	callback(null, error);
-				// });
-			});
+			console.log('packageSelected: ', packageSelected);
+			if(packageSelected.value === 'default'){
+				console.log('is default ====> ');
+				this._loadPhrases()
+					.then((phrases) => {
+						callback(phrases, null);
+					})
+					.catch((error) => {
+						callback(null, error);
+					});
+			}else{
+				console.log('else ======>');
+				this._getPhrasesOfPackage(packageSelected.value)
+					.then(packages => callback(packages));
+			}
 		});
 	}
 
+	/**
+	* @return Promise
+	* @description GET phrases in Package in local storage
+	*/
+	_getPhrasesOfPackage(packageSelected){
+		return new Promise((resolve, reject) => {
+			getChromeStorage('packages')
+				.then( packages => {
+					let arrPackageSelected = JSON.parse(packages)[packageSelected];
+					arrPackageSelected = arrPackageSelected.reduce((xs, curr) => xs.concat(curr.answer, curr.question), []);
+					console.log('Class Phrases: ', arrPackageSelected);
+					resolve(arrPackageSelected);
+				})
+				.catch(err => reject(err));
+		});
+	}
    /**
 	 * @return Promise
 	 */

@@ -25,8 +25,12 @@ export let cleanLevels = () => {
 	});
 };
 
-export let cleanPackages = () => {
-	  chrome.storage.sync.remove('packages', () => {
+/**
+ * @params String
+ * @description clean name in local storage
+ */
+export let cleanChromeStorage = (name) => {
+	  chrome.storage.sync.remove(name, () => {
 		    console.log('cleaned packages');
 	  });
 };

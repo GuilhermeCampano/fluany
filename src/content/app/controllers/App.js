@@ -74,8 +74,10 @@ class App {
 	*/
 	loadQuestion(){
 		this.phrases.getAll((phrases) => {
+			console.log('phrases: ', phrases);
 			this.phrasesFull = phrases;
 			chrome.storage.sync.get('localKeys', (obj) => {
+				console.log('localKeys: ', obj);
 				//points
 				if(getProperty(obj, "localKeys.points")){
 					this.points = obj.localKeys['points'];
