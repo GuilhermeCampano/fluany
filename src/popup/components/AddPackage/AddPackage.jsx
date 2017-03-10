@@ -57,6 +57,7 @@ class AddPackage extends Component{
             <div className="creatingItem__container">
                 <input placeholder="Package name"
                        className="packageName"
+                       maxLength={11}
                        onChange={this.handlerChangePackageName}/>
 
                 <button className="creatingItem__create-btn"
