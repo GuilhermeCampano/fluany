@@ -20,9 +20,7 @@ class Phrases {
  */
 	getAll(callback){
 		getChromeStorage('packageSelected').then( packageSelected => {
-			console.log('packageSelected: ', packageSelected);
 			if(packageSelected.value === 'default'){
-				console.log('is default ====> ');
 				this._loadPhrases()
 					.then((phrases) => {
 						callback(phrases, null);
@@ -31,7 +29,6 @@ class Phrases {
 						callback(null, error);
 					});
 			}else{
-				console.log('else ======>');
 				this._getPhrasesOfPackage(packageSelected.value)
 					.then(packages => callback(packages));
 			}
@@ -48,7 +45,6 @@ class Phrases {
 				.then( packages => {
 					let arrPackageSelected = JSON.parse(packages)[packageSelected];
 					arrPackageSelected = arrPackageSelected.reduce((xs, curr) => xs.concat(curr.answer, curr.question), []);
-					console.log('Class Phrases: ', arrPackageSelected);
 					resolve(arrPackageSelected);
 				})
 				.catch(err => reject(err));
