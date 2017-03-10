@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "chokidar": "^1.0.5",
+    "jest": "^19.0.2",
     "react-toggle": "^3.0.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.3.1"
