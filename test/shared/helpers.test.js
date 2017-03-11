@@ -1,9 +1,16 @@
-import {putStorage} from '../../src/shared/helpers';
-import {assert} from 'chai';
+import {getProperty} from '../../src/shared/helpers';
+import {expect} from 'chai';
 
-describe('Helpers function', () =>{
-	let a = 1 + 2;
-	it('Put Storage', () => {
-		assert.typeOf(a, 'number');
-	});
+describe('Helper functions', () =>{
+	  let user = {
+        name: "Victor Igor",
+        age: 19,
+        skills: {
+            label: "Frontend",
+            value: 0
+        }
+    };
+    it('getProperty', () => {
+        expect(getProperty(user, "skills.label")).to.exist;
+    });
 });
