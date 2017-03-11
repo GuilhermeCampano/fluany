@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Line } from 'rc-progress';
+import {getChromeStorage} from 'shared/helpers';
 
 //Max point : 1000
 class Points extends Component {
@@ -14,33 +15,30 @@ class Points extends Component {
 	}
 
 	getColorToPoint(){
-		if(this.state.point < 300){
+		if(this.state.point < 300)
 			return '#FE8C6A';
-		}else
-			if(this.state.point < 700){
+		else
+			if(this.state.point < 700)
 				return '#3FC7FA';
-			}else
+			else
 				return '#85D262';
 	}
 
 	componentDidMount() {
 		//get level of the User
-		chrome.storage.sync.get('localKeys', obj => {
-      //update a component with local data
-			if(obj.localKeys){
-				  this.setState({
-              level: obj.localKeys.level,
-              point: obj.localKeys.points});
-			}else{
-          this.setState({
-              level: 1,
-              point: 0
-          });
-      }
-		});
-		this.setState({
-			color: this.getColorToPoint()
-		});
+    getChromeStorage('localKeys')
+        .then(localKeys => {
+            this.setState({
+                level: localKeys.level,
+                point: localKeys.points});
+        })
+        .catch(() => {
+            this.setState({
+                level: 1,
+                point: 0
+            });
+        })
+        .then(() => this.setState({color: this.getColorToPoint()}));
 	}
 
 	render(){
