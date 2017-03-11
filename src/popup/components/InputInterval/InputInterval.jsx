@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import InputRange from 'react-input-range';
 import PubSub from 'pubsub-js';
+import {getChromeStorage} from 'shared/helpers';
 
 class InputInterval extends Component{
 	constructor(props){
@@ -12,16 +13,13 @@ class InputInterval extends Component{
 
 	componentDidMount() {
 			//get value saved in LocalStorage :: exit popup
-		  chrome.storage.sync.get('rangeInterval', (obj) => {
-		  	//update value component : localStorage previous
-		  	this.setState({value: obj.rangeInterval});
-		  });
+      getChromeStorage('rangeInterval')
+        .then(rangeInterval => this.setState({value: rangeInterval})) //update value component : localStorage previous
+        .catch(() => {})
 	}
 
 	handleValueChange(component, value) {
-    this.setState({
-      value: value
-    });
+    this.setState({value: value});
    	PubSub.publish('rangeInterval', value); //communication with components
   }
 

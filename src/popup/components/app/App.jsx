@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Header from '../Header/Header';
 import SelectLanguageOptions from '../SelectLanguageOptions/SelectLanguageOptions';
 import ButtonStart from '../ButtonStart/ButtonStart';
 import Packages from '../Packages/Packages';
