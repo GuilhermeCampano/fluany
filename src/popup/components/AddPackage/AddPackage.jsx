@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Alarm from 'shared/Alarms';
 import PubSub from 'pubsub-js';
+import R from 'ramda';
 import {putStorage, getChromeStorage} from 'shared/helpers';
 
 class AddPackage extends Component{
@@ -24,18 +25,15 @@ class AddPackage extends Component{
     }
 
     handlerCreatePackage(){
-        let allPackages = {};
-        allPackages[this.state.packageName] = [];
         getChromeStorage('packages')
             .then( packages => {
-                //updating packages
-                allPackages = JSON.parse(packages);
-                allPackages[this.state.packageName] = [];
-                putStorage("packages", JSON.stringify(allPackages));
+               //updating packages
+                let updatingPackage = R.assoc(this.state.packageName, [], JSON.parse(packages));
+                putStorage("packages", JSON.stringify(updatingPackage));
             })
             .catch(err => {
                 //first package:
-                putStorage("packages", JSON.stringify(allPackages));
+                putStorage("packages", JSON.stringify(R.assoc(this.state.packageName, [], {})));
             })
             .then( () => {
                 this.setState({
