@@ -98,19 +98,22 @@ class Packages extends Component{
 
     handleSaveToggle(e){
         if(e.target.checked){
-            let packageName = this.state.packageNameIsEditing;
-            console.log('packageName: ', packageName)
-            this.getPackageByName(packageName).then( cards => {
-                console.log('cards: ', cards);
-                let newCards = this.state.cardItemsValue;
-                console.log('newCardsSL ', newCards);
+            const packageName = this.state.packageNameIsEditing;
+            const newCards = this.state.cardItemsValue;
+            const frontIsEmpty = s => R.isEmpty(R.last(newCards).front)
+            const backIsEmpty  = s => R.isEmpty(R.last(newCards).back)
+            const lastIsEmpty = R.either(frontIsEmpty, backIsEmpty)();
+            const redirectToHome = () => setTimeout( () => this.setState({editing:false}), 1000);
+
+            if(!lastIsEmpty){
                 getChromeStorage('packages').then( packages => {
-                    let newobj = JSON.parse(packages);
-                    newobj[packageName] = newCards;
+                    let newobj = R.assoc(packageName, newCards, JSON.parse(packages));
                     putStorage('packages', JSON.stringify(newobj));
-                    setTimeout( () =>this.setState({editing:false}), 1000);
+                    redirectToHome();
                 });
-            });
+            }else
+              redirectToHome();
+
         }
     }
 
@@ -141,7 +144,7 @@ class Packages extends Component{
                 if(R.isEmpty(cards)){
                     this.setState({
                       cardItemsValue: [{front: "", back: ""}]
-                    }, ()=>
+                    }, () =>
                         cardItemsComponents = [
                             <CardItem value={this.state.cardItemsValue}
                                     id={0}
