@@ -1,79 +1,38 @@
 import React, {Component, } from 'react';
+import R from 'ramda';
 
 class CardItem extends Component{
 
     constructor(props) {
         super(props);
-        this.handlerSetQuestion = this.handlerSetQuestion.bind(this);
-        this.handlerSetAnswer   = this.handlerSetAnswer.bind(this);
-        this.handlerDeleteCard  = this.handlerDeleteCard.bind(this);
-        if(!this.props.load){
-            this.props.itemsArr.push({question: "", answer: ""});
-        }
-
+        this.handleChangeFront = this.handleChangeFront.bind(this);
+        this.handleChangeBack = this.handleChangeBack.bind(this);
         this.state = {
-            count: 1,
-            card: {
-                question: "",
-                answer: ""
-            }
+            front: this.props.value.front,
+            back: this.props.value.back
         }
     }
 
-    componentDidMount(){
-        console.log('=> ', this.props.itemsArr)
-        if(this.props.load){
-            console.log('load: ', this.props.load)
-            this.setState({
-                card: {
-                    question: this.props.load.question,
-                    answer: this.props.load.answer,
-                },
-                count: this.props.index + 1
-            });
-        }else{
-            console.log('itemsarr: ', this.props.itemsArr);
-            this.setState({
-                count: this.props.itemsArr.length
-            });
-        }
+    handleChangeFront(e){
+        let value = e.target.value;
+        this.setState({front: value}, () =>
+            this.props.onChange(this.props.id, this.state.front, 'front'));
     }
 
-    handlerSetQuestion(e){
-        this.setState({
-            card: {
-                question: e.target.value
-            }
-        }, () => {
-            let indexOfArray = this.state.count - 1;
-            this.props.itemsArr[indexOfArray] = Object.assign({},
-                                                              this.props.itemsArr[indexOfArray],
-                                                              {question: this.state.card.question});
-        });
-
+    handleChangeBack(e){
+        let value = e.target.value;
+        this.setState({back: value}, () =>
+            this.props.onChange(this.props.id, this.state.back, 'back'));
     }
 
     handlerDeleteCard(e){
         console.log('deleting.... ahh ;^; is not working!');
     }
 
-    handlerSetAnswer(e){
-        this.setState({
-            card: {
-                answer: e.target.value
-            }
-        }, () => {
-            let indexOfArray = this.state.count - 1;
-            this.props.itemsArr[indexOfArray] = Object.assign({},
-                                                              this.props.itemsArr[indexOfArray],
-                                                              {answer: this.state.card.answer});
-        });
-    }
-
     render(){
         return (
             <li className="editingPackage__item">
-                <span className="editingPackage__info">{this.state.count}</span>
+                <span className="editingPackage__info">{R.inc(this.props.id)}</span>
                 <span className="editingPackage__info" onClick={this.handlerDeleteCard}>
                     <svg width="20" height="20" viewBox="0 0 64 64">
                         <path fill="#fff" d="M24.72 8.777h14.56v3.747H24.72zM7.917 11.56h48.164v4.818H7.918z"/>
@@ -81,12 +40,12 @@ class CardItem extends Component{
                             stroke="#fff" d="M40.212 57.362V27.005M32 57.398V27.04m-8.212 30.394V27.077m-11.06-7.594h38.543v40.254H12.73z"/>
                     </svg>
                 </span>
-                <input value={this.state.card.question}
-                       onChange={this.handlerSetQuestion}
+                <input value={this.state.front}
+                       onChange={this.handleChangeFront}
                        className="question__field"
                        placeholder="Front"/>
-                <input value={this.state.card.answer}
-                       onChange={this.handlerSetAnswer}
+                <input value={this.state.back}
+                       onChange={this.handleChangeBack}
                        className="response__field"
                        placeholder="Back"/>
             </li>
@@ -95,11 +54,3 @@ class CardItem extends Component{
 }
 
 export default CardItem;
-
-CardItem.propTypes = {
-    itemsArr: React.PropTypes.arrayOf(React.PropTypes.shape({
-        question: React.PropTypes.string,
-        answer: React.PropTypes.string
-    }))
-}
-

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Alarm from 'shared/Alarms';
 import PubSub from 'pubsub-js';
+import R from 'ramda';
 import {putStorage, cleanPackages, getChromeStorage} from 'shared/helpers';
 import AddPackage from '../AddPackage/AddPackage';
 import CardItem from './CardItem.jsx';
@@ -19,6 +20,8 @@ class Packages extends Component{
         this.renderListCards      = this.renderListCards.bind(this);
         this.changeColorPackage   = this.changeColorPackage.bind(this);
         this.getPackageColor      = this.getPackageColor.bind(this);
+        this.handleChangeCard     = this.handleChangeCard.bind(this);
+        this.renderCard           = this.renderCard.bind(this);
 
         this.state = {
             addingPackage: false,
@@ -26,7 +29,7 @@ class Packages extends Component{
             editing: false,
             packageNameIsEditing: false,
             saveToggle: false,
-            cardItems: [],
+            cardItemsComponents: [],
             colorPackages: {},
             cardItemsValue: []
         }
@@ -79,7 +82,6 @@ class Packages extends Component{
         return element;
     }
 
-
     /**
     * @param {String} name
     */
@@ -97,8 +99,11 @@ class Packages extends Component{
     handleSaveToggle(e){
         if(e.target.checked){
             let packageName = this.state.packageNameIsEditing;
+            console.log('packageName: ', packageName)
             this.getPackageByName(packageName).then( cards => {
+                console.log('cards: ', cards);
                 let newCards = this.state.cardItemsValue;
+                console.log('newCardsSL ', newCards);
                 getChromeStorage('packages').then( packages => {
                     let newobj = JSON.parse(packages);
                     newobj[packageName] = newCards;
@@ -109,30 +114,54 @@ class Packages extends Component{
         }
     }
 
+    handleChangeCard(cardId, value, field){
+        let updatingCard = R.update(cardId,
+                               R.assoc(field, value, this.state.cardItemsValue[cardId]),
+                               this.state.cardItemsValue);
+        this.setState({
+            cardItemsValue: updatingCard
+        });
+    }
+
+    renderCard(card, index){
+        let props = {
+            value: this.state.cardItemsValue[index],
+            id: index,
+            key: index,
+            onChange: this.handleChangeCard
+        }
+        return (<CardItem {...props} />);
+    }
+
     renderListCards(){
         this.getPackageByName(this.state.packageNameIsEditing)
             .then( cards => {
-            //updating cardItems of the package ^
-            let cardItemsComponents = cards.map( (card, index) =>
-                <CardItem load={card}
-                          index={index}
-                          itemsArr={this.state.cardItemsValue}/>);
+                //updating cardItems of the package ^
+                let cardItemsComponents;
+                if(R.isEmpty(cards)){
+                    this.setState({
+                      cardItemsValue: [{front: "", back: ""}]
+                    }, ()=>
+                        cardItemsComponents = [
+                            <CardItem value={this.state.cardItemsValue}
+                                    id={0}
+                                    key={0}
+                                    onChange = {this.handleChangeCard}/>
+                        ]);
+                }else{
+                    this.setState({
+                        cardItemsValue: R.append({front: "", back: ""}, cards)
+                    }, () =>
+                        cardItemsComponents =  R.addIndex(R.map)(this.renderCard, this.state.cardItemsValue));
+                }
 
-            this.setState({
-                cardItemsValue: cards
-            }, () => {
                 this.setState({
-                    cardItems: [...cardItemsComponents,
-                                <CardItem itemsArr={this.state.cardItemsValue}/>]
+                    cardItemsComponents
                 });
+            })
+            .catch( (err) => {
+                //add first component card item
             });
-        }).catch( (err) => {
-            //add first component card items
-            this.setState({
-                cardItems: [...this.state.cardItems,
-                            <CardItem itemsArr={this.state.cardItemsValue}/>]
-            });
-        });
     }
 
     changeColorPackage(e){
@@ -199,6 +228,9 @@ class Packages extends Component{
                     </span>
                     <h3 className="editingPackage__title">{packageName}
                     </h3>
+                    <p>
+                        {JSON.stringify(this.state.cardItemsValue)}
+                    </p>
                 </header>
             );
         }
@@ -208,7 +240,7 @@ class Packages extends Component{
             <section className={classEditContainer}>
                 {packageTitleElement}
                 <ul className="editingPackage__questions">
-                    {this.state.cardItems}
+                    {this.state.cardItemsComponents}
                 </ul>
                 <button className="card__more-btn" onClick={this.moreCardItem}>+ more</button>
             </section>
@@ -217,9 +249,8 @@ class Packages extends Component{
 
     moreCardItem(){
         this.setState({
-            cardItems: [...this.state.cardItems,
-                        <CardItem cards={this.state.cardItems}
-                                  itemsArr={this.state.cardItemsValue}/>]
+            cardItemsComponents: [...this.state.cardItemsComponents,
+                        <CardItem />]
         });
     }
 
