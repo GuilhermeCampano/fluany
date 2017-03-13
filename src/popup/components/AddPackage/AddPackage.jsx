@@ -25,16 +25,14 @@ class AddPackage extends Component{
     }
 
     handlerCreatePackage(){
+        //updating packagea
         getChromeStorage('packages')
-            .then( packages => {
-               //updating packages
-                let updatingPackage = R.assoc(this.state.packageName, [], JSON.parse(packages));
-                putStorage("packages", JSON.stringify(updatingPackage));
-            })
-            .catch(err => {
-                //first package:
-                putStorage("packages", JSON.stringify(R.assoc(this.state.packageName, [], {})));
-            })
+            .then(JSON.parse)
+            .then(R.assoc(this.state.packageName, []))
+            .then(JSON.stringify)
+            .then(newpack => putStorage('packages', newpack))
+            .catch(err => putStorage("packages",
+                                     JSON.stringify(R.assoc(this.state.packageName, [], {}))))
             .then( () => {
                 this.setState({
                     addingPackage: false

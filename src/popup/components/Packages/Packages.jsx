@@ -253,8 +253,7 @@ class Packages extends Component{
                                 d="M40.212 57.362V27.005M32 57.398V27.04m-8.212 30.394V27.077m-11.06-7.594h38.543v40.254H12.73z"/>
                         </svg>
                     </span>
-                    <h3 className="editingPackage__title">{packageName}
-                    </h3>
+                    <h3 className="editingPackage__title">{packageName}</h3>
                 </header>
             );
         }
@@ -262,6 +261,11 @@ class Packages extends Component{
         let classEditContainer = "editingPackage__container " + (this.state.editing ? "editingPackage__container--edit" : "");
         return (
             <section className={classEditContainer}>
+                <span className="moveBack" onClick={ () => this.setState({editing:false})}>
+                    <svg height="32" viewBox="0 0 32 32" width="25" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#8c8c8c" clipRule="evenodd" d="M1 2.053h18v.025c6.117.264 11 5.292 11 11.475 0 6.182-4.883 11.21-11 11.475v.025H3.362l3.294-3.294c.39-.39.39-1.026 0-1.415s-1.025-.39-1.414 0l-4.95 4.95c-.2.2-.293.467-.287.732-.007.265.086.53.287.732l4.95 4.95c.39.388 1.025.388 1.414 0s.39-1.026 0-1.415l-3.242-3.24H19c.06 0 .11-.025.165-.035C26.31 26.67 32 20.784 32 13.553c0-7.456-6.044-13.5-13.5-13.5-.135 0-.266.016-.4.02-.035-.004-.065-.02-.1-.02H1c-.55 0-1 .45-1 1s.45 1 1 1z" fillRule="evenodd"/>
+                    </svg>
+                </span>
                 {packageTitleElement}
                 <ul className="editingPackage__questions">
                     {this.state.cardItemsComponents}
