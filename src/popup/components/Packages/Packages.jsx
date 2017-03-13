@@ -39,9 +39,24 @@ class Packages extends Component{
 
     handlerItemPackage(e){
         this.setState({
-            packageNameIsEditing: e.currentTarget.getAttribute('title'),
-            editing: true
-        }, () => this.renderListCards());
+            packageNameIsEditing: e.currentTarget.getAttribute('title')
+        }, () => {
+            getChromeStorage('packageIsBeingUsed')
+                .then(packageIsBeingUsed => {
+                    if(!R.equals(packageIsBeingUsed, this.state.packageNameIsEditing)){
+                        this.setState({
+                            editing: true
+                        });
+                        this.renderListCards();
+                    }
+                }) //first package ;b;
+                .catch(err => {
+                    this.setState({
+                        editing: true
+                    });
+                    this.renderListCards();
+                });
+        });
     }
 
     handlerDeletePackage(e){
@@ -131,21 +146,22 @@ class Packages extends Component{
 
             if(!this.cardLastIsEmpty(this.state.cardItemsValue)){
                 getChromeStorage('packages')
-                    .then( packages => {
-                        let newobj = R.assoc(packageName, newCards, JSON.parse(packages));
-                        putStorage('packages', JSON.stringify(newobj));
+                    .then(JSON.parse)
+                    .then(R.assoc(packageName, newCards))
+                    .then(JSON.stringify)
+                    .then(strpackages => {
+                        putStorage('packages', strpackages);
                         redirectToHome();
                     });
             }else
               redirectToHome();
-
         }
     }
 
     handleChangeCard(cardId, value, field){
-        let updatingCard = R.update(cardId,
-                               R.assoc(field, value, this.state.cardItemsValue[cardId]),
-                               this.state.cardItemsValue);
+        const updatingCard = R.update(cardId,
+                                R.assoc(field, value, this.state.cardItemsValue[cardId]),
+                                this.state.cardItemsValue);
         this.setState({
             cardItemsValue: updatingCard
         });
@@ -282,11 +298,9 @@ class Packages extends Component{
 
     moreCardItem(){
         if(!this.cardLastIsEmpty(this.state.cardItemsValue)){
-            console.log('dont is empty');
             this.setState({
                 cardItemsValue: [...this.state.cardItemsValue, {front: '', back: ''}]
             },() => {
-                console.log('morecard: ', this.state.cardItemsValue);
                 this.setState({
                     cardItemsComponents: [
                         ...this.state.cardItemsComponents,

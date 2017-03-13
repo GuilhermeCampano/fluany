@@ -43,7 +43,6 @@ class Phrases {
 		return new Promise((resolve, reject) => {
 			getChromeStorage('packages')
 				.then(JSON.parse)
-				.then()
 				.then( packages => {
 					let arrPackageSelected = packages[packageSelected];
 					arrPackageSelected = arrPackageSelected.reduce((xs, curr) => xs.concat(curr.front, curr.back), []);

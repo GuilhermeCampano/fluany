@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Alarm from 'shared/Alarms';
 import PubSub from 'pubsub-js';
-import {putStorage, getChromeStorage} from 'shared/helpers';
+import {putStorage, getChromeStorage, cleanChromeStorage} from 'shared/helpers';
 
 class ButtonStart extends Component{
 	constructor(props) {
@@ -49,6 +49,7 @@ class ButtonStart extends Component{
                 this.alarm.cancel();
                 this.setState({titleButton: "Play"});
             });
+            cleanChromeStorage('packageIsBeingUsed');
     })
     .catch(() => {
         /* If not was started, to create alarm and change button text to Stop*/
@@ -59,6 +60,12 @@ class ButtonStart extends Component{
             this.setState({titleButton: "Stop"})
             //saving in localStorage, beacause background script  it will take the value
             putStorage('rangeInterval', this.state.rangeInterval);
+
+            //blocking to edit package selected
+            getChromeStorage('packageSelected')
+                .then(packageSelected => {
+                    putStorage('packageIsBeingUsed', packageSelected.value);
+                });
         });
     });
 	}
