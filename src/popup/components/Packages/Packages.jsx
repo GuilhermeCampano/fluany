@@ -202,7 +202,9 @@ class Packages extends Component{
             .catch( () => {
                 let newobj = {};
                 newobj[this.state.packageNameIsEditing] = colorActive;
-                putStorage('packagesColor', newobj);
+                this.setState({
+                    colorPackages: newobj
+                }, () => putStorage('packagesColor', newobj));
             });
     }
 
@@ -253,9 +255,6 @@ class Packages extends Component{
                     </span>
                     <h3 className="editingPackage__title">{packageName}
                     </h3>
-                    <p>
-                        {JSON.stringify(this.state.cardItemsValue)}
-                    </p>
                 </header>
             );
         }
@@ -282,29 +281,32 @@ class Packages extends Component{
     componentDidMount(){
 
         /* cleanPackages();*/
-        getChromeStorage('packages').then( packages => {
-            this.setState({
-                packages: JSON.parse(packages)
-            });
-        });
+        getChromeStorage('packages')
+            .then( packages => {
+                this.setState({
+                    packages: JSON.parse(packages)
+                });
+            })
+            .catch(() => {});
 
         //get value if the user is adding package<Updating view)
         PubSub.subscribe('addingPackage', (topic, value) => {
             this.setState({addingPackage: true});
-            getChromeStorage('packages').then( packages => {
-                this.setState({
-                    packages: JSON.parse(packages)
-                });
-            });
+            getChromeStorage('packages')
+                .then( packages => {
+                    this.setState({
+                        packages: JSON.parse(packages)
+                    });
+                })
+                .catch(()=> {});
         });
 
         getChromeStorage('packagesColor')
             .then(packages => {
-                console.log('packages: ',packages);
                 this.setState({
                     colorPackages: packages
                 });
-            });
+            }).catch(() => {});
     }
 
 	  render(){
