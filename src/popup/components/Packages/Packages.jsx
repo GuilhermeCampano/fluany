@@ -14,6 +14,7 @@ class Packages extends Component{
         this.handlerItemPackage   = this.handlerItemPackage.bind(this);
         this.renderPackageEdit    = this.renderPackageEdit.bind(this);
         this.handlerDeletePackage = this.handlerDeletePackage.bind(this);
+        this.handlerDeletePackage = this.handlerDeletePackage.bind(this);
         this.getPackageByName     = this.getPackageByName.bind(this);
         this.moreCardItem         = this.moreCardItem.bind(this);
         this.handleSaveToggle     = this.handleSaveToggle.bind(this);
@@ -22,6 +23,7 @@ class Packages extends Component{
         this.getPackageColor      = this.getPackageColor.bind(this);
         this.handleChangeCard     = this.handleChangeCard.bind(this);
         this.renderCard           = this.renderCard.bind(this);
+        this.handleDeleteCard     = this.handleDeleteCard.bind(this);
 
         this.state = {
             addingPackage: false,
@@ -96,6 +98,24 @@ class Packages extends Component{
         });
     }
 
+
+    handleDeleteCard(index){
+        const packageName = this.state.packageNameIsEditing;
+        const removeCard = list => R.remove(index, index, list)
+        this.setState({
+            cardItemsValue: removeCard(this.state.cardItemsValue),
+            cardItemsComponents: removeCard(this.state.cardItemsComponents)
+        }, () => {
+            getChromeStorage('packages').then( packages => {
+                let newobj = R.assoc(packageName,
+                                     this.state.cardItemsValue,
+                                     JSON.parse(packages));
+
+                putStorage('packages', JSON.stringify(newobj));
+            });
+        });
+    }
+
     handleSaveToggle(e){
         if(e.target.checked){
             const packageName = this.state.packageNameIsEditing;
@@ -131,7 +151,8 @@ class Packages extends Component{
             value: this.state.cardItemsValue[index],
             id: index,
             key: index,
-            onChange: this.handleChangeCard
+            onChange: this.handleChangeCard,
+            handleDeleteCard: this.handleDeleteCard
         }
         return (<CardItem {...props} />);
     }
@@ -149,7 +170,8 @@ class Packages extends Component{
                             <CardItem value={this.state.cardItemsValue}
                                     id={0}
                                     key={0}
-                                    onChange = {this.handleChangeCard}/>
+                                    onChange = {this.handleChangeCard}
+                                    handleDeleteCard = {this.handleDeleteCard}/>
                         ]);
                 }else{
                     this.setState({

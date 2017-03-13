@@ -6,7 +6,8 @@ class CardItem extends Component{
     constructor(props) {
         super(props);
         this.handleChangeFront = this.handleChangeFront.bind(this);
-        this.handleChangeBack = this.handleChangeBack.bind(this);
+        this.handleChangeBack  = this.handleChangeBack.bind(this);
+        this.handleDeleteCard  = this.handleDeleteCard.bind(this);
         this.state = {
             front: this.props.value.front,
             back: this.props.value.back
@@ -25,15 +26,15 @@ class CardItem extends Component{
             this.props.onChange(this.props.id, this.state.back, 'back'));
     }
 
-    handlerDeleteCard(e){
-        console.log('deleting.... ahh ;^; is not working!');
+    handleDeleteCard(e){
+        this.props.handleDeleteCard(this.props.id)
     }
 
     render(){
         return (
             <li className="editingPackage__item">
                 <span className="editingPackage__info">{R.inc(this.props.id)}</span>
-                <span className="editingPackage__info" onClick={this.handlerDeleteCard}>
+                <span className="editingPackage__info" onClick={this.handleDeleteCard}>
                     <svg width="20" height="20" viewBox="0 0 64 64">
                         <path fill="#fff" d="M24.72 8.777h14.56v3.747H24.72zM7.917 11.56h48.164v4.818H7.918z"/>
                         <path fill="none"
