@@ -24,7 +24,7 @@ class Packages extends Component{
         this.handleChangeCard     = this.handleChangeCard.bind(this);
         this.renderCard           = this.renderCard.bind(this);
         this.handleDeleteCard     = this.handleDeleteCard.bind(this);
-
+        this.cardLastIsEmpty      = this.cardLastIsEmpty.bind(this);
         this.state = {
             addingPackage: false,
             packages: {},
@@ -116,21 +116,26 @@ class Packages extends Component{
         });
     }
 
+    cardLastIsEmpty(cards){
+        const frontIsEmpty = s => R.isEmpty(R.last(cards).front);
+        const backIsEmpty  = s => R.isEmpty(R.last(cards).back);
+        return R.either(frontIsEmpty, backIsEmpty)();
+    }
+
     handleSaveToggle(e){
         if(e.target.checked){
             const packageName = this.state.packageNameIsEditing;
             const newCards = this.state.cardItemsValue;
-            const frontIsEmpty = s => R.isEmpty(R.last(newCards).front)
-            const backIsEmpty  = s => R.isEmpty(R.last(newCards).back)
-            const lastIsEmpty = R.either(frontIsEmpty, backIsEmpty)();
             const redirectToHome = () => setTimeout( () => this.setState({editing:false}), 1000);
+            console.log("cardItems: ", this.state.cardItemsValue);
 
-            if(!lastIsEmpty){
-                getChromeStorage('packages').then( packages => {
-                    let newobj = R.assoc(packageName, newCards, JSON.parse(packages));
-                    putStorage('packages', JSON.stringify(newobj));
-                    redirectToHome();
-                });
+            if(!this.cardLastIsEmpty(this.state.cardItemsValue)){
+                getChromeStorage('packages')
+                    .then( packages => {
+                        let newobj = R.assoc(packageName, newCards, JSON.parse(packages));
+                        putStorage('packages', JSON.stringify(newobj));
+                        redirectToHome();
+                    });
             }else
               redirectToHome();
 
@@ -276,10 +281,24 @@ class Packages extends Component{
     }
 
     moreCardItem(){
-        this.setState({
-            cardItemsComponents: [...this.state.cardItemsComponents,
-                        <CardItem />]
-        });
+        if(!this.cardLastIsEmpty(this.state.cardItemsValue)){
+            console.log('dont is empty');
+            this.setState({
+                cardItemsValue: [...this.state.cardItemsValue, {front: '', back: ''}]
+            },() => {
+                console.log('morecard: ', this.state.cardItemsValue);
+                this.setState({
+                    cardItemsComponents: [
+                        ...this.state.cardItemsComponents,
+                        <CardItem value={this.state.cardItemsValue}
+                                id={R.dec(this.state.cardItemsValue.length)}
+                                key={R.dec(this.state.cardItemsValue.length)}
+                                onChange = {this.handleChangeCard}
+                                handleDeleteCard = {this.handleDeleteCard}/>]
+                });
+            });
+        }else
+            console.log('is empty');
     }
 
     componentDidMount(){

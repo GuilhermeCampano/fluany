@@ -20,7 +20,7 @@ class ButtonStart extends Component{
   componentDidMount() {
       /* Check if was already started*/
       getChromeStorage('playing')
-        .then((playing) => {
+        .then(playing => {
             this.setState({titleButton: "Stop", play: false});
         })
         .catch(err => {});
@@ -43,7 +43,7 @@ class ButtonStart extends Component{
   play(){
     this.handleClick();
     getChromeStorage('playing')
-        .then( playing => {
+        .then(playing => {
             /* If was already started, change the button to play and stop alarm */
             chrome.storage.sync.set({playing: false}, () => {
                 this.alarm.cancel();

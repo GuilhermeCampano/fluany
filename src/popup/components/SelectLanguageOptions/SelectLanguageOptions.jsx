@@ -26,7 +26,7 @@ class SelectLanguageOptions extends Component{
         });
 
         getChromeStorage('packageSelected')
-            .then( packageSelected => {
+            .then(packageSelected => {
                 this.setState({
                     packageSelected
                 });
@@ -46,16 +46,17 @@ class SelectLanguageOptions extends Component{
     }
 
     updatingSelectField(){
-      getChromeStorage('packages').then((packages) => {
-        let objPackages = JSON.parse(packages);
-        let options = [{value: 'default', label: 'Default by Fluany'}];
-        for(let property in objPackages){
-            options.push({value: property, label: property});
-        }
-        this.setState({
-            options
-        });
-      });
+        getChromeStorage('packages')
+            .then(JSON.parse)
+            .then(packages => {
+                let options = [{value: 'default', label: 'Default by Fluany'}];
+                for(let property in packages){
+                    options.push({value: property, label: property});
+                }
+                this.setState({
+                    options
+                });
+            });
     }
 
 	render(){

@@ -8,9 +8,9 @@ class AddPackage extends Component{
 
 	  constructor(props) {
 		  super(props);
-        this.handlerAddPackage = this.handlerAddPackage.bind(this);
-        this.renderButtonAddPackage = this.renderButtonAddPackage.bind(this);
-        this.handlerCreatePackage = this.handlerCreatePackage.bind(this);
+        this.handlerAddPackage        = this.handlerAddPackage.bind(this);
+        this.renderButtonAddPackage   = this.renderButtonAddPackage.bind(this);
+        this.handlerCreatePackage     = this.handlerCreatePackage.bind(this);
         this.handlerChangePackageName = this.handlerChangePackageName.bind(this);
 		    this.state = {
 			      addingPackage: false,
@@ -33,10 +33,9 @@ class AddPackage extends Component{
             .then(newpack => putStorage('packages', newpack))
             .catch(err => putStorage("packages",
                                      JSON.stringify(R.assoc(this.state.packageName, [], {}))))
-            .then( () => {
+            .then(() => {
                 this.setState({
                     addingPackage: false
-                    //communication with components (addClass and hidden button play)
                 }, () => PubSub.publish('addingPackage', false));
             });
 

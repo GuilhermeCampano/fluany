@@ -42,9 +42,11 @@ class Phrases {
 	_getPhrasesOfPackage(packageSelected){
 		return new Promise((resolve, reject) => {
 			getChromeStorage('packages')
+				.then(JSON.parse)
+				.then()
 				.then( packages => {
-					let arrPackageSelected = JSON.parse(packages)[packageSelected];
-					arrPackageSelected = arrPackageSelected.reduce((xs, curr) => xs.concat(curr.answer, curr.question), []);
+					let arrPackageSelected = packages[packageSelected];
+					arrPackageSelected = arrPackageSelected.reduce((xs, curr) => xs.concat(curr.front, curr.back), []);
 					resolve(arrPackageSelected);
 				})
 				.catch(err => reject(err));

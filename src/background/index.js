@@ -48,7 +48,6 @@ chrome.runtime.onMessage.addListener(function( msg, sender, sendResponse){
   chrome.storage.sync.get('rangeInterval', (obj) => {
     //get value in localStorage created by component [ButtonStart]
     alarm = new Alarm('remindme', obj.rangeInterval);
-    console.log('[Background]: obj--> ', obj);
     // alarm = new Alarm('reamindme', inter);
     if(typeof(msg.message) !== 'undefined' && msg.message === 'createAlarm'){
       alarm.create(); //returning after answer
