@@ -128,7 +128,6 @@ class Packages extends Component{
 
                 console.log('newobj:; ', newobj);
                 putStorage('packages', JSON.stringify(newobj));
-                /* this.renderListCards();*/
             });
         });
     }
@@ -188,14 +187,15 @@ class Packages extends Component{
                 if(R.isEmpty(cards)){
                     this.setState({
                       cardItemsValue: [{front: "", back: ""}]
-                    }, () =>
+                    }, () => {
                         cardItemsComponents = [
-                            <CardItem value={this.state.cardItemsValue}
+                            <CardItem value={this.state.cardItemsValue[0]}
                                     id={0}
                                     key={0}
                                     onChange = {this.handleChangeCard}
                                     handleDeleteCard = {this.handleDeleteCard}/>
-                        ]);
+                        ];
+                    });
                 }else{
                     this.setState({
                         cardItemsValue: R.uniq(R.append({front: "", back: ""}, cards))
