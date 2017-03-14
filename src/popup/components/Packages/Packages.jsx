@@ -116,7 +116,7 @@ class Packages extends Component{
 
     handleDeleteCard(index){
         const packageName = this.state.packageNameIsEditing;
-        const removeCard = list => R.remove(index, index, list)
+        const removeCard = list => R.remove(index, 1, list);
         this.setState({
             cardItemsValue: removeCard(this.state.cardItemsValue),
             cardItemsComponents: removeCard(this.state.cardItemsComponents)
@@ -126,7 +126,9 @@ class Packages extends Component{
                                      this.state.cardItemsValue,
                                      JSON.parse(packages));
 
+                console.log('newobj:; ', newobj);
                 putStorage('packages', JSON.stringify(newobj));
+                /* this.renderListCards();*/
             });
         });
     }
@@ -196,9 +198,9 @@ class Packages extends Component{
                         ]);
                 }else{
                     this.setState({
-                        cardItemsValue: R.append({front: "", back: ""}, cards)
+                        cardItemsValue: R.uniq(R.append({front: "", back: ""}, cards))
                     }, () =>
-                        cardItemsComponents =  R.addIndex(R.map)(this.renderCard, this.state.cardItemsValue));
+                        cardItemsComponents = R.addIndex(R.map)(this.renderCard, this.state.cardItemsValue));
                 }
 
                 this.setState({
