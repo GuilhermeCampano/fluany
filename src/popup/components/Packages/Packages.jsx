@@ -25,6 +25,8 @@ class Packages extends Component{
         this.renderCard           = this.renderCard.bind(this);
         this.handleDeleteCard     = this.handleDeleteCard.bind(this);
         this.cardLastIsEmpty      = this.cardLastIsEmpty.bind(this);
+        this.moveBack             = this.moveBack.bind(this);
+
         this.state = {
             addingPackage: false,
             packages: {},
@@ -46,8 +48,9 @@ class Packages extends Component{
                     if(!R.equals(packageIsBeingUsed, this.state.packageNameIsEditing)){
                         this.setState({
                             editing: true
+                        }, () => {
+                            this.renderListCards();
                         });
-                        this.renderListCards();
                     }
                 }) //first package ;b;
                 .catch(err => {
@@ -142,8 +145,7 @@ class Packages extends Component{
         if(e.target.checked){
             const packageName = this.state.packageNameIsEditing;
             const newCards = this.state.cardItemsValue;
-            const redirectToHome = () => setTimeout( () => this.setState({editing:false}), 1000);
-            console.log("cardItems: ", this.state.cardItemsValue);
+            const redirectToHome = () => setTimeout( () => this.setState({editing:false, cardItemsComponents: []}), 1000);
 
             if(!this.cardLastIsEmpty(this.state.cardItemsValue)){
                 getChromeStorage('packages')
@@ -185,6 +187,7 @@ class Packages extends Component{
                 //updating cardItems of the package ^
                 let cardItemsComponents;
                 if(R.isEmpty(cards)){
+                    console.log('is empty')
                     this.setState({
                       cardItemsValue: [{front: "", back: ""}]
                     }, () => {
@@ -197,6 +200,7 @@ class Packages extends Component{
                         ];
                     });
                 }else{
+                    console.log('dont is empty');
                     this.setState({
                         cardItemsValue: R.uniq(R.append({front: "", back: ""}, cards))
                     }, () =>
@@ -208,8 +212,7 @@ class Packages extends Component{
                 });
             })
             .catch( (err) => {
-                //add first component card item
-            });
+            })
     }
 
     changeColorPackage(e){
@@ -229,6 +232,13 @@ class Packages extends Component{
                     colorPackages: newobj
                 }, () => putStorage('packagesColor', newobj));
             });
+    }
+
+    moveBack(){
+        this.setState({
+            editing:false,
+            cardItemsComponents: []
+        });
     }
 
     renderPackageEdit(name){
@@ -284,7 +294,7 @@ class Packages extends Component{
         let classEditContainer = "editingPackage__container " + (this.state.editing ? "editingPackage__container--edit" : "");
         return (
             <section className={classEditContainer}>
-                <span className="moveBack" onClick={ () => this.setState({editing:false})}>
+                <span className="moveBack" onClick={this.moveBack}>
                     <svg height="32" viewBox="0 0 32 32" width="25" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#8c8c8c" clipRule="evenodd" d="M1 2.053h18v.025c6.117.264 11 5.292 11 11.475 0 6.182-4.883 11.21-11 11.475v.025H3.362l3.294-3.294c.39-.39.39-1.026 0-1.415s-1.025-.39-1.414 0l-4.95 4.95c-.2.2-.293.467-.287.732-.007.265.086.53.287.732l4.95 4.95c.39.388 1.025.388 1.414 0s.39-1.026 0-1.415l-3.242-3.24H19c.06 0 .11-.025.165-.035C26.31 26.67 32 20.784 32 13.553c0-7.456-6.044-13.5-13.5-13.5-.135 0-.266.016-.4.02-.035-.004-.065-.02-.1-.02H1c-.55 0-1 .45-1 1s.45 1 1 1z" fillRule="evenodd"/>
                     </svg>
