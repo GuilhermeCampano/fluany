@@ -24,6 +24,17 @@ class AddPackage extends Component{
                       () => PubSub.publish('addingPackage', true));
     }
 
+    renderButtonAddPackage(){
+        return (
+            <li key="add">
+                <button className="addPackage-btn"
+                        title="Add new package"
+                        onClick={this.handlerAddPackage}>+
+                </button>
+            </li>
+        );
+    }
+
     handlerCreatePackage(){
         //updating packagea
         getChromeStorage('packages')
@@ -59,17 +70,6 @@ class AddPackage extends Component{
                         onClick={this.handlerCreatePackage}>Create
                 </button>
             </div>
-        );
-    }
-
-    renderButtonAddPackage(){
-        return (
-            <li key="add">
-                <button className="addPackage-btn"
-                        title="Add new package"
-                        onClick={this.handlerAddPackage}>+
-                </button>
-            </li>
         );
     }
 

@@ -45,7 +45,6 @@ class Phrases {
 				.then(JSON.parse)
 				.then( packages => {
 					let arrPackageSelected = packages[packageSelected];
-					arrPackageSelected = arrPackageSelected.reduce((xs, curr) => xs.concat(curr.front, curr.back), []);
 					resolve(arrPackageSelected);
 				})
 				.catch(err => reject(err));
