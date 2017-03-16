@@ -71,23 +71,22 @@ class Phrases {
 	*/
 	_loadPhrases(){
 		return new Promise ((resolve, reject) => {
-			this._getPhrasesInLocal().then((phrases) => {
-
-				console.log("I had been saved::LocalStorage");
-				resolve(phrases);
-
-			}).catch((error) => {
-				//is not on localStorage
-				this._getPhrasesInAPI()
-				.then( (phrases) => {
-					console.log('Saved! He took API');
+			this._getPhrasesInLocal()
+				.then((phrases) => {
+					console.log("I had been saved::LocalStorage");
 					resolve(phrases);
 				})
+				.catch((error) => {
+					//is not on localStorage
+					this._getPhrasesInAPI()
+					.then( (phrases) => {
+						console.log('Saved! He took API');
+						resolve(phrases);
+					})
 				.catch((error) => {
 					console.log('oh no error API', error);
 					reject(new Error('Error catch phrases in api'));
 				});
-
 			});
 		});
 	}

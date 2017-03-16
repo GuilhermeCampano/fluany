@@ -49,8 +49,6 @@ class Points extends Component {
 				</section>
 				<section className="content-point">
 					<span className="Point-level">Level {this.state.level}</span>
-					<span className="Point-over">{1000 - this.state.point} Pts to Level {this.state.level + 1}</span>
-					<span className="Point-point">{this.state.point}</span>
 				</section>
 			</section>
 		);
