@@ -9,8 +9,7 @@ class SelectLanguageOptions extends Component{
     constructor(){
         super();
         this.state = {
-            options: [],
-            packageSelected: {value: 'default', label: 'Default by Fluany'}
+            options: []
         }
         this.updatingSelectField = this.updatingSelectField.bind(this);
         this._onSelect           = this._onSelect.bind(this);
