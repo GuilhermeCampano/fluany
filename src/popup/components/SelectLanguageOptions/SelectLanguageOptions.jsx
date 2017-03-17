@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Dropdown from 'react-dropdown';
+import ButtonStart from '../ButtonStart/ButtonStart';
 import PubSub from 'pubsub-js';
 import {getChromeStorage, putStorage, cleanPackages, cleanChromeStorage} from '../../../shared/helpers';
 
@@ -68,7 +69,8 @@ class SelectLanguageOptions extends Component{
 				onChange={this._onSelect}
 				value={this.state.packageSelected}
 				placeholder="Select an option"
-				/>
+/>
+        <ButtonStart />
 			</section>
 
 		);

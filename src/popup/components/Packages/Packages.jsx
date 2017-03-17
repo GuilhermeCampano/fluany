@@ -4,7 +4,6 @@ import PubSub from 'pubsub-js';
 import R from 'ramda';
 import {putStorage, cleanPackages, getChromeStorage} from 'shared/helpers';
 import AddPackage from '../AddPackage/AddPackage';
-import ButtonStart from '../ButtonStart/ButtonStart';
 import CardItem from './CardItem.jsx';
 import Toggle from 'react-toggle';
 
@@ -370,8 +369,6 @@ class Packages extends Component{
                         <AddPackage/>
                         {this.renderPackagesList()}
                     </ul>
-
-                    <ButtonStart />
                 </section>
             </div>
         );
