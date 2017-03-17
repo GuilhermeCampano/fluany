@@ -1,7 +1,7 @@
 .Packages
   max-width 400px
   margin 0 auto
-  transition all .4s
+  transition all .4s ease-out
   ul
     list-style none
     padding 0
@@ -86,6 +86,7 @@
             border-top 3px solid #f55d5d
 .editingPackage
   transform translateX(-100%);
+  position absolute
 
 .editingPackage__container
   transform translateX(150%);
@@ -99,7 +100,7 @@
     text-transform uppercase
   &--edit
     position initial
-    transition all .4s
+    transition all .3s
     transform translateX(0)
 
   button.card__more-btn

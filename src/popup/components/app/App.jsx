@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import SelectLanguageOptions from '../SelectLanguageOptions/SelectLanguageOptions';
-import ButtonStart from '../ButtonStart/ButtonStart';
 import Packages from '../Packages/Packages';
 import InputInterval from '../InputInterval/InputInterval';
 import Points from '../Points/Points';
@@ -17,7 +16,6 @@ class App extends Component {
         <InputInterval />
         <SelectLanguageOptions />
         <Packages/>
-        <ButtonStart />
       </main>
     );
   }
