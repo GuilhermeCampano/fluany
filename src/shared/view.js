@@ -529,6 +529,7 @@ export let view = (function(){
 
 	return {
 		alert: alert,
-		input: input
-	}
+		input: input,
+		confirm: confirm
+	};
 }());

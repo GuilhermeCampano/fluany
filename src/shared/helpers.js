@@ -52,7 +52,11 @@ export let getAllKeysInStorage = () => {
 			resolve(allKeys);
 		});
 	});
-}
+};
+
+export let stopAlarm = () => {
+	chrome.runtime.sendMessage({message: "killAlarm"}, function(response) {	});
+};
 
 /* ex: getProperty(myObj,'aze.xyz',0) // return myObj.aze.xyz safely
  * accepts array for property names:
