@@ -366,8 +366,8 @@ class Packages extends Component{
                 <section className={classPackageEdit}>
                     <h3>Yours packages:</h3>
                     <ul>
-                        {this.renderPackagesList()}
                         <AddPackage/>
+                        {this.renderPackagesList()}
                     </ul>
                 </section>
             </div>
