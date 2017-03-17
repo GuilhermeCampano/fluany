@@ -12,15 +12,18 @@ class AddPackage extends Component{
         this.renderButtonAddPackage   = this.renderButtonAddPackage.bind(this);
         this.handlerCreatePackage     = this.handlerCreatePackage.bind(this);
         this.handlerChangePackageName = this.handlerChangePackageName.bind(this);
+        this.renderPackageNameRequired= this.renderPackageNameRequired.bind(this);
+
 		    this.state = {
 			      addingPackage: false,
-            packageName: ""
+            packageName: "",
+            requirePackageName: false
 		    }
 	  }
 
     handlerAddPackage(){
         //communication with components (addClass and hidden button play)
-        this.setState({addingPackage: true},
+        this.setState({addingPackage: true, packageName: ""},
                       () => PubSub.publish('addingPackage', true));
     }
 
@@ -35,40 +38,57 @@ class AddPackage extends Component{
         );
     }
 
-    handlerCreatePackage(){
-        //updating packagea
-        getChromeStorage('packages')
-            .then(JSON.parse)
-            .then(R.assoc(this.state.packageName, []))
-            .then(JSON.stringify)
-            .then(newpack => putStorage('packages', newpack))
-            .catch(err => putStorage("packages",
-                                     JSON.stringify(R.assoc(this.state.packageName, [], {}))))
-            .then(() => {
-                this.setState({
-                    addingPackage: false
-                }, () => PubSub.publish('addingPackage', false));
-            });
-
+    handlerCreatePackage(e){
+        e.preventDefault();
+        console.log('packageName: ', this.state.packageName);
+        if(R.isEmpty(this.state.packageName)){
+            console.log('entrou!')
+            this.setState({
+                requirePackageName: true
+            })
+        }else
+            getChromeStorage('packages')
+                .then(JSON.parse)
+                .then(R.assoc(this.state.packageName, []))
+                .then(JSON.stringify)
+                .then(newpack => putStorage('packages', newpack))
+                .catch(err => putStorage("packages",
+                                        JSON.stringify(R.assoc(this.state.packageName, [], {}))))
+                .then(() => {
+                    this.setState({
+                        addingPackage: false
+                    }, () => PubSub.publish('addingPackage', false));
+                });
     }
 
     handlerChangePackageName(e){
         this.setState({
-            packageName: e.target.value
+            packageName: e.target.value.trim()
         });
+    }
+
+    renderPackageNameRequired(){
+        let element;
+        if (this.state.requirePackageName){
+            element = (<span className="creatingItem__required">This field cannot be left blank!</span>)
+        }
+        return element;
     }
 
     renderNewPackage(){
         return (
             <div className="creatingItem__container">
-                <input placeholder="Package name"
-                       className="packageName"
-                       maxLength={11}
-                       onChange={this.handlerChangePackageName}/>
+                {this.renderPackageNameRequired()}
+                <form className="creatingItem__form">
+                    <input placeholder="Package name"
+                        className="packageName"
+                        maxLength={11}
+                        onChange={this.handlerChangePackageName} required/>
 
-                <button className="creatingItem__create-btn"
-                        onClick={this.handlerCreatePackage}>Create
-                </button>
+                    <button className="creatingItem__create-btn"
+                            onClick={this.handlerCreatePackage}>Create
+                    </button>
+                </form>
             </div>
         );
     }

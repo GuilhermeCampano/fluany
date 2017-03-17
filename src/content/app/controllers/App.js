@@ -75,9 +75,8 @@ class App {
 									view.alert(1, `${message.RIGHT} 👊 (• ͜ʖ•)`, 2);
 									this.cards = R.remove(this.indexCardBeingUsed, 1, this.cards);
 									putStorage('cardStep', JSON.stringify(this.cards));
-									}else{
+									}else
 										view.alert(3, `<b> ${back} </b> =(`, 2);
-									}
 									chrome.runtime.sendMessage({message: "createAlarm"}, ()=>{});
 								}
 							, valueEntered => {

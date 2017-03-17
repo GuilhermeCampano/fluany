@@ -136,8 +136,8 @@ class Packages extends Component{
     }
 
     cardLastIsEmpty(cards){
-        const frontIsEmpty = s => R.isEmpty(R.last(cards).front);
-        const backIsEmpty  = s => R.isEmpty(R.last(cards).back);
+        const frontIsEmpty = s => R.isEmpty(R.last(cards).front.trim());
+        const backIsEmpty  = s => R.isEmpty(R.last(cards).back.trim());
         return R.either(frontIsEmpty, backIsEmpty)();
     }
 
