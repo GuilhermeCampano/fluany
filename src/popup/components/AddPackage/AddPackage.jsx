@@ -83,7 +83,7 @@ class AddPackage extends Component{
                     <input placeholder="Package name"
                         className="packageName"
                         maxLength={11}
-                        onChange={this.handlerChangePackageName} required/>
+                        onChange={this.handlerChangePackageName} required autoFocus/>
 
                     <button className="creatingItem__create-btn"
                             onClick={this.handlerCreatePackage}>Create

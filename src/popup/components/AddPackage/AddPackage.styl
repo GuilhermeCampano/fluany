@@ -1,11 +1,17 @@
+.packages
+    li
+      outline none
 .addPackage-btn
   width 100px
   height 100px
   font-size 50px
+  outline none
   border none
   background #eee
   cursor pointer
   color #929292
+  &:hover, &:focus
+    background #e0dede
 
 .packageName
   background #ececec
@@ -14,8 +20,9 @@
   border none
   outline none
   display block
-  &:hover, &:focus
-    border 1px solid #aaa
+  transition all .3s 
+  &:focus
+    transform translateY(3px)
 
 .creatingItem__create-btn
   border none
@@ -25,7 +32,7 @@
   cursor pointer
   background #ececec
   &:hover, &:focus
-    border 1px solid #aaa
+    background #d8d8d8
 
 .creatingItem__container
   text-align center
