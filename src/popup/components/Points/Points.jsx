@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Line } from 'rc-progress';
 import {getChromeStorage} from 'shared/helpers';
 
-//Max point : 1000
 class Points extends Component {
 
 	constructor(props) {
@@ -17,26 +16,22 @@ class Points extends Component {
 
  _updatePointInPackage(){
     getChromeStorage('packageSelected').then( packageSelected => {
-      console.log('pacageselected: ', packageSelected);
       getChromeStorage('packages')
-          .then(JSON.parse)
-          .then( packages => {
-            let arrPackageSelected = packages[packageSelected.label];
-            this.setState({totalCards: arrPackageSelected.length});
-            console.log('arrPackageSelected: ', arrPackageSelected);
-          });
+        .then(JSON.parse)
+        .then( packages => {
+          let arrPackageSelected = packages[packageSelected.label];
+          this.setState({totalCards: arrPackageSelected.length});
+        });
 
       getChromeStorage('cardStep')
         .then(JSON.parse)
         .then(newcard => {
            this.cards = newcard;
-           console.log('newcards: ', newcard);
            this.setState({lengthCards: newcard.length});
         })//first time
         .catch(()=> {
           this.cards = 0;
           this.setState({lengthCards: 0});
-          console.log('dont new cards!');
         }).then(() => {
           this.setState({color: this.getColorToPoint()})
         })//finally
