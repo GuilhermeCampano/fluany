@@ -16,7 +16,7 @@ export let putStorage = (key, value) => {
  */
 export let getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};
 
 export let getChromeStorage = name => {
   return new Promise( (resolve, reject) => {

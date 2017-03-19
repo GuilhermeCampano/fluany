@@ -10,7 +10,6 @@ These are just guidelines, not rules. Use your best judgment, and feel free to p
 
 [What should I know before I get started?](#what-should-i-know-before-i-get-started)
   * [Code of Conduct](#code-of-conduct)
-  * [Fluany and Packages](#fluany-and-packages)
 
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
@@ -26,21 +25,6 @@ By participating, you are expected to uphold this code.
 Please report unacceptable behavior to [fluanyorganization@gmail.com](mailto:fluanyorganization@gmail.com).
 
 
-### Fluany and Packages
-
-Fluany is a open source project—it's made up of over [4 repositories](https://github.com/fluany).
-When you initially consider contributing to Fluany, you might be unsure about which of those 4 repositories implements the functionality you want to change or report a bug for.
-This section should help you with that.
-
-Fluany is intentionally very modular.
-
-Here's a list:
-
-* [Fluany ](https://github.com/fluany/fluany) - The extension for Google Chrome.
-* [Fluany Firefox](https://github.com/fluany/fluany-firefox-extension) - The extension for Firefox.
-* [Fluany API](https://github.com/fluany/fluany-api) - The API requests for extensions or apps.
-* [Fluany DB](https://github.com/fluany/db_phrases_and_questions) - The Database of phrases, questions and texts.
-
 ## How Can I Contribute?
 
 ### Reporting Bugs
@@ -51,7 +35,7 @@ When you are creating a bug report, please [include as many details as possible]
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which repository](https://github.com/fluany) your bug is related to, create an issue on that repository and provide the following information.
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which repository](https://github.com/fluany/fluany) your bug is related to, create an issue on that repository and provide the following information.
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
@@ -211,8 +195,8 @@ All JavaScript must adhere to [JavaScript Semi-Standard Style](https://github.co
 
 ### Issue and Pull Request Labels
 
-This section lists the labels we use to help us track and manage issues and pull requests. Most labels are used across all Fluany repositories, but some are specific to `fluany/fluany`.
+This section lists the labels we use to help us track and manage issues and pull requests. Most labels are used across all Fluany repositories, but some are specific to `fluany`.
 
 The labels are loosely grouped by their purpose, but it's not required that every issue have a label from every group or that an issue can't have more than one label from the same group.
 
-Please open an issue on `fluany/fluany` if you have suggestions for new labels, and if you notice some labels are missing on some repositories, then please open an issue on that repository.
+Please open an issue on `fluany` if you have suggestions for new labels, and if you notice some labels are missing on some repositories, then please open an issue on that repository.

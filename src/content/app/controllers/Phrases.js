@@ -35,6 +35,12 @@ class Phrases {
 		});
 	}
 
+  _getPointsToPackage(packages){
+      console.log('entro getpoints...');
+      if(packages.length){
+      }
+
+  }
 	/**
 	* @return Promise
 	* @description GET phrases in Package in local storage
@@ -44,8 +50,10 @@ class Phrases {
 			getChromeStorage('packages')
 				.then(JSON.parse)
 				.then( packages => {
-					let arrPackageSelected = packages[packageSelected];
-					resolve(arrPackageSelected);
+            let arrPackageSelected = packages[packageSelected];
+            console.log('arrPackageSelected: ', arrPackageSelected);
+            this._getPointsToPackage(arrPackageSelected);
+            resolve(arrPackageSelected);
 				})
 				.catch(err => reject(err));
 		});

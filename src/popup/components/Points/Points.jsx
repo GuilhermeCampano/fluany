@@ -47,9 +47,6 @@ class Points extends Component {
 				<section className="content-progress">
 					 <Line percent={(this.state.point/100)*10} strokeWidth="4" strokeColor={this.getColorToPoint()} />
 				</section>
-				<section className="content-point">
-					<span className="Point-level">Level {this.state.level}</span>
-				</section>
 			</section>
 		);
 	}
