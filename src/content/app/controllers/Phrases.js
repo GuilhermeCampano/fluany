@@ -51,7 +51,6 @@ class Phrases {
 				.then(JSON.parse)
 				.then( packages => {
             let arrPackageSelected = packages[packageSelected];
-            console.log('arrPackageSelected: ', arrPackageSelected);
             this._getPointsToPackage(arrPackageSelected);
             resolve(arrPackageSelected);
 				})

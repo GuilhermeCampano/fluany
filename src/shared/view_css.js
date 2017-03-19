@@ -26,7 +26,7 @@ let css = `.notie-transition {
 	  position: fixed;
 	  top: 0;
 	  left: 0;
-	  z-index: 999999999;
+	  z-index: 1999999999;
 	  height: auto;
 	  width: 100%;
 	  display: none;

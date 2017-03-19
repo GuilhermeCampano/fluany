@@ -27,7 +27,7 @@ class App {
 			getChromeStorage('cardStep')
 			  .then(JSON.parse)
 				.then(newcard => {
-					this.cards = newcard;
+					  this.cards = newcard;
 				})//first time
 				.catch(()=> {
 					this.cards = cards;
@@ -74,6 +74,7 @@ class App {
 								if(back === valueEntered){
 									view.alert(1, `${message.RIGHT} 👊 (• ͜ʖ•)`, 2);
 									this.cards = R.remove(this.indexCardBeingUsed, 1, this.cards);
+                  console.log('new point: ', this.cards.length);
 									putStorage('cardStep', JSON.stringify(this.cards));
 									}else
 										view.alert(3, `<b> ${back} </b> =(`, 2);
