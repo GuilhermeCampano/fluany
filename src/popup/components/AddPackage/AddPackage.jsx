@@ -7,13 +7,7 @@ import {putStorage, getChromeStorage} from 'shared/helpers';
 class AddPackage extends Component{
 
 	  constructor(props) {
-		  super(props);
-        this.handlerAddPackage        = this.handlerAddPackage.bind(this);
-        this.renderButtonAddPackage   = this.renderButtonAddPackage.bind(this);
-        this.handlerCreatePackage     = this.handlerCreatePackage.bind(this);
-        this.handlerChangePackageName = this.handlerChangePackageName.bind(this);
-        this.renderPackageNameRequired= this.renderPackageNameRequired.bind(this);
-
+        super(props);
 		    this.state = {
 			      addingPackage: false,
             packageName: "",
@@ -21,13 +15,13 @@ class AddPackage extends Component{
 		    }
 	  }
 
-    handlerAddPackage(){
+    handlerAddPackage = () => {
         //communication with components (addClass and hidden button play)
         this.setState({addingPackage: true, packageName: ""},
                       () => PubSub.publish('addingPackage', true));
     }
 
-    renderButtonAddPackage(){
+    renderButtonAddPackage = () => {
         return (
             <li key="add">
                 <button className="addPackage-btn"
@@ -38,7 +32,7 @@ class AddPackage extends Component{
         );
     }
 
-    handlerCreatePackage(e){
+    handlerCreatePackage = (e) => {
         e.preventDefault();
         console.log('packageName: ', this.state.packageName);
         if(R.isEmpty(this.state.packageName)){
@@ -61,13 +55,13 @@ class AddPackage extends Component{
                 });
     }
 
-    handlerChangePackageName(e){
+    handlerChangePackageName = (e) => {
         this.setState({
             packageName: e.target.value.trim()
         });
     }
 
-    renderPackageNameRequired(){
+    renderPackageNameRequired = () => {
         let element;
         if (this.state.requirePackageName){
             element = (<span className="creatingItem__required">This field cannot be left blank!</span>)
