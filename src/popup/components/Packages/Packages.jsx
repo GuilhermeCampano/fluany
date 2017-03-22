@@ -28,6 +28,7 @@ class Packages extends Component{
         this.moveBack             = this.moveBack.bind(this);
 
         this.state = {
+            messageInfo: "",
             addingPackage: false,
             packages: {},
             editing: false,
@@ -41,7 +42,8 @@ class Packages extends Component{
 
     handlerItemPackage(e){
         this.setState({
-            packageNameIsEditing: e.currentTarget.getAttribute('title')
+            packageNameIsEditing: e.currentTarget.getAttribute('title'),
+            messageInfo: ''
         }, () => {
             getChromeStorage('packageIsBeingUsed')
                 .then(packageIsBeingUsed => {
@@ -51,6 +53,8 @@ class Packages extends Component{
                         }, () => {
                             this.renderListCards();
                         });
+                    }else{
+                        this.setState({messageInfo: "This package is being used, stop to use"});
                     }
                 }) //first package ;b;
                 .catch(err => {
@@ -95,7 +99,6 @@ class Packages extends Component{
                     <span className="top__ribbon">
                         <span>{pckg}</span>
                     </span>
-                    {/* <span className="package__name">{pckg}</span> */}
                 </li>
             ), ...element ]
         }
@@ -360,11 +363,13 @@ class Packages extends Component{
 
 	  render(){
         let classPackageEdit = "Packages " + (this.state.editing ? "editingPackage" : "");
+        let messageInfo = (<p className="messageInfo">{this.state.messageInfo}</p>)
+        let renderMessage = this.state.messageInfo !== '' ? messageInfo : "";
         return (
             <div>
                 {this.renderPackageEdit()}
                 <section className={classPackageEdit}>
-                    <h3>Yours packages:</h3>
+                    {renderMessage}
                     <ul>
                         <AddPackage/>
                         {this.renderPackagesList()}
