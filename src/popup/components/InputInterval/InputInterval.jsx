@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import InputRange from 'react-input-range';
 import PubSub from 'pubsub-js';
-import {getChromeStorage} from 'shared/helpers';
+import {getChromeStorage} from '../../../shared/helpers';
 
 class InputInterval extends Component{
 	constructor(props){
