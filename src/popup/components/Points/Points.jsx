@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {compose, multiply, divide, __, ifElse} from 'ramda';
 import { Line } from 'rc-progress';
 import {getChromeStorage} from 'shared/helpers';
 
@@ -15,10 +16,10 @@ class Points extends Component {
 	}
 
  _updatePointInPackage(){
-    getChromeStorage('packageSelected').then( packageSelected => {
+    getChromeStorage('packageSelected').then(packageSelected => {
       getChromeStorage('packages')
         .then(JSON.parse)
-        .then( packages => {
+        .then(packages => {
           let arrPackageSelected = packages[packageSelected.label];
           this.setState({totalCards: arrPackageSelected.length});
         });
@@ -37,6 +38,7 @@ class Points extends Component {
         })//finally
      });
   }
+
 	getColorToPoint(){
     let cardsAccepted = this.state.totalCards - this.state.lengthCards;
 		if(cardsAccepted < this.state.totalCards/3)
@@ -52,12 +54,13 @@ class Points extends Component {
     this._updatePointInPackage();
 	}
 
- render(){
-    let cardsAccepted = this.state.totalCards - this.state.lengthCards;
+  render(){
+      let cardsAccepted = this.state.totalCards - this.state.lengthCards;
+      let porcent = this.state.totalCards ? compose(multiply(100), divide) : () => 0;
 		return (
 			  <section>
 				  <section className="content-progress">
-					 <Line percent={(cardsAccepted/this.state.totalCards)*100} strokeWidth="4" strokeColor={this.getColorToPoint()} />
+					 <Line percent={porcent(cardsAccepted, this.state.totalCards)} strokeWidth="4" strokeColor={this.getColorToPoint()} />
 				</section>
 			</section>
 		);
