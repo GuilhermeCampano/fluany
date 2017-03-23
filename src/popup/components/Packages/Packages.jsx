@@ -127,14 +127,13 @@ class Packages extends Component{
             cardItemsValue: removeCard(this.state.cardItemsValue),
             cardItemsComponents: removeCard(this.state.cardItemsComponents)
         }, () => {
-            getChromeStorage('packages').then( packages => {
-                let newobj = R.assoc(packageName,
-                                     this.state.cardItemsValue,
-                                     JSON.parse(packages));
-
-                console.log('newobj:; ', newobj);
-                putStorage('packages', JSON.stringify(newobj));
-            });
+            getChromeStorage('packages')
+                .then(packages =>
+                    R.assoc(packageName, this.state.cardItemsValue, JSON.parse(packages)))
+                .then(newobj => {
+                    console.log('newobj:; ', newobj);
+                    putStorage('packages', JSON.stringify(newobj));
+                })
         });
     }
 
