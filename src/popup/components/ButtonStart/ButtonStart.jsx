@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Alarm from 'shared/Alarms';
+import Alarm from '../../../shared/Alarms';
 import PubSub from 'pubsub-js';
-import {putStorage, getChromeStorage, cleanChromeStorage} from 'shared/helpers';
+import {putStorage, getChromeStorage, cleanChromeStorage} from '../../../shared/helpers';
 
 class ButtonStart extends Component{
 	constructor(props) {
