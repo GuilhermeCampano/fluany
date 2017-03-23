@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import Alarm from 'shared/Alarms';
+import Alarm from '../../../shared/Alarms';
 import PubSub from 'pubsub-js';
 import R from 'ramda';
-import {putStorage, getChromeStorage} from 'shared/helpers';
+import {putStorage, getChromeStorage} from '../../../shared/helpers';
 
 class AddPackage extends Component{
 
@@ -34,9 +34,7 @@ class AddPackage extends Component{
 
     handlerCreatePackage = (e) => {
         e.preventDefault();
-        console.log('packageName: ', this.state.packageName);
         if(R.isEmpty(this.state.packageName)){
-            console.log('entrou!')
             this.setState({
                 requirePackageName: true
             })
