@@ -5,28 +5,25 @@ class CardItem extends Component{
 
     constructor(props) {
         super(props);
-        this.handleChangeFront = this.handleChangeFront.bind(this);
-        this.handleChangeBack  = this.handleChangeBack.bind(this);
-        this.handleDeleteCard  = this.handleDeleteCard.bind(this);
         this.state = {
             front: this.props.value.front,
             back: this.props.value.back
         }
     }
 
-    handleChangeFront(e){
+    handleChangeFront = (e) => {
         let value = e.target.value;
         this.setState({front: value}, () =>
             this.props.onChange(this.props.id, this.state.front, 'front'));
     }
 
-    handleChangeBack(e){
+    handleChangeBack = (e) => {
         let value = e.target.value;
         this.setState({back: value}, () =>
             this.props.onChange(this.props.id, this.state.back, 'back'));
     }
 
-    handleDeleteCard(e){
+    handleDeleteCard = (e) => {
         this.props.handleDeleteCard(this.props.id)
     }
 
