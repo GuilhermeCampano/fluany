@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {compose, multiply, divide, __, ifElse} from 'ramda';
+import {compose, multiply, divide, isEmpty, ifElse} from 'ramda';
 import { Line } from 'rc-progress';
 import {getChromeStorage} from 'shared/helpers';
 import PubSub from 'pubsub-js';
@@ -21,12 +21,20 @@ class Points extends Component {
       getChromeStorage('packages')
         .then(JSON.parse)
         .then(packages => {
-          let arrPackageSelected = packages[packageSelected.label];
-            this.setState({
-                totalCards: arrPackageSelected.cards.length,
-                lengthCards: arrPackageSelected.cardsInProgress.length,
-                color: this.getColorToPoint()
-            });
+            let arrPackageSelected = packages[packageSelected.label];
+            if(isEmpty(arrPackageSelected)){
+                this.setState({
+                    totalCards: 0,
+                    lengthCards: 0,
+                    color: this.getColorToPoint()
+                });
+            }else{
+                this.setState({
+                    totalCards: arrPackageSelected.cards.length,
+                    lengthCards: arrPackageSelected.cardsInProgress.length,
+                    color: this.getColorToPoint()
+                });
+            }
         });
     });
  }
@@ -45,6 +53,7 @@ class Points extends Component {
 	componentDidMount() {
       this._updatePointInPackage();
       PubSub.subscribe('EVENT_SELECTED_PACKAGE', (topic, value) => {
+          console.log('cauu')
         this._updatePointInPackage();
       });
 	}
