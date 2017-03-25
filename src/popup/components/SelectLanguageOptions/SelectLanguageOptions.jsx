@@ -9,7 +9,8 @@ class SelectLanguageOptions extends Component{
     constructor(){
         super();
         this.state = {
-            options: []
+            options: [],
+            playing: false
         }
         this.updatingSelectField = this.updatingSelectField.bind(this);
         this._onSelect           = this._onSelect.bind(this);
@@ -25,6 +26,17 @@ class SelectLanguageOptions extends Component{
             }
         });
 
+        PubSub.subscribe('EVENT_PLAYING', (topic, value) => {
+            console.log('uuuuu', value)
+            this.setState({playing: !value});
+        });
+
+        getChromeStorage('playing')
+            .then(playing => {
+                this.setState({
+                    playing: playing
+                })
+            })
         getChromeStorage('packageSelected')
             .then(packageSelected => {
                 this.setState({
@@ -58,9 +70,8 @@ class SelectLanguageOptions extends Component{
     }
 
 	render(){
-
 		return (
-			<section className="options">
+			<section className={"options" + (this.state.playing ? " playing" : "")}>
 				<Dropdown
 				options={this.state.options}
 				onChange={this._onSelect}

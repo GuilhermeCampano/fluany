@@ -53,7 +53,6 @@ class Points extends Component {
 	componentDidMount() {
       this._updatePointInPackage();
       PubSub.subscribe('EVENT_SELECTED_PACKAGE', (topic, value) => {
-          console.log('cauu')
         this._updatePointInPackage();
       });
 	}

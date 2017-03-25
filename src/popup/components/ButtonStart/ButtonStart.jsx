@@ -48,8 +48,10 @@ class ButtonStart extends Component{
   }
 
 	handleClick(){
-    this.setState({play: !this.state.play});
-    PubSub.publish('EVENT_MESSAGE_INFO', '');
+      this.setState({play: !this.state.play}, () => {
+          PubSub.publish('EVENT_MESSAGE_INFO', '');
+            PubSub.publish('EVENT_PLAYING', this.state.play);
+      });
 	}
 
   play(){

@@ -4,6 +4,7 @@
 .Dropdown-root
   position relative
   width 75%
+  transition transform .5s ease-out, width .6s ease-out
 
 .Dropdown-control
   position relative
@@ -83,3 +84,7 @@
   cursor default
   display block
   padding 8px 10px
+
+.options.playing .Dropdown-root
+  transform translateX(311px)
+  width 15%;
