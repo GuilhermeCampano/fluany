@@ -14,33 +14,31 @@ class App {
 		this.level = 1;
 		this.points = 0;
 		this.category = category;
+    this.packages = [];
+    this.namePackageSelected = '';
 		this.phrases = new Phrases();
 	}
 
 	_getRandomCard(){
-		this.indexBeingUsed = getRandomInt(0, R.dec(this.cards.length));
-		return this.cards[this.indexBeingUsed];
+	  this.indexCardBeingUsed = getRandomInt(0, R.dec(this.cards.length));
+    console.log('indexBeingUsed: ', this.indexCardBeingUsed);
+		return this.cards[this.indexCardBeingUsed];
 	}
 
 	loadQuestion(){
-		this.phrases.getAll(cards => {
-			getChromeStorage('cardStep')
-			  .then(JSON.parse)
-				.then(newcard => {
-					  this.cards = newcard;
-				})//first time
-				.catch(()=> {
-					this.cards = cards;
-				})//finally
-				.then(() => {
-					if(!R.isEmpty(this.cards)){
-						let card = this._getRandomCard();
-						this.showCard(card.front, card.back);
-					}else{
-						this.showFinishCard();
-					}
-				});
-		});
+      this.phrases.getAll((packages, namePackageSelected) => {
+          console.log('allPackages: ', packages);
+          console.log('namePackageSelected: ', namePackageSelected);
+          this.cards = packages[namePackageSelected].cardsInProgress;
+          this.packages = packages;
+          this.namePackageSelected = namePackageSelected;
+          if(R.isEmpty(this.cards)){
+              this.showFinishCard();
+          }else{
+              let card = this._getRandomCard();
+              this.showCard(card.front, card.back);
+          }
+		  });
 	}
 
 	showFinishCard(){
@@ -52,7 +50,9 @@ class App {
 										 "Yes",
 										 "No",
 										 () => {
-											 cleanChromeStorage('cardStep');
+                         this.packages = R.assocPath([this.namePackageSelected, 'cardsInProgress'],
+                                                     this.packages[this.namePackageSelected].cards, this.packages);
+                         putStorage('packages', JSON.stringify(this.packages));
 											 chrome.runtime.sendMessage({message: "createAlarm"}, ()=>{});
 										 },
 										 () => {
@@ -73,10 +73,14 @@ class App {
 							, valueEntered => {
 								if(back === valueEntered){
 									view.alert(1, `${message.RIGHT} 👊 (• ͜ʖ•)`, 2);
-									this.cards = R.remove(this.indexCardBeingUsed, 1, this.cards);
-                  console.log('new point: ', this.cards.length);
-									putStorage('cardStep', JSON.stringify(this.cards));
-									}else
+                  this.cards = R.remove(this.indexCardBeingUsed, 1, this.cards);
+                  this.packages = R.assocPath([this.namePackageSelected, 'cardsInProgress'],
+                                                this.cards, this.packages);
+
+                  console.log('this.cards: ', this.cards);
+                  console.log('this.packages: ', this.packages);
+                  putStorage('packages', JSON.stringify(this.packages));
+								}else
 										view.alert(3, `<b> ${back} </b> =(`, 2);
 									chrome.runtime.sendMessage({message: "createAlarm"}, ()=>{});
 								}

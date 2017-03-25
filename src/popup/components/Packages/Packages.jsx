@@ -17,13 +17,11 @@ class Packages extends Component{
         this.handlerDeletePackage = this.handlerDeletePackage.bind(this);
         this.getPackageByName     = this.getPackageByName.bind(this);
         this.moreCardItem         = this.moreCardItem.bind(this);
-        this.handleSaveToggle     = this.handleSaveToggle.bind(this);
         this.renderListCards      = this.renderListCards.bind(this);
         this.changeColorPackage   = this.changeColorPackage.bind(this);
         this.getPackageColor      = this.getPackageColor.bind(this);
         this.handleChangeCard     = this.handleChangeCard.bind(this);
         this.renderCard           = this.renderCard.bind(this);
-        this.handleDeleteCard     = this.handleDeleteCard.bind(this);
         this.cardLastIsEmpty      = this.cardLastIsEmpty.bind(this);
         this.moveBack             = this.moveBack.bind(this);
 
@@ -66,7 +64,7 @@ class Packages extends Component{
         });
     }
 
-    handlerDeletePackage(e){
+    handlerDeletePackage = (e) => {
         getChromeStorage('packages').then( packages => {
             let newobj = JSON.parse(packages);
             delete newobj[this.state.packageNameIsEditing];
@@ -120,7 +118,7 @@ class Packages extends Component{
     }
 
 
-    handleDeleteCard(index){
+    handleDeleteCard = (index) => {
         const packageName = this.state.packageNameIsEditing;
         const removeCard = list => R.remove(index, 1, list);
         this.setState({
@@ -129,7 +127,7 @@ class Packages extends Component{
         }, () => {
             getChromeStorage('packages')
                 .then(packages =>
-                    R.assoc(packageName, this.state.cardItemsValue, JSON.parse(packages)))
+                    R.assoc(packageName, {cards: this.state.cardItemsValue}, JSON.parse(packages)))
                 .then(newobj => {
                     console.log('newobj:; ', newobj);
                     putStorage('packages', JSON.stringify(newobj));
@@ -143,7 +141,7 @@ class Packages extends Component{
         return R.either(frontIsEmpty, backIsEmpty)();
     }
 
-    handleSaveToggle(e){
+    handleSaveToggle = (e) => {
         if(e.target.checked){
             const packageName = this.state.packageNameIsEditing;
             const newCards = this.state.cardItemsValue;
@@ -152,7 +150,7 @@ class Packages extends Component{
             if(!this.cardLastIsEmpty(this.state.cardItemsValue)){
                 getChromeStorage('packages')
                     .then(JSON.parse)
-                    .then(R.assoc(packageName, newCards))
+                    .then(R.assoc(packageName, {cards: newCards, cardsInProgress: newCards}))
                     .then(JSON.stringify)
                     .then(strpackages => {
                         putStorage('packages', strpackages);
@@ -183,12 +181,12 @@ class Packages extends Component{
         return (<CardItem {...props} />);
     }
 
-    renderListCards(){
+    renderListCards = () => {
         this.getPackageByName(this.state.packageNameIsEditing)
-            .then( cards => {
+            .then( pckg => {
                 //updating cardItems of the package ^
                 let cardItemsComponents;
-                if(R.isEmpty(cards)){
+                if(R.isEmpty(pckg.cards)){
                     console.log('is empty')
                     this.setState({
                       cardItemsValue: [{front: "", back: ""}]
@@ -204,7 +202,7 @@ class Packages extends Component{
                 }else{
                     console.log('dont is empty');
                     this.setState({
-                        cardItemsValue: R.uniq(R.append({front: "", back: ""}, cards))
+                        cardItemsValue: R.uniq(R.append({front: "", back: ""}, pckg.cards))
                     }, () =>
                         cardItemsComponents = R.addIndex(R.map)(this.renderCard, this.state.cardItemsValue));
                 }
@@ -213,8 +211,7 @@ class Packages extends Component{
                     cardItemsComponents
                 });
             })
-            .catch( (err) => {
-            })
+            .catch( err => {})
     }
 
     changeColorPackage(e){

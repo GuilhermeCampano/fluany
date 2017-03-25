@@ -20,54 +20,23 @@ class Phrases {
  */
 	getAll(callback){
 		getChromeStorage('packageSelected').then( packageSelected => {
-			if(packageSelected.value === 'default'){
-				this._loadPhrases()
-					.then((phrases) => {
-						callback(phrases, null);
-					})
-					.catch((error) => {
-						callback(null, error);
-					});
-			}else{
-				this._getPhrasesOfPackage(packageSelected.value)
-					.then(packages => callback(packages));
-			}
+				this._getPhrasesInLocal()
+			  .then(packages => callback(packages, packageSelected.label));
 		});
 	}
 
-  _getPointsToPackage(packages){
-      console.log('entro getpoints...');
-      if(packages.length){
-      }
-
-  }
 	/**
 	* @return Promise
 	* @description GET phrases in Package in local storage
 	*/
-	_getPhrasesOfPackage(packageSelected){
+	_getPhrasesInLocal(){
 		return new Promise((resolve, reject) => {
 			getChromeStorage('packages')
 				.then(JSON.parse)
 				.then( packages => {
-            let arrPackageSelected = packages[packageSelected];
-            this._getPointsToPackage(arrPackageSelected);
-            resolve(arrPackageSelected);
+            resolve(packages);
 				})
 				.catch(err => reject(err));
-		});
-	}
-   /**
-	 * @return Promise
-	 */
-	_getPhrasesInLocal(){
-		return new Promise((resolve, reject) => {
-			chrome.storage.sync.get('phrases', (obj) => {
-				if(obj.phrases)
-					  resolve(obj.phrases);
-				else
-					reject(Error('I was not saved'));
-			});
 		});
 	}
 

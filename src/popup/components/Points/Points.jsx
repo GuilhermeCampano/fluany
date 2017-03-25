@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {compose, multiply, divide, __, ifElse} from 'ramda';
 import { Line } from 'rc-progress';
 import {getChromeStorage} from 'shared/helpers';
+import PubSub from 'pubsub-js';
 
 class Points extends Component {
 
@@ -21,23 +22,14 @@ class Points extends Component {
         .then(JSON.parse)
         .then(packages => {
           let arrPackageSelected = packages[packageSelected.label];
-          this.setState({totalCards: arrPackageSelected.length});
+            this.setState({
+                totalCards: arrPackageSelected.cards.length,
+                lengthCards: arrPackageSelected.cardsInProgress.length,
+                color: this.getColorToPoint()
+            });
         });
-
-      getChromeStorage('cardStep')
-        .then(JSON.parse)
-        .then(newcard => {
-           this.cards = newcard;
-           this.setState({lengthCards: newcard.length});
-        })//first time
-        .catch(()=> {
-          this.cards = 0;
-          this.setState({lengthCards: 0});
-        }).then(() => {
-          this.setState({color: this.getColorToPoint()})
-        })//finally
-     });
-  }
+    });
+ }
 
 	getColorToPoint(){
     let cardsAccepted = this.state.totalCards - this.state.lengthCards;
@@ -51,7 +43,10 @@ class Points extends Component {
 	}
 
 	componentDidMount() {
-    this._updatePointInPackage();
+      this._updatePointInPackage();
+      PubSub.subscribe('EVENT_SELECTED_PACKAGE', (topic, value) => {
+        this._updatePointInPackage();
+      });
 	}
 
   render(){

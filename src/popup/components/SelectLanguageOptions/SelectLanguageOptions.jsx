@@ -40,9 +40,8 @@ class SelectLanguageOptions extends Component{
             packageSelected: e
         }, () => putStorage('packageSelected', this.state.packageSelected));
 
-
-        //because the phrasesStep need to stay empty for the content get new Package
-        cleanChromeStorage('localKeys');
+        console.log('e: ', e)
+        PubSub.publish('EVENT_SELECTED_PACKAGE', e.label);
     }
 
     updatingSelectField(){
