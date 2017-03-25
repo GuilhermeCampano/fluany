@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Alarm from '../../../shared/Alarms';
 import PubSub from 'pubsub-js';
+import {isEmpty} from 'ramda';
 import {putStorage, getChromeStorage, cleanChromeStorage} from '../../../shared/helpers';
 
 class ButtonStart extends Component{
@@ -11,13 +12,23 @@ class ButtonStart extends Component{
 			titleButton: "Play",
 			play: true,
 			rangeInterval: 1,
-      addingPackage: false
+      addingPackage: false,
+      packageSelected: ''
 		}
 
 		this.alarm = new Alarm('remindme', 1); //default
 	}
 
+  _updatingPackageSelected = () => {
+      getChromeStorage('packageSelected')
+       .then(packageSelected => {
+         this.setState({
+          packageSelected: packageSelected.label
+         });
+      })
+  }
   componentDidMount() {
+     this._updatingPackageSelected()
       /* Check if was already started*/
       getChromeStorage('playing')
         .then(playing => {
@@ -38,36 +49,46 @@ class ButtonStart extends Component{
 
 	handleClick(){
     this.setState({play: !this.state.play});
+    PubSub.publish('EVENT_MESSAGE_INFO', '');
 	}
 
   play(){
-    this.handleClick();
-    getChromeStorage('playing')
-        .then(playing => {
-            /* If was already started, change the button to play and stop alarm */
-            chrome.storage.sync.set({playing: false}, () => {
-                this.alarm.cancel();
-                this.setState({titleButton: "Play"});
-            });
-            cleanChromeStorage('packageIsBeingUsed');
-    })
-    .catch(() => {
-        /* If not was started, to create alarm and change button text to Stop*/
-        chrome.storage.sync.set({playing: true}, () => {
-            this.alarm.cancel();
-            this.alarm = new Alarm('remindme', this.state.rangeInterval); //update Interval
-            this.alarm.create();
-            this.setState({titleButton: "Stop"})
-            //saving in localStorage, beacause background script  it will take the value
-            putStorage('rangeInterval', this.state.rangeInterval);
+    this._updatingPackageSelected();
+    getChromeStorage('packages')
+        .then(JSON.parse)
+        .then(packages => {
+            if(isEmpty(packages[this.state.packageSelected])){
+                PubSub.publish('EVENT_MESSAGE_INFO', 'This packages is empty');
+            }else{
+                this.handleClick();
+                getChromeStorage('playing')
+                    .then(playing => {
+                        /* If was already started, change the button to play and stop alarm */
+                        chrome.storage.sync.set({playing: false}, () => {
+                            this.alarm.cancel();
+                            this.setState({titleButton: "Play"});
+                        });
+                        cleanChromeStorage('packageIsBeingUsed');
+                })
+                .catch(() => {
+                    /* If not was started, to create alarm and change button text to Stop*/
+                    chrome.storage.sync.set({playing: true}, () => {
+                        this.alarm.cancel();
+                        this.alarm = new Alarm('remindme', this.state.rangeInterval); //update Interval
+                        this.alarm.create();
+                        this.setState({titleButton: "Stop"})
+                        //saving in localStorage, beacause background script  it will take the value
+                        putStorage('rangeInterval', this.state.rangeInterval);
 
-            //blocking to edit package selected
-            getChromeStorage('packageSelected')
-                .then(packageSelected => {
-                    putStorage('packageIsBeingUsed', packageSelected.value);
+                        //blocking to edit package selected
+                        getChromeStorage('packageSelected')
+                            .then(packageSelected => {
+                                putStorage('packageIsBeingUsed', packageSelected.value);
+                            });
+                    });
                 });
+            }
         });
-    });
 	}
 
 	render(){

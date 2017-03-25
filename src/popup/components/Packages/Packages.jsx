@@ -349,6 +349,12 @@ class Packages extends Component{
                 .catch(()=> {});
         });
 
+        PubSub.subscribe('EVENT_MESSAGE_INFO', (topic, value) => {
+            this.setState({
+                messageInfo: value
+            })
+        });
+
         getChromeStorage('packagesColor')
             .then(packages => {
                 this.setState({

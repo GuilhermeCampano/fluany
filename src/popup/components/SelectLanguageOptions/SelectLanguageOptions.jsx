@@ -40,7 +40,6 @@ class SelectLanguageOptions extends Component{
             packageSelected: e
         }, () => putStorage('packageSelected', this.state.packageSelected));
 
-        console.log('e: ', e)
         PubSub.publish('EVENT_SELECTED_PACKAGE', e.label);
     }
 
