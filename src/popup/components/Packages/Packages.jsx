@@ -6,6 +6,7 @@ import {putStorage, cleanPackages, getChromeStorage} from 'shared/helpers';
 import AddPackage from '../AddPackage/AddPackage';
 import CardItem from './CardItem.jsx';
 import Toggle from 'react-toggle';
+import Import from '../Import/Import';
 
 class Packages extends Component{
     constructor(props) {
@@ -71,7 +72,8 @@ class Packages extends Component{
 
             //updating packages state
             this.setState({
-                packages: newobj
+                packages: newobj,
+                packagesFiltered: newobj
             });
 
             //saving
@@ -341,10 +343,12 @@ class Packages extends Component{
         //get value if the user is adding package<Updating view)
         PubSub.subscribe('addingPackage', (topic, value) => {
             this.setState({addingPackage: true});
+            console.log('sjsjsjsjjjsjjjjsj')
             getChromeStorage('packages')
                 .then( packages => {
                     this.setState({
-                        packages: JSON.parse(packages)
+                        packages: JSON.parse(packages),
+                        packagesFiltered: JSON.parse(packages)
                     });
                 })
                 .catch(()=> {});
@@ -411,6 +415,7 @@ class Packages extends Component{
                             </svg>
                         </button>
                     </section>
+                    <Import />
                     <ul>
                         <AddPackage/>
                         {this.renderPackagesList()}
