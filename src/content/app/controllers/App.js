@@ -57,6 +57,7 @@ class App {
 										 },
 										 () => {
 											 chrome.storage.sync.set({playing: false}, () => {});
+                       cleanChromeStorage('packageIsBeingUsed');
 										 });
 		});
 	}
