@@ -385,6 +385,11 @@ class Packages extends Component{
     handleClickSearch = () => {
         this.setState({searching: true});
     }
+
+    OnBlurSearch = () => {
+        this.setState({searching: false});
+    }
+
 	  render(){
         let classPackageEdit = "Packages " + (this.state.editing ? "editingPackage" : "");
         let messageInfo = (<p className="messageInfo">{this.state.messageInfo}</p>)
@@ -397,7 +402,7 @@ class Packages extends Component{
                     <section className={"package__search-container" + (this.state.searching ? " active": "")}>
                         <input className="package__input-search"
                                onChange={this.handleOnFilter}
-                               placeholder="Search package" ></input>
+                               placeholder="Search package" onBlur={this.OnBlurSearch}></input>
                         <button className="package__btn-search"
                                 title="search"
                                 onClick={this.handleClickSearch}>p</button>
