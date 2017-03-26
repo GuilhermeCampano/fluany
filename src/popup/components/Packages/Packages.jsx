@@ -405,7 +405,11 @@ class Packages extends Component{
                                placeholder="Search package" onBlur={this.OnBlurSearch}></input>
                         <button className="package__btn-search"
                                 title="search"
-                                onClick={this.handleClickSearch}>p</button>
+                                onClick={this.handleClickSearch}>
+                            <svg>
+                                <use xlinkHref="#icon-search"></use>
+                            </svg>
+                        </button>
                     </section>
                     <ul>
                         <AddPackage/>

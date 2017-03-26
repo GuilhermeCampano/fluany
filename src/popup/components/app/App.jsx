@@ -3,6 +3,7 @@ import SelectLanguageOptions from '../SelectLanguageOptions/SelectLanguageOption
 import Packages from '../Packages/Packages';
 import InputInterval from '../InputInterval/InputInterval';
 import Points from '../Points/Points';
+import Import from '../Import/Import';
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class App extends Component {
         <Points />
         <InputInterval />
         <SelectLanguageOptions />
+        <Import />
         <Packages/>
       </main>
     );
