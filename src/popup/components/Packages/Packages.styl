@@ -4,6 +4,7 @@
   margin-right 11px
   transition all .4s ease-out
   ul
+    margin-top 0
     list-style none
     padding 0
     display flex
@@ -237,3 +238,41 @@
   margin-bottom -24px
   text-shadow none
   color white
+
+
+.package__search-container
+  position relative
+  &.active
+    margin-bottom -6px
+    .package__input-search
+      visibility visible
+      opacity 1
+      transform translateX(0)
+      padding 10px 16px 10px 2px
+      border none
+      background rgba(0,0,0,0.003)
+      box-shadow inset 0 -2px 1px rgba(0,0,0,0.03)
+      font-size 15px
+      margin-top 10px
+      line-height 1.4em
+      margin-right 25px
+      width 90%
+      padding-left 10px
+
+    .package__btn-search
+      visibility hidden
+      opacity 0
+  .package__input-search
+    opacity 0
+    visibility hidden
+    height 23px
+    outline: 0
+    padding-left 9px
+    transition all .4s
+    transform translateX(-400px)
+    &:focus
+      padding-left 2px
+  .package__btn-search
+    position absolute
+    left -1px
+    top 21px

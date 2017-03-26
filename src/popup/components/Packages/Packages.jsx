@@ -88,7 +88,7 @@ class Packages extends Component{
 
     renderPackagesList(){
         let element = [];
-        for(let pckg in this.state.packages){
+        for(let pckg in this.state.packagesFiltered){
             element = [(
                 <li key     = {pckg}
                     title   = {pckg}
@@ -332,7 +332,8 @@ class Packages extends Component{
         getChromeStorage('packages')
             .then( packages => {
                 this.setState({
-                    packages: JSON.parse(packages)
+                    packages: JSON.parse(packages),
+                    packagesFiltered: JSON.parse(packages)
                 });
             })
             .catch(() => {});
@@ -363,6 +364,27 @@ class Packages extends Component{
             }).catch(() => {});
     }
 
+    handleOnFilter = (e) => {
+        let value = e.target.value;
+        const filterWithKeys = (pred, obj) => R.pipe(
+            R.toPairs,
+            R.filter(R.apply(pred)),
+            R.fromPairs
+        )(obj);
+
+        let packagesFiltered = filterWithKeys(
+            (key, val) => !key.indexOf(value),
+            this.state.packages
+        );
+
+        this.setState({
+            packagesFiltered: packagesFiltered
+        })
+    }
+
+    handleClickSearch = () => {
+        this.setState({searching: true});
+    }
 	  render(){
         let classPackageEdit = "Packages " + (this.state.editing ? "editingPackage" : "");
         let messageInfo = (<p className="messageInfo">{this.state.messageInfo}</p>)
@@ -372,6 +394,14 @@ class Packages extends Component{
                 {this.renderPackageEdit()}
                 <section className={classPackageEdit}>
                     {renderMessage}
+                    <section className={"package__search-container" + (this.state.searching ? " active": "")}>
+                        <input className="package__input-search"
+                               onChange={this.handleOnFilter}
+                               placeholder="Search package" ></input>
+                        <button className="package__btn-search"
+                                title="search"
+                                onClick={this.handleClickSearch}>p</button>
+                    </section>
                     <ul>
                         <AddPackage/>
                         {this.renderPackagesList()}
