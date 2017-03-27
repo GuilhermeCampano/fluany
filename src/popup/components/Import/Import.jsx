@@ -30,7 +30,7 @@ class Import extends Component{
             })
             .then( () => {
                 PubSub.publish('addingPackage', false);
-                PubSub.publish('EVENT_MESSAGE_INFO', 'Your package has been imported =)');
+                PubSub.publish('EVENT_MESSAGE_INFO', {message: 'Your package has been imported =)', className: 'success'});
             });
     }
 

@@ -49,7 +49,7 @@ class ButtonStart extends Component{
 
 	handleClick(){
       this.setState({play: !this.state.play}, () => {
-          PubSub.publish('EVENT_MESSAGE_INFO', '');
+          PubSub.publish('EVENT_MESSAGE_INFO', {message: ''});
             PubSub.publish('EVENT_PLAYING', this.state.play);
       });
 	}
@@ -60,7 +60,7 @@ class ButtonStart extends Component{
         .then(JSON.parse)
         .then(packages => {
             if(isEmpty(packages[this.state.packageSelected])){
-                PubSub.publish('EVENT_MESSAGE_INFO', 'This packages is empty');
+                PubSub.publish('EVENT_MESSAGE_INFO', {message: 'This packages is empty', className: 'danger'});
             }else{
                 this.handleClick();
                 getChromeStorage('playing')

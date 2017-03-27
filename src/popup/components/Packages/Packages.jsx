@@ -27,7 +27,7 @@ class Packages extends Component{
         this.moveBack             = this.moveBack.bind(this);
 
         this.state = {
-            messageInfo: "",
+            messageInfo: {message: '', className: ''},
             addingPackage: false,
             packages: {},
             editing: false,
@@ -396,8 +396,8 @@ class Packages extends Component{
 
 	  render(){
         let classPackageEdit = "Packages " + (this.state.editing ? "editingPackage" : "");
-        let messageInfo = (<p className="messageInfo">{this.state.messageInfo}</p>)
-        let renderMessage = this.state.messageInfo !== '' ? messageInfo : "";
+        let messageInfo = (<p className={"messageInfo " + this.state.messageInfo['className']}>{this.state.messageInfo["message"]}</p>)
+        let renderMessage = this.state.messageInfo["message"] !== '' ? messageInfo : "";
         return (
             <div>
                 {this.renderPackageEdit()}
