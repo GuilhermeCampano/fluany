@@ -23,7 +23,7 @@ class Import extends Component{
             .then(JSON.stringify)
             .then(newpackage => putStorage('packages', newpackage))
             .catch( () => {
-                let newpackage = {packages: {}};
+                let newpackage = {};
                 newpackage = R.assoc(pckg.name, {cards: pckg.cards, cardsInProgress: pckg.cards} , newpackage);
                 putStorage('packages', JSON.stringify(newpackage));
 

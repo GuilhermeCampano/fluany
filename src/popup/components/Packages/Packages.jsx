@@ -240,6 +240,7 @@ class Packages extends Component{
             editing:false,
             cardItemsComponents: []
         });
+        PubSub.publish('EVENT_MESSAGE_INFO', {message: ''});
     }
 
     renderPackageEdit(name){
