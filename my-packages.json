@@ -1,0 +1,14 @@
+{
+    "name": "Dump",
+    "description": "Its packages is a dump",
+    "cards": [
+        {
+            "front": "drugs",
+            "back" : "drogas"
+        },
+        {
+            "front": "hello",
+            "back" : "oi"
+        }
+    ]
+}
