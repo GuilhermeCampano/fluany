@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import createApp from './App';
 
-import App from './components/app/App';
-// import 'shared/popup.css';
-import './popup.styl';
+const App = createApp(React);
 
-ReactDOM.render(
-	  <App />,
-	  document.getElementById('app')
+render(
+  <App></App>,
+  document.getElementById('app')
 );
+
