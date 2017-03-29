@@ -1,14 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 import createApp from './App';
+import './popup.styl';
 
 const App = createApp(React);
 
-const props = {
-    title: 'teste'
-}
 render(
-  <App {...props}/>,
+  <App />,
   document.getElementById('app')
 );
 

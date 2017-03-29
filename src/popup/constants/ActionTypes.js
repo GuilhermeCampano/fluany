@@ -5,3 +5,4 @@
  */
 
 export const ADD_PACKAGE = 'ADD_PACKAGE';
+export const CREATE_PACKAGE = 'CREATE_PACKAGE';
