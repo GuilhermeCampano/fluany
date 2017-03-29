@@ -4,8 +4,11 @@ import createApp from './App';
 
 const App = createApp(React);
 
+const props = {
+    title: 'teste'
+}
 render(
-  <App></App>,
+  <App {...props}/>,
   document.getElementById('app')
 );
 

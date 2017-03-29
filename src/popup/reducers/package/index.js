@@ -1,12 +1,8 @@
-const assign = Object.assign;
+import { combineReducers } from 'redux';
+import pack from './pack';
+import newPackage from './newPackage';
 
-export default (state = [{name: 'Package1'}], {type, pckg} = {}) => {
-
-	switch (type) {
-		case 'ADD_PACKAGE':
-		return [...state, ...pckg];
-		default:
-			return state;
-	}
-
-};
+export default combineReducers({
+	pack,
+	newPackage
+});

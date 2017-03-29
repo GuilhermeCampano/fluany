@@ -1,27 +1,26 @@
 import { createStore } from 'redux';
-
-import createAddPackage from './components/addPackage';
+import CreatePackage from './components/CreatePackage';
 import packageReducer from './reducers/package';
 const store = createStore(packageReducer);
 
-const addPackage = pckg => store.dispatch({type: 'ADD_PACKAGE', pckg});
+const createPackage = (isCreating) => store.dispatch({type: 'CREATE_PACKAGE', isCreating});
 
 store.subscribe(() => {
   console.log(store.getState());
 });
 
-export default React => () => {
-  const NewPackage = createAddPackage(React);
-
-  const addPackageProps = {
+export default React => ({ title, ...props}) => {
+  const Create = CreatePackage(React);
+  const createPackageProps = {
     actions: {
-      addPackage
+			...props,
+      createPackage
     }
   };
 
   return (
 			<div className="content">
-				<NewPackage { ...addPackageProps } />
+				<Create { ...createPackageProps } />
 			</div>
   );
 };
