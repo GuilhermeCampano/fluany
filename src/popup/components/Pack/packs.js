@@ -13,8 +13,7 @@ export default React => {
 
     return (
 		 <section>
-				<ul>
-					<li>Pack1</li>
+				<ul className="packs-content">
 					<Create {...createProps}/>
 				</ul>
 			</section>

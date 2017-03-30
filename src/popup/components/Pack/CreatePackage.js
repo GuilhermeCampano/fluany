@@ -7,9 +7,9 @@ export default React => {
   const pack = ({store, actions: { createPackage } }) => {
     const handleClickItem = () => store.dispatch({type: 'CREATE_PACKAGE', value: {isCreating: true}})
     return (
-        <li key="add" onClick={handleClickItem}>
-					<p>+</p>
-					<p>Criar novo pacote</p>
+        <li key="add" className="pack-item pack-item--new" onClick={handleClickItem}>
+					<p className="create-package--icon">+</p>
+					<p className="create-package--description">Criar novo pacote</p>
         </li>
     );
   };
