@@ -5,8 +5,6 @@ import packageReducer from './reducers/package';
 import * as PackageActions from './actions/PackageActions';
 const store = createStore(packageReducer);
 
-const createPackage = (value) => store.dispatch({type: 'CREATE_PACKAGE', isCreating: value});
-
 store.subscribe(() => {
   console.log(store.getState());
 });
@@ -14,6 +12,7 @@ store.subscribe(() => {
 export default React => () => {
 	const Packs  = CreatePacks(React);
   const packsProps = {
+    store,
     actions: {
       ...PackageActions
     }

@@ -1,12 +1,12 @@
 const assign = Object.assign;
 
 export default (
-  state = { isCreating: false }, {isCreating, type } = {}
+  state = { isCreating: false }, {type, value } = {}
 ) => {
 
   switch (type) {
 		case 'CREATE_PACKAGE':
-			return assign({}, state, isCreating);
+			return assign({}, state, value);
 		default:
 			return state;
   }

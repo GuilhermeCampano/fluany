@@ -4,9 +4,10 @@ export default React => {
     string, shape, func
   } = React.PropTypes;
 
-  const pack = ({ actions: { createPackage } }) => {
+  const pack = ({store, actions: { createPackage } }) => {
+    const handleClickItem = () => store.dispatch({type: 'CREATE_PACKAGE', value: {isCreating: true}})
     return (
-        <li key="add" onClick={ () => createPackage({isCreating: true}) }>
+        <li key="add" onClick={handleClickItem}>
 					<p>+</p>
 					<p>Criar novo pacote</p>
         </li>
