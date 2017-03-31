@@ -1,11 +1,13 @@
 import CreatePackage from './CreatePackage';
-
+import CreatePackItem from './PackItem.js';
 
 export default React => {
   const packs = ({store, actions: {createPackage}}) => {
 		const Create = CreatePackage(React);
+    const PackItem = CreatePackItem(React);
 		const createProps = {
       store,
+      isCreating: false,
 			actions: {
 				createPackage
 			}
@@ -14,7 +16,8 @@ export default React => {
     return (
 		 <section>
 				<ul className="packs-content">
-					<Create {...createProps}/>
+					  <Create {...createProps}/>
+            <PackItem {...createProps}/>
 				</ul>
 			</section>
     );
