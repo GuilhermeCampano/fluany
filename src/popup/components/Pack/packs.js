@@ -1,27 +1,15 @@
-import CreatePackage from './CreatePackage';
-import CreatePackItem from './PackItem.js';
+import React from 'react';
+import {connect} from 'react-redux';
+import Create from './create';
 
-export default React => {
-  const packs = ({store, actions: {createPackage}}) => {
-		const Create = CreatePackage(React);
-    const PackItem = CreatePackItem(React);
-		const createProps = {
-      store,
-      isCreating: false,
-			actions: {
-				createPackage
-			}
-		};
-
+let Packs = ({dispatch}) => {
     return (
-		 <section>
-				<ul className="packs-content">
-					  <Create {...createProps}/>
-            <PackItem {...createProps}/>
-				</ul>
-			</section>
+        <section>
+				    <ul className="packs-content">
+                <Create/>
+				    </ul>
+        </section>
     );
-  };
+}
 
-  return packs;
-};
+export default connect()(Packs);

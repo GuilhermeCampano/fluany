@@ -1,12 +1,20 @@
 import React from 'react';
-import { render } from 'react-dom';
-import createApp from './App';
-import './popup.styl';
+import {render} from 'react-dom';
+import { Provider } from 'react-redux';
+import App from './containers/App';
+import configureStore from './store/configureStore';
+import './styl/app.styl';
 
-const App = createApp(React);
+const store = configureStore();
+window.store = store;
+
+store.subscribe(() => {
+    console.log(store.getState());
+})
 
 render(
-  <App />,
-  document.getElementById('app')
+  <Provider store={store}>
+    <App />
+  </Provider>
+  , document.getElementById('app')
 );
-
