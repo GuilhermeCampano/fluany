@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { changePackageTitle,
          changePackageDescription } from '../../actions/actions';
 import Play  from '../Play/Play';
+import Palette from '../Palette/Palette';
 
 let Pack = ({
     dispatch,
@@ -54,6 +55,7 @@ let Pack = ({
                 {TitlePackage()}
                 {DescriptionPackage()}
                 <Play />
+                <Palette />
             </li>
     );
 }

@@ -1,0 +1,38 @@
+.palette-color
+  position absolute
+  right 35px
+  bottom 14px
+  ul
+    list-style none
+    background #FFF
+    border-radius 200px 200px 200px 200px
+    padding-left 8px
+    li
+      display inline-block
+      margin-right 5px
+      margin-top 4px
+      label
+        width 20px
+        height 20px
+        display block
+        border-radius 100%
+        border 2px solid #FFF
+        cursor pointer
+        transition all .4s
+        &.color-1
+          background color-1
+          &.active
+            box-shadow 0px 0px 5px 2px color-1
+        &.color-2
+          background color-2
+          &.active
+            box-shadow 0px 0px 5px 2px color-2
+        &.color-3
+          background color-3
+          &.active
+            box-shadow 0px 0px 5px 2px color-3
+        &.color-4
+          background color-4
+          &.active
+            box-shadow 0px 0px 5px 2px color-4
+
