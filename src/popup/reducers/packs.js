@@ -1,4 +1,8 @@
-import { ADD_PACKAGE } from '../constants/ActionTypes';
+import { ADD_PACKAGE,
+         CHANGE_PACKAGE_TITLE,
+         CHANGE_PACKAGE_DESCRIPTION } from '../constants/ActionTypes';
+import { assoc, update } from 'ramda';
+
 let defaultState = [
   {
     id: 0,
@@ -16,6 +20,10 @@ const packs = (state = defaultState, action) => {
     switch(action.type){
         case ADD_PACKAGE:
             return [...state, action.value];
+        case CHANGE_PACKAGE_TITLE:
+            return update(action.id, assoc('title', action.value, state[action.id]), state);
+        case CHANGE_PACKAGE_DESCRIPTION:
+            return update(action.id, assoc('description', action.value, state[action.id]), state);
         default:
             return state;
     }

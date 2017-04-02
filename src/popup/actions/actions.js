@@ -1,7 +1,7 @@
-import {ADD_PACKAGE,
-        IS_CREATING_PACKAGE,
-        IS_EDIT_PACKAGE_TITLE,
-        EDIT_PACKAGE_TITLE} from '../constants/ActionTypes';
+import { ADD_PACKAGE,
+         IS_CREATING_PACKAGE,
+         CHANGE_PACKAGE_TITLE,
+         CHANGE_PACKAGE_DESCRIPTION } from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -18,16 +18,18 @@ export function isCreatingPackage(value){
 	  };
 }
 
-export function editTitlePackage(value){
+export function changePackageTitle(id, value){
     return {
-        type: EDIT_PACKAGE_TITLE,
-        value
+        type: CHANGE_PACKAGE_TITLE,
+        value,
+        id
     };
 }
 
-export function isEditTitlePackage(value){
+export function changePackageDescription(id, value){
     return {
-        type: IS_EDIT_PACKAGE_TITLE,
-        value
+        type: CHANGE_PACKAGE_DESCRIPTION,
+        value,
+        id
     };
 }

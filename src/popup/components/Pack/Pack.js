@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEditTitlePackage } from '../../actions/actions';
+import { changePackageTitle,
+         changePackageDescription } from '../../actions/actions';
 import Play  from '../Play/Play';
 
 let Pack = ({
@@ -10,15 +11,23 @@ let Pack = ({
     description}) => {
 
     let titleInput;
-    setTimeout(() => {
-        titleInput.blur()
-    }, 100);
+
+    const handlePackageTitle = e => {
+        dispatch(changePackageTitle(id, e.target.value));
+    }
+
+    const handlePackageDescription = e => {
+        dispatch(changePackageDescription(id, e.target.value));
+    }
 
     const TitlePackage = () => (
         <div className="title-package--container">
             <textarea
                 className="input-title-package"
                 type="text"
+                onChange={handlePackageTitle}
+                spellCheck="false"
+                autoCorrect="false"
                 ref={input => {titleInput = input;}}
                 value={title}>
             </textarea>
@@ -30,8 +39,10 @@ let Pack = ({
             <textarea
                 className="input-description-package"
                 type="text"
+                onChange={handlePackageDescription}
                 value={description}
                 spellCheck="false"
+                maxLength="98"
                 autoCorrect="false">
             </textarea>
         </div>
