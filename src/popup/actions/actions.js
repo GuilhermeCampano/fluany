@@ -1,7 +1,9 @@
 import { ADD_PACKAGE,
          IS_CREATING_PACKAGE,
          CHANGE_PACKAGE_TITLE,
-         CHANGE_PACKAGE_DESCRIPTION } from '../constants/ActionTypes';
+         CHANGE_PACKAGE_DESCRIPTION,
+         CHANGE_FILTER_PACKAGE,
+         TOGGLE_ACTIVE_SEARCH} from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -31,5 +33,18 @@ export function changePackageDescription(id, value){
         type: CHANGE_PACKAGE_DESCRIPTION,
         value,
         id
+    };
+}
+
+export function changeFilterPackage(value){
+    return {
+        type: CHANGE_FILTER_PACKAGE,
+        value
+    };
+}
+
+export function toggleActiveSearch(){
+    return {
+        type: TOGGLE_ACTIVE_SEARCH
     };
 }
