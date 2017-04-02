@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import pack from './pack';
+import packs from './packs';
 import flags from './flags';
 
 const app = combineReducers({
-    pack,
+    packs,
     flags
 });
 

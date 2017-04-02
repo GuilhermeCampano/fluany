@@ -2,36 +2,85 @@
   padding 0
   list-style none
   display flex
+  flex-flow wrap
   justify-content space-between
 
 .pack-item
-  cursor pointer
-  width 210px
+  width 220px
   padding 20px 10px 10px 10px
+  height 130px
+  margin-top 15px
   h3
     color #FFF
     font-size 16px
     margin 0
   &.color-1
-    background-color #3c7ee0
+    background-color color-1
 
 .pack-item--new
   text-align center
   border 2px dotted rgba(44,151,222,1)
-  padding-top 40px
-  padding-bottom 40px
   color gray-light
+  padding 18px 9px 9px 9px
+  .pack-item-content
+    cursor pointer
 
 .create-package--icon
   font-size 80px
-  margin 0 0 30px 0
+  margin 30px 0 30px 0
   line-height 10px
+  font-weight bold
 
 .create-package--description
   margin 0
   font-size 17px
+  font-weight bold
 
 .pack-description
   color #FFF
   margin 0
   font-weight 300
+
+.pack-item--creating
+  padding 0 10px
+  .pack-item--title
+    font-size 16px
+    text-align left
+    margin-bottom 6px
+  .pack-item--input
+    width 97%
+    display block
+    height 20px
+    padding-left 10px
+    outline none
+  .new-pack--buttons
+    display flex
+    justify-content space-between
+    margin-top 10px
+    .btn-cancel, .btn-create
+      padding 10px
+      font-size 10px
+      width 97px
+    .btn-cancel
+      background #e2e2e2
+      color rgba(184, 189, 199, 1)
+    .btn-create
+      background rgba(178, 218, 118, 1)
+
+.title-package--container
+  .input-title-package
+    border none
+    outline none
+    background color-1
+    display block
+    height 20px
+    resize none
+    min-height 22px
+    word-wrap break-word
+    overflow hidden
+    color #FFF
+    font-size 16px
+    &:focus
+      color darken(color-1, 10%)
+      background #FFF
+
