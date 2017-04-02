@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Create from './create';
 import Pack from './Pack';
-import { filter, toLower } from 'ramda';
+import MorePackage from './MorePakage';
+import { filter, toLower, take, compose } from 'ramda';
 
 let PackList = ({
     packs
@@ -18,11 +19,17 @@ let PackList = ({
                          {...pack}/>
                  )}
 				    </ul>
+            <MorePackage/>
         </section>
     );
 }
 
 const getVisiblePackages = (
+    packs,
+    pagination
+) => take(pagination, packs);
+
+const getSearchPackages = (
     packs,
     filterPackage
 ) => filter(pack => {
@@ -37,9 +44,14 @@ const getVisiblePackages = (
 const mapStateToProps = (
   state
 ) => {
+
   return {
-      packs: getVisiblePackages(state.packs, state.flags.filterPackage)
+      packs: getVisiblePackages(
+                getSearchPackages(state.packs, state.flags.filterPackage),
+                state.flags.paginationPackage
+            )
   };
+
 };
 
 export default connect(

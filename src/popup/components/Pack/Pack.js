@@ -28,6 +28,7 @@ let Pack = ({
                 onChange={handlePackageTitle}
                 spellCheck="false"
                 autoCorrect="false"
+                maxLength="21"
                 ref={input => {titleInput = input;}}
                 value={title}>
             </textarea>
@@ -42,7 +43,7 @@ let Pack = ({
                 onChange={handlePackageDescription}
                 value={description}
                 spellCheck="false"
-                maxLength="98"
+                maxLength="92"
                 autoCorrect="false">
             </textarea>
         </div>

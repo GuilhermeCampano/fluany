@@ -3,7 +3,9 @@ import { ADD_PACKAGE,
          CHANGE_PACKAGE_TITLE,
          CHANGE_PACKAGE_DESCRIPTION,
          CHANGE_FILTER_PACKAGE,
-         TOGGLE_ACTIVE_SEARCH} from '../constants/ActionTypes';
+         TOGGLE_ACTIVE_SEARCH,
+         CHANGE_PAGINATION_PACKAGE,
+         MORE_PACKAGE } from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -48,3 +50,9 @@ export function toggleActiveSearch(){
         type: TOGGLE_ACTIVE_SEARCH
     };
 }
+
+export function changePagination(){
+    return {
+        type: CHANGE_PAGINATION_PACKAGE
+    };
+};

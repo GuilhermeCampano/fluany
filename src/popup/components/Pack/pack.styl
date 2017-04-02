@@ -3,6 +3,8 @@
   list-style none
   display flex
   flex-flow wrap
+  margin-bottom 20px
+  margin-top 0
   justify-content space-between
 
 .pack-item
@@ -88,3 +90,14 @@
     &:focus
       color darken(color-1, 10%)
       background #FFF
+
+
+.more-package--content
+  display block
+  text-align center
+  .more-package--button
+    background transparent
+    border 2px solid gray-border
+    color gray-border
+  &.more-package--hidden
+    display none

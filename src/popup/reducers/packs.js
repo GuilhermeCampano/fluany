@@ -4,14 +4,35 @@ import { ADD_PACKAGE,
 import { assoc, update } from 'ramda';
 
 let defaultState = [
-  {
+{
     id: 0,
-    title: 'Pack teste numero 1',
+    title: 'Pack teste numero 0',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
-  },
+},
 {
     id: 1,
+    title: 'Pack teste numero 1',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+},
+
+{
+    id: 2,
     title: 'Pack teste numero 2',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+},
+{
+    id: 3,
+    title: 'Pack teste numero 3',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+},
+{
+    id: 4,
+    title: 'Pack teste numero 4',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+},
+{
+    id: 5,
+    title: 'Pack teste numero 5',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
 }
 ];
