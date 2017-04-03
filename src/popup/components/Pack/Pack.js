@@ -9,10 +9,11 @@ let Pack = ({
     dispatch,
     title,
     id,
-    description}) => {
+    colorID,
+    description,
+    isChangingColor}) => {
 
     let titleInput;
-
     const handlePackageTitle = e => {
         dispatch(changePackageTitle(id, e.target.value));
     }
@@ -51,11 +52,11 @@ let Pack = ({
     )
 
     return (
-            <li className="pack-item color-1">
+            <li className={"pack-item color-" + colorID}>
                 {TitlePackage()}
                 {DescriptionPackage()}
                 <Play />
-                <Palette />
+                <Palette isChanging={isChangingColor} colorID={colorID} packageid={id}/>
             </li>
     );
 }

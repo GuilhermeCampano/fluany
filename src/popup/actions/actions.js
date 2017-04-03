@@ -5,7 +5,9 @@ import { ADD_PACKAGE,
          CHANGE_FILTER_PACKAGE,
          TOGGLE_ACTIVE_SEARCH,
          CHANGE_PAGINATION_PACKAGE,
-         MORE_PACKAGE } from '../constants/ActionTypes';
+         MORE_PACKAGE,
+         CHANGE_PACKAGE_COLORID,
+         IS_CHANGING_COLOR } from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -56,3 +58,19 @@ export function changePagination(){
         type: CHANGE_PAGINATION_PACKAGE
     };
 };
+
+export function changeColorID(value, id){
+    return {
+        type: CHANGE_PACKAGE_COLORID,
+        value,
+        id
+    };
+}
+
+export function isChangingColor(value, id){
+    return {
+        type: IS_CHANGING_COLOR,
+        value,
+        id
+    };
+}

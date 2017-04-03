@@ -1,8 +1,8 @@
+import { toLower } from 'ramda';
 import { IS_CREATING_PACKAGE,
          CHANGE_FILTER_PACKAGE,
          TOGGLE_ACTIVE_SEARCH,
          CHANGE_PAGINATION_PACKAGE } from '../constants/ActionTypes';
-import { toLower } from 'ramda';
 
 const assign = Object.assign;
 

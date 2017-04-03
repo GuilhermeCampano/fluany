@@ -1,39 +1,53 @@
 import { ADD_PACKAGE,
          CHANGE_PACKAGE_TITLE,
-         CHANGE_PACKAGE_DESCRIPTION } from '../constants/ActionTypes';
+         CHANGE_PACKAGE_DESCRIPTION,
+         CHANGE_PACKAGE_COLORID,
+         IS_CHANGING_COLOR } from '../constants/ActionTypes';
 import { assoc, update } from 'ramda';
 
 let defaultState = [
 {
     id: 0,
     title: 'Pack teste numero 0',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
+    colorID: 1,
+    isChangingColor: false
 },
 {
     id: 1,
     title: 'Pack teste numero 1',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
+    colorID: 1,
+    isChangingColor: false
 },
 
 {
     id: 2,
     title: 'Pack teste numero 2',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
+    colorID: 3,
+    isChangingColor: false
 },
 {
     id: 3,
     title: 'Pack teste numero 3',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
+    colorID: 3,
+    isChangingColor: false
 },
 {
     id: 4,
     title: 'Pack teste numero 4',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
+    colorID: 1,
+    isChangingColor: false
 },
 {
     id: 5,
     title: 'Pack teste numero 5',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
+    colorID: 4,
+    isChangingColor: false
 }
 ];
 
@@ -45,6 +59,10 @@ const packs = (state = defaultState, action) => {
             return update(action.id, assoc('title', action.value, state[action.id]), state);
         case CHANGE_PACKAGE_DESCRIPTION:
             return update(action.id, assoc('description', action.value, state[action.id]), state);
+        case CHANGE_PACKAGE_COLORID:
+            return update(action.id, assoc('colorID', action.value, state[action.id]), state);
+        case IS_CHANGING_COLOR:
+            return update(action.id, assoc('isChangingColor', action.value, state[action.id]), state);
         default:
             return state;
     }
