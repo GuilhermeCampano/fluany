@@ -3,6 +3,13 @@ import { connect } from 'react-redux';
 import { isCreatingPackage,
          isEditPackage } from '../../actions/actions';
 
+/**
+ * A component to Create pack
+ *
+ * @param  {Function} dispatch   The result from `store.dispatch()`
+ * @param  {Boolean} isCreating   A flag to know if it's creating package
+ * @return {Component}
+ */
 let Create = ({
     isCreating,
     dispatch}) => {
@@ -53,10 +60,18 @@ let Create = ({
 
 const mapStateToProps = (
   state
-) => {
-  return {
+) => ({
       isCreating: state.flags.isCreatingPackage
-  };
+    }
+)
+
+const {
+    func, bool
+} = React.PropTypes;
+
+Create.propTypes = {
+    dispatch: func.isRequired,
+    isCreating: bool.isRequired
 };
 
 export default connect(

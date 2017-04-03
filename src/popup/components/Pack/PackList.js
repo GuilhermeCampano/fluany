@@ -5,6 +5,12 @@ import Pack from './Pack';
 import MorePackage from './MorePakage';
 import { filter, toLower, take, compose } from 'ramda';
 
+/**
+ * A component to list store's packs
+ *
+ * @param  {Array} packs   Store's packs
+ * @return {Component}
+ */
 let PackList = ({
     packs
     }) => {
@@ -24,11 +30,25 @@ let PackList = ({
     );
 }
 
+
+/**
+ * A function to take the packages in accordance with the store's pagination
+ *
+ * @param  {Array} packs        Store's packs
+ * @return {Number} pagination  Store's pagination
+ */
 const getVisiblePackages = (
     packs,
     pagination
 ) => take(pagination, packs);
 
+
+/**
+ * A function to filter packages in accordance with the store's filter
+ *
+ * @param  {Array} packs           Store's packs
+ * @return {String} filterPackage  Store's filterPackage
+ */
 const getSearchPackages = (
     packs,
     filterPackage
@@ -43,15 +63,21 @@ const getSearchPackages = (
 
 const mapStateToProps = (
   state
-) => {
-
-  return {
+) => ({
       packs: getVisiblePackages(
                 getSearchPackages(state.packs, state.flags.filterPackage),
                 state.flags.paginationPackage
-            )
-  };
+      )
+    }
+);
 
+
+const {
+  array
+} = React.PropTypes;
+
+PackList.propTypes = {
+    packs: array.isRequired
 };
 
 export default connect(
