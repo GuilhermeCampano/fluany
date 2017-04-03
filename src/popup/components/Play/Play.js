@@ -7,7 +7,7 @@ let Play = () => {
             <svg className="play-icon">
                 <use xlinkHref="#icon-play"></use>
             </svg>
-            <span className="play-label">Play</span>
+            <span className="play-label">Treinar</span>
         </section>
     );
 }

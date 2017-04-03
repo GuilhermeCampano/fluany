@@ -16,8 +16,7 @@ export function addPackage(value){
 	  };
 }
 
-export function isCreatingPackage(value){
-    console.log('value: ', value);
+export function creatingPackage(value){
 	  return {
 		    type: IS_CREATING_PACKAGE,
         value
