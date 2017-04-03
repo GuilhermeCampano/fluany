@@ -15,7 +15,6 @@ let Pack = ({
     description,
     isChangingColor}) => {
 
-    let titleInput;
     const handlePackageTitle = e => {
         dispatch(changePackageTitle(id, e.target.value));
     }

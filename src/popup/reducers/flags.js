@@ -2,6 +2,7 @@ import { toLower } from 'ramda';
 import { IS_CREATING_PACKAGE,
          CHANGE_FILTER_PACKAGE,
          TOGGLE_ACTIVE_SEARCH,
+				 IS_EDIT_PACKAGE,
          CHANGE_PAGINATION_PACKAGE } from '../constants/ActionTypes';
 
 const assign = Object.assign;
@@ -10,7 +11,8 @@ let defaultState = {
     isCreatingPackage: false,
     filterPackage: "",
     isActiveSearch: false,
-    paginationPackage: 3
+		paginationPackage: 3,
+		isEditPackage: false
 };
 
 const flags = (state = defaultState, action) => {
@@ -23,6 +25,8 @@ const flags = (state = defaultState, action) => {
             return assign({}, state, {isActiveSearch: !state.isActiveSearch});
         case CHANGE_PAGINATION_PACKAGE:
             return assign({}, state, {paginationPackage: state.paginationPackage + 2});
+				case IS_EDIT_PACKAGE:
+					return assign({}, state, {isEditPackage: action.value});
         default:
             return state;
     }

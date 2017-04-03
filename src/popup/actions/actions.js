@@ -7,7 +7,8 @@ import { ADD_PACKAGE,
          CHANGE_PAGINATION_PACKAGE,
          MORE_PACKAGE,
          CHANGE_PACKAGE_COLORID,
-         IS_CHANGING_COLOR } from '../constants/ActionTypes';
+         IS_CHANGING_COLOR,
+				 IS_EDIT_PACKAGE } from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -16,7 +17,8 @@ export function addPackage(value){
 	  };
 }
 
-export function creatingPackage(value){
+export function isCreatingPackage(value){
+    console.log('value: ', value);
 	  return {
 		    type: IS_CREATING_PACKAGE,
         value
@@ -72,4 +74,11 @@ export function isChangingColor(value, id){
         value,
         id
     };
+}
+
+export function isEditPackage(value){
+	return {
+		type: IS_EDIT_PACKAGE,
+		value
+	};
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isCreatingPackage } from '../../actions/actions';
+import { isCreatingPackage,
+         isEditPackage } from '../../actions/actions';
 
 let Create = ({
     isCreating,
@@ -14,6 +15,10 @@ let Create = ({
         dispatch(isCreatingPackage(false));
     }
 
+    const handleClickCreate = () => {
+        dispatch(isEditPackage(true));
+    }
+
     const Creating = () => (
         <div className="pack-item--creating">
             <p className="pack-item--title">Adicionar novo pacote</p>
@@ -25,7 +30,8 @@ let Create = ({
             <div className="new-pack--buttons">
                 <button className="btn btn-cancel"
                         onClick={handleClickCancel}>Cancelar</button>
-                <button className="btn btn-create">Criar pacote</button>
+                <button className="btn btn-create"
+                        onClick={handleClickCreate}>Criar pacote</button>
             </div>
         </div>
 

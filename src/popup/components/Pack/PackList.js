@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Create from './create';
+import Create from './Create';
 import Pack from './Pack';
 import MorePackage from './MorePakage';
 import { filter, toLower, take, compose } from 'ramda';
