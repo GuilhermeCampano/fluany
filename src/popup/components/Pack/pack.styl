@@ -8,7 +8,7 @@
   justify-content space-between
 
 .pack-item
-  width 220px
+  width 250px
   padding 20px 10px 10px 10px
   height 130px
   margin-top 15px
@@ -23,29 +23,45 @@
     background-color color-1
     .input-description-package
       background color-1
+      &:focus
+        color color-1
     .input-title-package
       background color-1
+      &:focus
+        color color-1
 
   &.color-2
     background-color color-2
     .input-description-package
       background color-2
+      &:focus
+        color color-2
     .input-title-package
       background color-2
+      &:focus
+        color color-2
 
   &.color-3
     background-color color-3
     .input-description-package
       background color-3
+      &:focus
+        color color-3
     .input-title-package
       background color-3
+      &:focus
+        color color-3
 
   &.color-4
     background-color color-4
     .input-description-package
       background color-4
+      &:focus
+        color color-4
     .input-title-package
       background color-4
+      &:focus
+        color color-4
 
 .pack-item--new
   text-align center
@@ -98,6 +114,7 @@
     height 19px
     color #FFF
     font-size 16px
+    font-weight bold
     &:focus
       color darken(color-1, 10%)
       background #FFF
@@ -106,13 +123,12 @@
   height 48px
   .input-description-package
     display block
-    font-weight 300
+    font-weight 500
     font-size 12px
     color #FFF
     width 98%
     height 100%
     &:focus
-      color darken(color-1, 10%)
       background #FFF
 
 
