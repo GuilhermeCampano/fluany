@@ -12,7 +12,7 @@ let defaultState = {
     filterPackage: "",
     isActiveSearch: false,
 		paginationPackage: 3,
-		isEditPackage: true
+		isEditPackage: false
 };
 
 const flags = (state = defaultState, action) => {

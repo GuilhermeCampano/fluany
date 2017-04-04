@@ -1,9 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PackEdit from '../components/PackEdit/PackEdit';
-const PackConfig = () => (
-		<div>
-			<PackEdit />
-		</div>
-);
+const PackConfig = ({isEdit}) => {
+	if(isEdit){
+		return (
+				<div>
+					<PackEdit />
+				</div>
+		);
+	}else
+		return null;
+}
 
-export default PackConfig;
+
+const mapStateToProps = (
+  state
+) => {
+  return {
+    isEdit: state.flags.isEditPackage
+  };
+};
+
+export default connect(mapStateToProps)(PackConfig);

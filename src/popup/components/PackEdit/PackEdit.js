@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TitlePack from '../Pack/TitlePack';
+import DescriptionPack from '../Pack/DescriptionPack';
 import { changePackageTitle,
          changePackageDescription,
          isEditPackage } from '../../actions/actions';
@@ -10,14 +11,32 @@ let PackEdit = ({
   isEdit
 }) => {
 
-  const handlePackageTitle = e => {
+  const handlePackTitle = e => {
 		console.log('editing title ');
   };
+
+	const handlePackDescription = e => {
+
+	};
+
+	const handleComeBack = () => {
+		dispatch(isEditPackage(false));
+	};
+
+	const titleProps = {
+		onChange: handlePackTitle,
+		title: "Título do pacote"
+	};
+
+	const descriptionProps = {
+		onChange: handlePackDescription,
+		description: "Click aqui para mudar a descrição do pacote"
+	};
 
   const Container = () => (
       <section className="config-package">
 				<nav>
-					<button className="btn btn-back">Voltar
+					<button className="btn btn-back" onClick={handleComeBack}>Voltar
 							<svg className="arrow-back">
 								<use xlinkHref="#icon-arrow"></use>
 							</svg>
@@ -31,8 +50,8 @@ let PackEdit = ({
 					</button>
 				</nav>
 				<div>
-					<TitlePack title="teste victor"/>
-					<p> Curabitur vulputate vestibulum lorem. </p>
+					<TitlePack {...titleProps}/>
+					<DescriptionPack {...descriptionProps}/>
 				</div>
       </section>
   );
