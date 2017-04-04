@@ -1,0 +1,44 @@
+.config-package
+  position relativa
+  .btn
+    font-weight bold
+    text-transform none
+    position relative
+  .btn-back
+    background transparent
+    color gray-border
+    .arrow-back
+      width 40px
+      height 40px
+      transform rotateZ(90deg)
+      fill gray-light
+      position absolute
+      right 50px
+      top -4px
+      transition transform
+
+  .btn-save
+    background green-light
+    font-size 12px
+    padding-top 15px
+    padding-bottom 15px
+    float right
+  .btn-delete
+    float right
+    width 110px
+    margin-right 20px
+    color red-light
+    text-align right
+    background transparent
+    transition all .3s ease
+    padding-top 15px
+    padding-bottom 15px
+    .trash-icon
+      width 30px
+      height 30px
+      fill red-light
+      position absolute
+      left 10px
+      top 5px
+    &:hover
+      color darken(red-light, 20%)

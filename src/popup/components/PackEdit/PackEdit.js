@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TitlePack from '../components/Pack/TitlePack';
+import TitlePack from '../Pack/TitlePack';
 import { changePackageTitle,
          changePackageDescription,
-         isEditPackage } from '../actions/actions';
+         isEditPackage } from '../../actions/actions';
 
 let PackEdit = ({
   dispatch,
@@ -11,14 +11,24 @@ let PackEdit = ({
 }) => {
 
   const handlePackageTitle = e => {
-  }
+		console.log('editing title ');
+  };
 
   const Container = () => (
-      <section>
+      <section className="config-package">
 				<nav>
-					<button className="btn">Voltar</button>
-					<button className="btn">Excluir</button>
-					<button className="btn">Salvar pacote</button>
+					<button className="btn btn-back">Voltar
+							<svg className="arrow-back">
+								<use xlinkHref="#icon-arrow"></use>
+							</svg>
+					</button>
+					<button className="btn btn-save">Salvar pacote</button>
+					<button className="btn btn-delete">
+						<span>Excluir</span>
+						<svg className="trash-icon">
+							<use xlinkHref="#icon-trash"></use>
+						</svg>
+					</button>
 				</nav>
 				<div>
 					<TitlePack title="teste victor"/>
@@ -28,7 +38,7 @@ let PackEdit = ({
   );
 
   return isEdit ? Container() : (<div></div>);
-}
+};
 
 const mapStateToProps = (
   state

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import Search from '../components/Search/Search';
-import PackList from '../components/Pack/PackList';
 import configureStore from '../store/configureStore';
+import Home from './Home';
+import PackConfig from './PackConfig';
 
 const App = () => (
   <div>
-    <Search/>
-    <PackList/>
+      <Home/>
+      <PackConfig/>
   </div>
 );
 
