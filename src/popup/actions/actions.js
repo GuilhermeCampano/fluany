@@ -8,7 +8,8 @@ import { ADD_PACKAGE,
          MORE_PACKAGE,
          CHANGE_PACKAGE_COLORID,
          IS_CHANGING_COLOR,
-				 IS_EDIT_PACKAGE } from '../constants/ActionTypes';
+				 IS_EDIT_PACKAGE,
+         NEW_PACKAGE } from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -81,4 +82,11 @@ export function isEditPackage(value){
 		type: IS_EDIT_PACKAGE,
 		value
 	};
+}
+
+export function newPackage(value){
+    return {
+        type: NEW_PACKAGE,
+        value
+    };
 }

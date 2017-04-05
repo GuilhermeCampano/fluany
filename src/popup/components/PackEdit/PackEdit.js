@@ -1,22 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { assoc } from 'ramda';
 import TitlePack from '../Pack/TitlePack';
 import DescriptionPack from '../Pack/DescriptionPack';
 import { changePackageTitle,
          changePackageDescription,
-         isEditPackage } from '../../actions/actions';
+         isEditPackage, newPackage } from '../../actions/actions';
 
 let PackEdit = ({
-  dispatch,
-  isEdit
+    dispatch,
+    isEdit,
+    packflag
 }) => {
 
   const handlePackTitle = e => {
-		console.log('editing title ');
+      dispatch(newPackage(assoc('title', e.target.value, packflag)));
   };
 
 	const handlePackDescription = e => {
-
+      dispatch(newPackage(assoc('description', e.target.value, packflag)));
 	};
 
 	const handleComeBack = () => {
@@ -25,12 +27,12 @@ let PackEdit = ({
 
 	const titleProps = {
 		onChange: handlePackTitle,
-		title: "Título do pacote"
+		title: packflag.title
 	};
 
 	const descriptionProps = {
 		onChange: handlePackDescription,
-		description: "Click aqui para mudar a descrição do pacote"
+		description: packflag.description
 	};
 
   const Container = () => (
@@ -63,7 +65,8 @@ const mapStateToProps = (
   state
 ) => {
   return {
-    isEdit: state.flags.isEditPackage
+      isEdit: state.flags.isEditPackage,
+      packflag: state.flags.newPackage
   };
 };
 

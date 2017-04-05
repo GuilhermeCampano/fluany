@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { isCreatingPackage,
-         isEditPackage } from '../../actions/actions';
+         isEditPackage,
+         newPackage } from '../../actions/actions';
 
 /**
  * A component to Create pack
@@ -26,12 +27,17 @@ let Create = ({
         dispatch(isEditPackage(true));
     }
 
+    const handleInputNewPackage = (e) => {
+        dispatch(newPackage({title: e.target.value, description: "Click aqui para mudar a descrição do pacote"}));
+    }
+
     const Creating = () => (
         <div className="pack-item--creating">
             <p className="pack-item--title">Adicionar novo pacote</p>
             <input className="pack-item--input"
                    name="newpack"
                    type="text"
+                   onChange={handleInputNewPackage}
                    placeholder="Qual o nome do novo pacote?"/>
 
             <div className="new-pack--buttons">
