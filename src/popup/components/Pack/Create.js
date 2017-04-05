@@ -28,7 +28,7 @@ let Create = ({
     }
 
     const handleInputNewPackage = (e) => {
-        dispatch(newPackage({title: e.target.value, description: "Click aqui para mudar a descrição do pacote"}));
+        dispatch(newPackage({title: e.target.value, description: ""}));
     }
 
     const Creating = () => (
