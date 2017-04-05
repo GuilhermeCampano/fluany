@@ -13,8 +13,12 @@
   height 130px
   margin-top 15px
   position relative
-  border-radius 4px
+  border-radius 10px
   transition background .4s ease-in
+  &:hover
+    .palette-color
+      opacity 1
+      visibility visible
   h3
     color #FFF
     font-size 16px
@@ -111,9 +115,9 @@
 .title-package--container
   .input-title-package
     display block
-    height 19px
+    height 22px
     color #FFF
-    font-size 16px
+    font-size 22px
     font-weight bold
     &:focus
       color darken(color-1, 10%)

@@ -10,14 +10,14 @@ let defaultState = [
     id: 0,
     title: 'Pack teste numero 0',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
-    colorID: 1,
+    colorID: 4,
     isChangingColor: false
 },
 {
     id: 1,
     title: 'Pack teste numero 1',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
-    colorID: 1,
+    colorID: 2,
     isChangingColor: false
 },
 
