@@ -9,7 +9,8 @@ import { ADD_PACKAGE,
          CHANGE_PACKAGE_COLORID,
          IS_CHANGING_COLOR,
 				 IS_EDIT_PACKAGE,
-         NEW_PACKAGE } from '../constants/ActionTypes';
+         NEW_PACKAGE,
+				 CHANGE_TIME_PACKAGE } from '../constants/ActionTypes';
 
 export function addPackage(value){
 	  return {
@@ -89,4 +90,12 @@ export function newPackage(value){
         type: NEW_PACKAGE,
         value
     };
+}
+
+export function changeTimePackage(value, id){
+	return {
+		type: CHANGE_TIME_PACKAGE,
+		value,
+		id
+	};
 }
