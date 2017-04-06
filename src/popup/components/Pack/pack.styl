@@ -123,6 +123,10 @@
     &:focus
       color darken(color-1, 10%)
       background #FFF
+  &:hover
+    .title-edit-icon
+      opacity 1
+      visibility visible
 
 .description-package--container
   height 48px
@@ -135,6 +139,10 @@
     height 100%
     &:focus
       background #FFF
+  &:hover
+    .description-edit-icon
+      opacity 1
+      visibility visible
 
 .more-package--content
   display block
@@ -145,3 +153,24 @@
     color color-4
   &.more-package--hidden
     display none
+
+
+//icons
+.edit-icon
+  width 19px
+  height 19px
+  fill rgba(255, 255, 255, 0.68)
+
+.title-edit-icon
+  float right
+  margin-top -23px
+  margin-right 36px
+  opacity 0
+  visibility hidden
+
+.description-edit-icon
+  float right
+  margin-top -40px
+  margin-right 26px
+  opacity 0
+  visibility hidden

@@ -16,10 +16,15 @@ const DescriptionPack = ({onChange, description}) => (
 				onChange={onChange}
 				value={description}
 				spellCheck="false"
-				maxLength="92"
+				maxLength="82"
         placeholder="Clique aqui para mudar a descrição"
 				autoCorrect="false">
 			</textarea>
+      <div className="description-edit-icon">
+        <svg className="edit-icon">
+            <use xlinkHref="#icon-edit"></use>
+        </svg>
+      </div>
     </div>
 );
 

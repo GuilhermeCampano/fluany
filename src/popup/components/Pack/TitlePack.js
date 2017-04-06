@@ -20,6 +20,11 @@ const TitlePack = ({onChange, title}) => (
         placeholder="Clique aqui para mudar o título"
 				value={title}>
 			</textarea>
+      <div className="title-edit-icon">
+        <svg className="edit-icon">
+            <use xlinkHref="#icon-edit"></use>
+        </svg>
+      </div>
     </div>
 );
 
