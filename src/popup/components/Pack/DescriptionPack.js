@@ -17,7 +17,7 @@ const DescriptionPack = ({onChange, description}) => (
 				value={description}
 				spellCheck="false"
 				maxLength="92"
-        placeholder="Clique aqui para mudar a descrição do pacote"
+        placeholder="Clique aqui para mudar a descrição"
 				autoCorrect="false">
 			</textarea>
     </div>

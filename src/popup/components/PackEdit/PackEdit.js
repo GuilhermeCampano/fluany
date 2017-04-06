@@ -55,7 +55,7 @@ let PackEdit = ({
 				<div>
 					<TitlePack {...titleProps}/>
 					<DescriptionPack {...descriptionProps}/>
-          {/* <Time idPackage={0}/> */}
+          <Time idPackage={0}/>
 				</div>
       </section>
   );

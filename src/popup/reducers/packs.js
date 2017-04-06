@@ -13,7 +13,7 @@ let defaultState = [
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
     colorID: 4,
 		isChangingColor: false,
-		timeMinutes: 0
+		timeMinutes: 3
 },
 {
     id: 1,
