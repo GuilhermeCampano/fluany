@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { assoc } from 'ramda';
 import TitlePack from '../Pack/TitlePack';
 import DescriptionPack from '../Pack/DescriptionPack';
+import Cards from '../Card/Cards';
 import Time from './Time';
 import { changePackageTitle,
          changePackageDescription,
@@ -56,6 +57,7 @@ let PackEdit = ({
 					<TitlePack {...titleProps}/>
 					<DescriptionPack {...descriptionProps}/>
           <Time idPackage={0}/>
+          <Cards idPackage={0}/>
 				</div>
       </section>
   );

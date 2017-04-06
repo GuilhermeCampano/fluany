@@ -13,7 +13,29 @@ let defaultState = [
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sithendrerit ultrices',
     colorID: 4,
 		isChangingColor: false,
-		timeMinutes: 3
+		timeMinutes: 3,
+    cards: [
+        {
+            colorID: 1,
+            front: "Hello",
+            back: "Olá"
+        },
+        {
+            colorID: 2,
+            front: "Hi",
+            back: "Olá"
+        },
+        {
+            colorID: 3,
+            front: "Hello",
+            back: "Olá"
+        },
+        {
+            colorID: 4,
+            front: "Hello",
+            back: "Olá"
+        }
+    ]
 },
 {
     id: 1,
